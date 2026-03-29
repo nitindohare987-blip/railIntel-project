@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking Page</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  text-decoration: none;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: linear-gradient(135deg, #0f172a, #1e293b, #312e81, #6366f1);
+  color: white;
+  min-height: 100vh;
+}
+
+/* ── NAVBAR ── */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 80px;
+  background: #020617;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #b026ff;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 32px;
+}
+
+nav ul li a {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+  position: relative;
+}
+
+nav ul li a:hover {
+  color: white;
+}
+
+/* underline effect on hover */
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #b026ff;
+  transition: width 0.25s;
+}
+
+nav ul li a:hover::after {
+  width: 100%;
+}
+
+/* HEADING */
+h2 {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding: 32px 0 4px;
+  letter-spacing: 0.5px;
+  color: #e2e8f0;
+}
+
+/* FORM BOX */
+.formBox {
+  width: 90%;
+  max-width: 360px;
+  margin: 20px auto 60px;
+  background: #020617;
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 28px 24px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* INPUTS */
+input, select {
+  padding: 11px 14px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: #0f172a;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input::placeholder { color: #475569; }
+input:focus, select:focus { border-color: #6366f1; }
+select option { background: #0f172a; }
+
+/* date input color fix */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.6);
+  cursor: pointer;
+}
+
+/* DIVIDER */
+.divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  margin: 2px 0;
+}
+
+/* BUTTONS */
+.btn-row {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-book {
+  flex: 1;
+  padding: 11px;
+  border: none;
+  border-radius: 20px;
+  background: #6366f1;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.btn-book:hover {
+  background: #4f46e5;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(99,102,241,0.35);
+}
+
+.btn-back {
+  padding: 11px 20px;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  background: transparent;
+  color: #94a3b8;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.btn-back:hover {
+  border-color: white;
+  color: white;
+}
+
+/* TICKET RESULT */
+#ticket {
+  text-align: center;
+  font-size: 0.92rem;
+  line-height: 1.9;
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: #fde68a;
+  display: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  nav { padding: 14px 20px; }
+  .logo { font-size: 1.8rem; }
+  nav ul { gap: 16px; }
+  nav ul li a { font-size: 0.8rem; }
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#faqs">FAQs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<h2>Book Ticket</h2>
+
+<div class="formBox">
+
+  <input id="name"  placeholder="Full Name">
+  <input id="train" placeholder="Train No">
+  <input id="from"  placeholder="From">
+  <input id="to"    placeholder="To">
+  <input type="date" id="date">
+
+  <select id="class">
+    <option value="">Select Class</option>
+    <option>Sleeper</option>
+    <option>3AC</option>
+    <option>2AC</option>
+    <option>General</option>
+  </select>
+
+  <hr class="divider">
+
+  <div class="btn-row">
+    <button class="btn-book" onclick="bookNow()">Book Ticket</button>
+    <button class="btn-back" onclick="goBack()">← Back</button>
+  </div>
+
+  <div id="ticket"></div>
+
+</div>
+
+<script>
+
+function bookNow() {
+  var name  = document.getElementById("name").value.trim();
+  var train = document.getElementById("train").value.trim();
+  var from  = document.getElementById("from").value.trim();
+  var to    = document.getElementById("to").value.trim();
+  var date  = document.getElementById("date").value;
+  var cls   = document.getElementById("class").value;
+
+  var ticketBox = document.getElementById("ticket");
+
+  if (!name || !train || !from || !to) {
+    ticketBox.style.display = "block";
+    ticketBox.style.color = "#f87171";
+    ticketBox.innerHTML = "⚠️ Please fill all details.";
+    return;
+  }
+
+  var seat = Math.floor(Math.random() * 100) + 1;
+
+  ticketBox.style.display = "block";
+  ticketBox.style.color = "#fde68a";
+  ticketBox.innerHTML =
+    "✅ <b>Ticket Confirmed!</b><br>" +
+    "👤 Name: " + name + "<br>" +
+    "🚆 Train: " + train + "<br>" +
+    "💺 Seat: " + seat + " &nbsp;|&nbsp; Class: " + cls + "<br>" +
+    "📍 " + from + " → " + to + "<br>" +
+    "📅 Date: " + (date || "Not selected");
+}
+
+function goBack() {
+  window.location.href = "index.html";
+}
+
+</script>
+</body>
+</html>

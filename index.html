@@ -37,23 +37,28 @@
 
 <section class="hero">
     
-<button class="ticket">Book Ticket</button>
+<button class="ticket" onclick="bookTicket()">Book Ticket</button>
 
-<button class="search">Search Train</button>
+<button class="search" onclick="searchTrain()">Search Train</button>
 
-<button class="runningstatus">Running Status</button>
+<button class="runningstatus" onclick="runningStatus()">Running Status</button>
 
-<button class="Delay">Delay Measure</button>
+<button class="Delay" onclick="Delay()">Delay Intelligence</button>
 
-<button class="risk">Risk Indicator</button>
+<button class="reliability" onclick="Reliability()">Reliability Score</button>
 
-<button class="rating">Passenger Rating</button>
+<button class="rating" onclick="rating()">Passenger Rating</button>
 
-<button class="alternative">Alternative</button>
+<button class="alternative" onclick="alternative()">Alternative</button>
 
-<button class="food">Food </button>
+<button class="food" onclick="food()">Food </button>
+
 
 </section>
+
+<div id="resultbox">
+<p id="output"></p>
+</div>
 <!-- photo of rail -->
 
 <div class="photo">
@@ -68,7 +73,7 @@
 
 <!--about-->
 
-<section class="about">
+<section id="about">
     <h2>About RailIntel</h2>
 
     <p>
@@ -84,7 +89,7 @@ risk indicators.</span>
 
 </section>
 
-<section class="faqs">
+<section id="faqs">
 
 <h2>FAQs</h2>
 
@@ -110,7 +115,7 @@ risk indicators.</span>
 </section>
 
 
-<section  class="contact">
+<section id="contact" >
 
 <h2>Contact Us</h2>
 
@@ -127,3 +132,9 @@ risk indicators.</span>
 </form>
 
 </section>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>

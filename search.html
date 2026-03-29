@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search Train – RailIntel</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  text-decoration: none;
+}
+
+body {
+  background: linear-gradient(135deg, #0f172a, #1e293b, #312e81, #6366f1);
+  color: white;
+  min-height: 100vh;
+}
+
+/* ── NAVBAR ── */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 80px;
+  background: #020617;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #b026ff;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 32px;
+}
+
+nav ul li a {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+  position: relative;
+}
+
+nav ul li a:hover {
+  color: white;
+}
+
+/* underline effect on hover */
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #b026ff;
+  transition: width 0.25s;
+}
+
+nav ul li a:hover::after {
+  width: 100%;
+}
+
+/* TITLE */
+h2 {
+  text-align: center;
+  padding-top: 40px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  letter-spacing: 0.2px;
+}
+
+/* BOX */
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 28px;
+  gap: 4px;
+}
+
+input {
+  padding: 11px 16px;
+  width: 280px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 9px;
+  background: rgba(15, 23, 42, 0.85);
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.25s;
+}
+
+input::placeholder { color: #475569; }
+
+input:focus {
+  border-color: #2563eb;
+  background: rgba(15, 23, 42, 1);
+}
+
+button {
+  margin-top: 8px;
+  padding: 11px 32px;
+  border: none;
+  border-radius: 25px;
+  background: #2563eb;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.4);
+}
+
+button:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(37,99,235,0.55);
+}
+
+button:active { transform: translateY(0); }
+
+/* RESULT */
+#result {
+  margin-top: 20px;
+  font-size: 0.95rem;
+  color: #ffd166;
+  width: 300px;
+  text-align: center;
+}
+
+/* CARD */
+.card {
+  background: rgba(2, 6, 23, 0.72);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.09);
+  padding: 20px 22px;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  text-align: left;
+  color: #e2e8f0;
+  width: 100%;
+}
+
+.card .row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 0.88rem;
+}
+
+.card .row:last-child { border-bottom: none; }
+
+.card .label { color: #94a3b8; }
+.card .value { font-weight: 600; text-align: right; max-width: 60%; }
+
+.route-row {
+  flex-direction: column !important;
+  gap: 4px;
+}
+
+.route-row .value {
+  text-align: left !important;
+  max-width: 100% !important;
+  color: #a5b4fc;
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.not-found {
+  color: #f87171;
+  font-size: 0.95rem;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">FAQs</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- TITLE -->
+<h2>Search Train</h2>
+
+<!-- BOX -->
+<div class="box">
+
+  <input id="trainNo" placeholder="Enter Train Number (e.g. 12345)">
+
+  <button onclick="searchTrain()">Search Train</button>
+
+  <div id="result"></div>
+
+</div>
+
+<script>
+
+const trains = {
+  12345: {
+    name: "Malwa Express",
+    from: "Indore",
+    to: "Delhi",
+    start: "08:30 AM",
+    days: "Daily",
+    type: "Express",
+    route: "Indore → Ujjain → Bhopal → Jhansi → Gwalior → Delhi"
+  },
+  12198: {
+    name: "Intercity",
+    from: "Bhopal",
+    to: "Gwalior",
+    start: "06:00 AM",
+    days: "Mon · Tue · Wed",
+    type: "Superfast",
+    route: "Bhopal → Vidisha → Guna → Shivpuri → Gwalior"
+  },
+  12919: {
+    name: "Mewar Express",
+    from: "Udaipur",
+    to: "Delhi",
+    start: "07:15 PM",
+    days: "Daily",
+    type: "Superfast",
+    route: "Udaipur → Chittor → Kota → Mathura → Delhi"
+  }
+};
+
+function searchTrain() {
+  const t    = document.getElementById("trainNo").value.trim();
+  const data = trains[t];
+  const box  = document.getElementById("result");
+
+  if (data) {
+    box.innerHTML = `
+      <div class="card">
+        <div class="row">
+          <span class="label">Train Name</span>
+          <span class="value">${data.name}</span>
+        </div>
+        <div class="row">
+          <span class="label">From</span>
+          <span class="value">${data.from}</span>
+        </div>
+        <div class="row">
+          <span class="label">To</span>
+          <span class="value">${data.to}</span>
+        </div>
+        <div class="row">
+          <span class="label">Departure</span>
+          <span class="value">${data.start}</span>
+        </div>
+        <div class="row">
+          <span class="label">Runs On</span>
+          <span class="value">${data.days}</span>
+        </div>
+        <div class="row">
+          <span class="label">Type</span>
+          <span class="value">${data.type}</span>
+        </div>
+        <div class="row route-row">
+          <span class="label">Route</span>
+          <span class="value">${data.route}</span>
+        </div>
+      </div>`;
+  } else {
+    box.innerHTML = `<span class="not-found">⚠️ Train not found. Try: 12345, 12198, 12919</span>`;
+  }
+}
+
+</script>
+
+</body>
+</html>

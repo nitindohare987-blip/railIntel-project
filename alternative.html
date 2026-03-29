@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alternative Route</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b, #312e81, #6366f1);
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* NAV */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 60px;
+            background: #020617;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #b026ff;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 28px;
+        }
+
+        nav ul li a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        nav ul li a:hover {
+            color: white;
+        }
+
+        /* HEADING */
+        h1 {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 24px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* CARD */
+        .box1 {
+            width: 350px;
+            margin: 0 auto 60px;
+            background: #020617;
+            padding: 28px 24px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* INPUTS */
+        input,
+        select {
+            padding: 10px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            background: #0f172a;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.88rem;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        input::placeholder {
+            color: #475569;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #6366f1;
+        }
+
+        select option {
+            background: #0f172a;
+        }
+
+        label {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: -6px;
+        }
+
+        /* DIVIDER */
+        .divider {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        /* BUTTON */
+        #btn {
+            padding: 11px;
+            border: none;
+            border-radius: 10px;
+            background: #6366f1;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        #btn:hover {
+            background: #4f46e5;
+            transform: scale(1.03);
+        }
+
+        /* RESULT */
+        #result {
+            text-align: center;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 10px;
+            padding: 14px 16px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">FAQs</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+
+    <h1>Alternative Route Finder</h1>
+
+    <div class="box1">
+
+        <input type="text" id="from" placeholder="From (e.g. Gwalior)">
+        <input type="text" id="to" placeholder="To (e.g. Indore)">
+
+        <label>Seat Available</label>
+        <select id="seat">
+            <option>Yes</option>
+            <option>No</option>
+        </select>
+
+        <hr class="divider">
+
+        <button id="btn" onclick="route()">Find Route</button>
+
+        <div id="result"></div>
+
+    </div>
+
+    <script>
+
+        function route() {
+
+            var from = document.getElementById("from").value.trim().toLowerCase();
+            var to = document.getElementById("to").value.trim().toLowerCase();
+            var seat = document.getElementById("seat").value;
+            var ans = "";
+
+            var resultBox = document.getElementById("result");
+
+            if (!from || !to) {
+                resultBox.style.display = "block";
+                resultBox.innerHTML = "⚠️ Please enter From and To stations.";
+                return;
+            }
+
+            /* DIRECT ROUTES */
+
+            if (from == "gwalior" && to == "indore") {
+                ans = seat == "Yes"
+                    ? "🚆 Train: <b>Malwa Express</b> (Direct)"
+                    : "🔁 Try: Gwalior → Bhopal (Intercity) → Indore (Express)";
+            }
+
+            else if (from == "gwalior" && to == "delhi") {
+                ans = seat == "Yes"
+                    ? "🚆 Train: <b>Taj Express</b> (Direct)"
+                    : "🔁 Try: Gwalior → Agra → Delhi";
+            }
+
+            else if (from == "bhopal" && to == "indore") {
+                ans = seat == "Yes"
+                    ? "🚆 Train: <b>Intercity Express</b> (Direct)"
+                    : "🔁 Try: Bhopal → Ujjain → Indore";
+            }
+
+            else if (from == "jhansi" && to == "indore") {
+                ans = seat == "Yes"
+                    ? "🚆 Train: <b>Express</b> (Direct)"
+                    : "🔁 Try: Jhansi → Bhopal → Indore";
+            }
+
+            else if (from == "indore" && to == "delhi") {
+                ans = seat == "Yes"
+                    ? "🚆 Train: <b>Indore Delhi Express</b> (Direct)"
+                    : "🔁 Try: Indore → Bhopal → Delhi";
+            }
+
+            else {
+                ans = "❌ No route found. Try via <b>Bhopal / Jhansi / Agra</b>";
+            }
+
+            resultBox.style.display = "block";
+            resultBox.innerHTML = ans;
+        }
+
+    </script>
+
+</body>
+
+</html>

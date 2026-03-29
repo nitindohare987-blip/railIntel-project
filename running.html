@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Running Status – RailIntel</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  text-decoration: none;
+}
+
+body {
+  background: linear-gradient(135deg, #0f172a, #1e293b, #312e81, #6366f1);
+  color: white;
+  min-height: 100vh;
+}
+
+/* ── NAVBAR ── */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 80px;
+  background: #020617;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #b026ff;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 32px;
+}
+
+nav ul li a {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+  position: relative;
+}
+
+nav ul li a:hover {
+  color: white;
+}
+
+/* underline effect on hover */
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #b026ff;
+  transition: width 0.25s;
+}
+
+nav ul li a:hover::after {
+  width: 100%;
+}
+
+
+/* TITLE */
+h2 {
+  text-align: center;
+  padding-top: 36px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  letter-spacing: 0.2px;
+}
+
+/* CARD */
+.container {
+  width: 320px;
+  margin: 28px auto 0;
+  background: rgba(2, 6, 23, 0.72);
+  backdrop-filter: blur(14px);
+  padding: 30px 26px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.09);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 8px 36px rgba(0,0,0,0.4);
+}
+
+/* INPUT */
+input {
+  padding: 11px 14px;
+  width: 100%;
+  border-radius: 9px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(15, 23, 42, 0.85);
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.25s;
+}
+
+input::placeholder { color: #475569; }
+
+input:focus {
+  border-color: #2563eb;
+  background: rgba(15, 23, 42, 1);
+}
+
+/* BUTTON */
+button {
+  padding: 11px 28px;
+  border: none;
+  border-radius: 25px;
+  background: #2563eb;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.4);
+  width: 100%;
+}
+
+button:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(37,99,235,0.55);
+}
+
+button:active { transform: translateY(0); }
+
+/* STATUS BOX */
+#statusBox {
+  margin-top: 6px;
+  font-size: 0.95rem;
+  color: #ffd166;
+  width: 100%;
+}
+
+/* RESULT CARD */
+.card {
+  padding: 18px 20px;
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 12px;
+  line-height: 2;
+  font-size: 0.9rem;
+  color: #e2e8f0;
+}
+
+.card .row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 4px 0;
+}
+
+.card .row:last-child { border-bottom: none; }
+
+.card .label { color: #94a3b8; font-size: 0.82rem; }
+.card .value { font-weight: 600; }
+
+.on-time { color: #4ade80; }
+.late     { color: #f87171; }
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">FAQs</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- TITLE -->
+<h2>Running Status</h2>
+
+<!-- CONTAINER -->
+<div class="container">
+
+  <input id="trainNo" placeholder="Enter Train Number">
+
+  <button onclick="checkStatus()">Check Status</button>
+
+  <div id="statusBox"></div>
+
+</div>
+
+<script>
+function checkStatus() {
+  let t = document.getElementById("trainNo").value.trim();
+
+  if (t === "") {
+    alert("Please enter a Train Number");
+    return;
+  }
+
+  let delay    = Math.floor(Math.random() * 40);
+  let stations = ["Gwalior", "Bhopal", "Indore", "Ratlam", "Ujjain"];
+  let s        = stations[Math.floor(Math.random() * stations.length)];
+  let platform = Math.floor(Math.random() * 5) + 1;
+  let isLate   = delay > 20;
+  let status   = isLate ? "Late" : "Running On Time";
+  let cls      = isLate ? "late" : "on-time";
+
+  document.getElementById("statusBox").innerHTML = `
+    <div class="card">
+      <div class="row">
+        <span class="label">Train No.</span>
+        <span class="value">${t}</span>
+      </div>
+      <div class="row">
+        <span class="label">Status</span>
+        <span class="value ${cls}">${status}</span>
+      </div>
+      <div class="row">
+        <span class="label">Delay</span>
+        <span class="value">${delay} min</span>
+      </div>
+      <div class="row">
+        <span class="label">Current Station</span>
+        <span class="value">${s}</span>
+      </div>
+      <div class="row">
+        <span class="label">Platform</span>
+        <span class="value">${platform}</span>
+      </div>
+    </div>`;
+}
+</script>
+
+</body>
+</html>

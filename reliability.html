@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reliability Indicator – RailIntel</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #0f172a, #1e293b, #312e81, #6366f1);
+  color: white;
+  min-height: 100vh;
+}
+
+/* NAV */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 100px;
+  background: rgba(2, 6, 23, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #b026ff;
+  letter-spacing: -0.5px;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+}
+
+nav ul li a,
+nav ul li {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.92rem;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+
+nav ul li a:hover,
+nav ul li:hover { color: white; }
+
+/* PAGE TITLE */
+h2 {
+  text-align: center;
+  margin-top: 36px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  letter-spacing: 0.2px;
+}
+
+/* CARD */
+.box1 {
+  width: 370px;
+  margin: 32px auto 60px;
+  background: rgba(2, 6, 23, 0.72);
+  backdrop-filter: blur(14px);
+  padding: 32px 28px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.09);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.45);
+}
+
+/* LABELS */
+label {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  margin-bottom: -4px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* INPUTS */
+input, select {
+  padding: 11px 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 9px;
+  background: rgba(15, 23, 42, 0.85);
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.25s;
+  width: 100%;
+}
+
+input::placeholder { color: #475569; }
+
+input:focus, select:focus {
+  border-color: #6366f1;
+  background: rgba(15, 23, 42, 1);
+}
+
+select option { background: #0f172a; }
+
+/* BUTTON */
+button {
+  padding: 12px;
+  background: #6366f1;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+  box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+  width: 100%;
+}
+
+button:hover {
+  background: #4f46e5;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(99,102,241,0.5);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* DIVIDER */
+hr {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+/* RESULT */
+#result {
+  margin-top: 4px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  min-height: 28px;
+  transition: all 0.3s;
+}
+
+.high  { color: #4ade80; }
+.medium{ color: #fb923c; }
+.low   { color: #f87171; }
+
+/* SCORE BAR */
+#bar-wrap {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#bar-wrap span {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-align: right;
+}
+
+#bar-bg {
+  width: 100%;
+  height: 7px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+#bar-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 99px;
+  transition: width 0.7s cubic-bezier(.4,0,.2,1), background 0.4s;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li>About</li>
+    <li>FAQs</li>
+    <li>Contact</li>
+  </ul>
+</nav>
+
+<!-- TITLE -->
+<h2>Smart Reliability Analyzer</h2>
+
+<!-- CARD -->
+<div class="box1">
+
+  <input type="text" id="trainno" placeholder="Train Number">
+
+  <label>Train Type</label>
+  <select id="type">
+    <option>Superfast</option>
+    <option>Express</option>
+    <option>Passenger</option>
+    <option>Local</option>
+  </select>
+
+  <label>Delay (minutes)</label>
+  <input type="text" id="delay" placeholder="Enter delay in minutes">
+
+  <hr>
+
+  <button onclick="check()">Check Reliability</button>
+
+  <!-- SCORE BAR -->
+  <div id="bar-wrap">
+    <span id="bar-label">0%</span>
+    <div id="bar-bg"><div id="bar-fill"></div></div>
+  </div>
+
+  <div id="result"></div>
+
+</div>
+
+<script>
+function check() {
+  let delay = Number(document.getElementById("delay").value);
+  let type  = document.getElementById("type").value;
+
+  let score = 100;
+
+  score -= delay;
+
+  if (type === "Superfast")     score += 10;
+  else if (type === "Express")  score += 0;
+  else if (type === "Passenger") score -= 10;
+  else if (type === "Local")    score -= 5;
+
+  if (score > 100) score = 100;
+  if (score < 0)   score = 0;
+
+  let status, cls, barColor;
+
+  if (score > 80) {
+    status = "Very Reliable";   cls = "high";   barColor = "#4ade80";
+  } else if (score > 60) {
+    status = "Reliable";        cls = "high";   barColor = "#86efac";
+  } else if (score > 40) {
+    status = "Average";         cls = "medium"; barColor = "#fb923c";
+  } else {
+    status = "Unreliable";      cls = "low";    barColor = "#f87171";
+  }
+
+  // Result text
+  document.getElementById("result").innerHTML =
+    `<span class="${cls}">Score: ${score}%<br>${status}</span>`;
+
+  // Animated bar
+  const barWrap  = document.getElementById("bar-wrap");
+  const barFill  = document.getElementById("bar-fill");
+  const barLabel = document.getElementById("bar-label");
+
+  barWrap.style.display = "flex";
+  barLabel.textContent  = score + "%";
+  barFill.style.background = barColor;
+
+  // Trigger animation
+  setTimeout(() => { barFill.style.width = score + "%"; }, 50);
+}
+</script>
+
+</body>
+</html>

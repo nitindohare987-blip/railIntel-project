@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delay Recovery</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b, #312e81, #6366f1);
+            color: white;
+            min-height: 100vh;
+        }
+
+       
+/* ── NAVBAR ── */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 80px;
+  background: #020617;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #b026ff;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 32px;
+}
+
+nav ul li a {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+  position: relative;
+}
+
+nav ul li a:hover {
+  color: white;
+}
+
+/* underline effect on hover */
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #b026ff;
+  transition: width 0.25s;
+}
+
+nav ul li a:hover::after {
+  width: 100%;
+}
+
+
+        /* ── HEADING ── */
+        h2 {
+            text-align: center;
+            padding-top: 36px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            letter-spacing: 1px;
+        }
+
+        /* ── CARD ── */
+        .div {
+            width: 90%;
+            max-width: 400px;
+            margin: 24px auto 60px;
+            background: #020617;
+            padding: 28px 26px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* ── INPUTS ── */
+        input,
+        select {
+            padding: 11px 14px;
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: #0f172a;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.88rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input::placeholder {
+            color: #475569;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #6366f1;
+        }
+
+        select option {
+            background: #0f172a;
+        }
+
+        /* ── BUTTON ── */
+        button {
+            padding: 12px;
+            background: #6366f1;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #4f46e5;
+            transform: scale(1.03);
+        }
+
+        /* ── RESULT BOX ── */
+        #result {
+            font-size: 0.92rem;
+            background: #0f172a;
+            padding: 16px 18px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            line-height: 1.9;
+            display: none;
+        }
+
+        /* ── CHART ── */
+        canvas {
+            margin-top: 6px;
+            max-width: 100%;
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            margin: 2px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
+        <ul>
+            <li>Home</li>
+            <li>About</li>
+            <li>FAQs</li>
+            <li>Contact</li>
+        </ul>
+    </nav>
+
+    <h2>Delay Intelligence</h2>
+
+    <div class="div">
+
+        <input type="text" id="train" placeholder="Train No">
+
+        <select id="type">
+            <option>Superfast</option>
+            <option>Express</option>
+            <option>Passenger</option>
+            <option>Local</option>
+        </select>
+
+        <input type="text" id="delay" placeholder="Delay in minutes">
+
+        <hr class="divider">
+
+        <button onclick="check()">Check Recovery</button>
+
+        <div id="result"></div>
+
+        <canvas id="delayChart"></canvas>
+
+    </div>
+
+    <script>
+
+        let chart;
+
+        function check() {
+
+            let train = document.getElementById("train").value;
+            let type = document.getElementById("type").value;
+            let delay = parseInt(document.getElementById("delay").value);
+
+            if (!train || isNaN(delay)) {
+                document.getElementById("result").style.display = "block";
+                document.getElementById("result").innerHTML = "⚠️ Please enter all details";
+                return;
+            }
+
+            let ans = "";
+
+            if (type == "Superfast") {
+                ans = delay <= 60 ? "✅ Can recover delay" : "❌ May not recover";
+            } else if (type == "Express") {
+                ans = delay <= 40 ? "🟡 Possible recovery" : "❌ Low chance";
+            } else if (type == "Passenger") {
+                ans = delay <= 20 ? "🟡 Possible" : "❌ Cannot recover";
+            } else if (type == "Local") {
+                ans = delay <= 30 ? "✅ Normal delay" : "❌ Will stay late";
+            }
+
+            let data;
+            if (train == "12121") {
+                data = [10, 20, 15, 30, 25, 40, 35];
+            } else if (train == "12951") {
+                data = [5, 15, 10, 20, 18, 25, 30];
+            } else {
+                data = Array.from({ length: 7 }, () => Math.floor(Math.random() * 60));
+            }
+
+            let avg = Math.floor(data.reduce((a, b) => a + b, 0) / data.length);
+
+            let risk;
+            if (delay <= avg) {
+                risk = "🟢 Low Risk";
+            } else if (delay <= avg + 15) {
+                risk = "🟡 Medium Risk";
+            } else {
+                risk = "🔴 High Risk";
+            }
+
+            let resultBox = document.getElementById("result");
+            resultBox.style.display = "block";
+            resultBox.innerHTML =
+                "<b>" + ans + "</b><br>" +
+                "Average Delay: <b>" + avg + " mins</b><br>" +
+                "Risk: <b>" + risk + "</b>";
+
+            let labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+            let ctx = document.getElementById("delayChart").getContext("2d");
+
+            if (chart) { chart.destroy(); }
+
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Past Delay (minutes)',
+                        data: data,
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99,102,241,0.1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#6366f1',
+                        pointRadius: 4,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            labels: { color: '#94a3b8', font: { size: 11 } }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#94a3b8', font: { size: 11 } }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#94a3b8', font: { size: 11 } },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+    </script>
+</body>
+
+</html>

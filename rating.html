@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  text-decoration: none;
+}
+
+body {
+  background: linear-gradient(135deg, #0f172a, #1e293b, #312e81, #6366f1);
+  color: white;
+  min-height: 100vh;
+}
+
+/* NAV */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 80px;
+  background: #020617;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #b026ff;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 28px;
+}
+
+nav ul li a {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+nav ul li a:hover { color: white; }
+
+/* HEADING */
+h2 {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding: 32px 0 4px;
+  letter-spacing: 0.5px;
+  color: #e2e8f0;
+}
+
+/* CARD */
+.div {
+  width: 90%;
+  max-width: 360px;
+  margin: 20px auto 60px;
+  background: #020617;
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 28px 24px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* INPUTS */
+input {
+  padding: 11px 14px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: #0f172a;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input::placeholder { color: #475569; }
+input:focus { border-color: #6366f1; }
+
+/* DIVIDER */
+.divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+/* BUTTON */
+button {
+  padding: 12px;
+  background: #6366f1;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  width: 100%;
+}
+
+button:hover {
+  background: #4f46e5;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(99,102,241,0.35);
+}
+
+/* RESULT */
+#result {
+  text-align: center;
+  font-size: 0.92rem;
+  line-height: 1.9;
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  nav { padding: 14px 20px; }
+  .logo { font-size: 1.8rem; }
+  nav ul { gap: 16px; }
+  nav ul li a { font-size: 0.8rem; }
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">FAQs</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<h2>Passenger Rating</h2>
+
+<div class="div">
+
+  <input type="text"   id="train"   placeholder="Train Number">
+  <input type="number" id="comfort" placeholder="Comfort (1–5)">
+  <input type="number" id="food"    placeholder="Food (1–5)">
+  <input type="number" id="staff"   placeholder="Staff (1–5)">
+  <input type="number" id="delay"   placeholder="Delay (1–5)">
+  <input type="text"   id="other"   placeholder="Other Comments">
+
+  <hr class="divider">
+
+  <button onclick="submitFeedback()">Submit Feedback</button>
+
+  <div id="result"></div>
+
+</div>
+
+<script>
+
+function submitFeedback() {
+
+  var t = document.getElementById("train").value.trim();
+  var c = Number(document.getElementById("comfort").value);
+  var f = Number(document.getElementById("food").value);
+  var s = Number(document.getElementById("staff").value);
+  var d = Number(document.getElementById("delay").value);
+  var o = document.getElementById("other").value.trim();
+
+  var resultBox = document.getElementById("result");
+
+  if (!t) {
+    resultBox.style.display = "block";
+    resultBox.style.color = "#f87171";
+    resultBox.innerHTML = "⚠️ Please enter train number.";
+    return;
+  }
+
+  var avg = (c + f + s + d) / 4;
+
+  var rating, emoji;
+
+  if (avg >= 4) {
+    rating = "Excellent"; emoji = "🌟";
+  } else if (avg >= 3) {
+    rating = "Good"; emoji = "😊";
+  } else if (avg >= 2) {
+    rating = "Average"; emoji = "😐";
+  } else {
+    rating = "Poor"; emoji = "😞";
+  }
+
+  resultBox.style.display = "block";
+  resultBox.style.color = "#fde68a";
+  resultBox.innerHTML =
+    "✅ <b>Feedback Submitted!</b><br>" +
+    "🚆 Train: " + t + "<br>" +
+    "⭐ Overall Rating: <b>" + rating + "</b> " + emoji + "<br>" +
+    (o ? "💬 Comment: " + o : "");
+}
+
+</script>
+
+</body>
+</html>
