@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RailIntel - PNR Status</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* RESET */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins', sans-serif;
+}
+
+/* BODY */
+body{
+background:linear-gradient(135deg,#0f172a,#1e293b,#312e81,#6366f1);
+color:white;
+min-height:100vh;
+}
+
+/* NAV */
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 80px;
+background:#020617;
+border-bottom:1px solid rgba(255,255,255,0.07);
+}
+
+.logo{
+font-size:2.2rem;
+font-weight:700;
+color:#b026ff;
+}
+
+/* HEADING */
+h2{
+text-align:center;
+margin-top:40px;
+color:#e2e8f0;
+}
+
+/* CARD */
+.box{
+width:90%;
+max-width:380px;
+margin:30px auto;
+background:#020617;
+padding:28px;
+border-radius:14px;
+border:1px solid rgba(255,255,255,0.07);
+display:flex;
+flex-direction:column;
+gap:14px;
+}
+
+/* INPUT */
+input{
+padding:12px;
+border-radius:8px;
+border:1px solid rgba(255,255,255,0.1);
+background:#0f172a;
+color:white;
+outline:none;
+}
+
+input:focus{
+border-color:#6366f1;
+}
+
+/* BUTTON */
+button{
+padding:12px;
+border:none;
+border-radius:10px;
+background:#6366f1;
+color:white;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+background:#4f46e5;
+transform:translateY(-2px);
+}
+
+/* RESULT */
+#result{
+display:none;
+padding:14px;
+background:#0f172a;
+border-radius:10px;
+border:1px solid rgba(255,255,255,0.07);
+color:#fde68a;
+text-align:center;
+line-height:1.8;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
+</nav>
+
+<h2>Check PNR Status</h2>
+
+<div class="box">
+
+<input type="text" id="pnrInput" placeholder="Enter PNR Number">
+
+<button onclick="getPNR()">Check Status</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+async function getPNR() {
+
+const pnr = document.getElementById("pnrInput").value;
+const resultBox = document.getElementById("result");
+
+if(!pnr){
+resultBox.style.display="block";
+resultBox.innerHTML="⚠️ Please enter PNR number";
+return;
+}
+
+const url = `https://irctc-indian-railway-pnr-status.p.rapidapi.com/getPNRStatus/${pnr}`;
+
+const options = {
+method:'GET',
+headers:{
+'X-RapidAPI-Key':'03c4ace90msh47238dfc65dde83p1cd063jsna09071ee56c3',
+'X-RapidAPI-Host':'irctc-indian-railway-pnr-status.p.rapidapi.com'
+}
+};
+
+try{
+
+const response = await fetch(url,options);
+const data = await response.json();
+
+console.log(data); // debug
+
+resultBox.style.display="block";
+
+resultBox.innerHTML =
+"🚆 Train: " + data.data.train_name + "<br>" +
+"📍 Status: " + data.data.current_status;
+
+}catch(error){
+
+resultBox.style.display="block";
+resultBox.innerHTML="❌ Error fetching data";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

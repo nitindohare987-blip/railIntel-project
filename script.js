@@ -30,3 +30,7 @@ function food(){
 function Delay(){
     window.location.href="delaymeasure.html";
 }
+
+function pnr(){
+    window.location.href="pnr.html"
+}
