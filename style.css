@@ -19,7 +19,7 @@ body {
   font-family: 'Noto Sans Devanagari', sans-serif;
 }
 
-/* ── NAVBAR ── */
+/* ───────── NAVBAR ───────── */
 nav {
   display: flex;
   justify-content: space-between;
@@ -32,30 +32,34 @@ nav {
   z-index: 1000;
 }
 
+/* LOGO */
 .logo {
   font-size: 2.4rem;
   font-weight: 700;
   color: #b026ff;
 }
 
+/* NAV LINKS */
 nav ul {
   display: flex;
   list-style: none;
   gap: 32px;
 }
 
+/* LINKS */
 nav ul li a {
   color: #94a3b8;
   font-size: 0.95rem;
-  transition: color 0.2s;
+  transition: all 0.2s;
   position: relative;
 }
 
+/* HOVER COLOR */
 nav ul li a:hover {
   color: white;
 }
 
-/* underline effect on hover */
+/* UNDERLINE EFFECT */
 nav ul li a::after {
   content: '';
   position: absolute;

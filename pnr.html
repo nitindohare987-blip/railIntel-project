@@ -25,6 +25,64 @@ min-height:100vh;
 }
 
 /* NAV */
+/* ───────── NAVBAR ───────── */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 80px;
+  background: #020617;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* LOGO */
+.logo {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #b026ff;
+}
+
+/* NAV LINKS */
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 32px;
+}
+
+/* LINKS */
+nav ul li a {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  position: relative;
+}
+
+/* HOVER COLOR */
+nav ul li a:hover {
+  color: white;
+}
+
+/* UNDERLINE EFFECT */
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #b026ff;
+  transition: width 0.25s;
+}
+
+nav ul li a:hover::after {
+  width: 100%;
+}
+
+
+
 nav{
 display:flex;
 justify-content:space-between;
@@ -111,6 +169,18 @@ line-height:1.8;
 
 <nav>
 <div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
+
+   
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">FAQs</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+ 
+
+
+
 </nav>
 
 <h2>Check PNR Status</h2>
@@ -143,7 +213,7 @@ const url = `https://irctc-indian-railway-pnr-status.p.rapidapi.com/getPNRStatus
 const options = {
 method:'GET',
 headers:{
-'X-RapidAPI-Key':'03c4ace90msh47238dfc65dde83p1cd063jsna09071ee56c3',
+'X-RapidAPI-Key':'f03c4ace90msh47238dfc65dde83p1cd063jsna09071ee56c3',
 'X-RapidAPI-Host':'irctc-indian-railway-pnr-status.p.rapidapi.com'
 }
 };
