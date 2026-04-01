@@ -24,78 +24,39 @@ color:white;
 min-height:100vh;
 }
 
-/* NAV */
-/* ───────── NAVBAR ───────── */
+/* NAVBAR */
 nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 80px;
-  background: #020617;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-/* LOGO */
-.logo {
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: #b026ff;
-}
-
-/* NAV LINKS */
-nav ul {
-  display: flex;
-  list-style: none;
-  gap: 32px;
-}
-
-/* LINKS */
-nav ul li a {
-  color: #94a3b8;
-  font-size: 0.95rem;
-  transition: all 0.2s;
-  position: relative;
-}
-
-/* HOVER COLOR */
-nav ul li a:hover {
-  color: white;
-}
-
-/* UNDERLINE EFFECT */
-nav ul li a::after {
-  content: '';
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: #b026ff;
-  transition: width 0.25s;
-}
-
-nav ul li a:hover::after {
-  width: 100%;
-}
-
-
-
-nav{
 display:flex;
 justify-content:space-between;
 align-items:center;
 padding:18px 80px;
 background:#020617;
 border-bottom:1px solid rgba(255,255,255,0.07);
+position:sticky;
+top:0;
 }
 
-.logo{
+.logo {
 font-size:2.2rem;
 font-weight:700;
 color:#b026ff;
+}
+
+nav ul {
+display:flex;
+list-style:none;
+gap:32px;
+}
+
+nav ul li a {
+color:#94a3b8;
+font-size:0.95rem;
+text-decoration:none;
+transition:0.2s;
+}
+
+nav ul li a:hover {
+color:white;
 }
 
 /* HEADING */
@@ -108,7 +69,7 @@ color:#e2e8f0;
 /* CARD */
 .box{
 width:90%;
-max-width:380px;
+max-width:420px;
 margin:30px auto;
 background:#020617;
 padding:28px;
@@ -153,14 +114,23 @@ transform:translateY(-2px);
 /* RESULT */
 #result{
 display:none;
-padding:14px;
+padding:16px;
 background:#0f172a;
 border-radius:10px;
 border:1px solid rgba(255,255,255,0.07);
-color:#fde68a;
-text-align:center;
 line-height:1.8;
 }
+
+/* STATUS BADGES */
+.badge{
+padding:4px 10px;
+border-radius:6px;
+font-weight:600;
+}
+
+.cnf{ background:#16a34a; }
+.wl{ background:#dc2626; }
+.rac{ background:#f59e0b; }
 
 </style>
 </head>
@@ -169,18 +139,12 @@ line-height:1.8;
 
 <nav>
 <div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
-
-   
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">FAQs</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
- 
-
-
-
+<ul>
+<li><a href="#">Home</a></li>
+<li><a href="#">About</a></li>
+<li><a href="#">FAQs</a></li>
+<li><a href="#">Contact</a></li>
+</ul>
 </nav>
 
 <h2>Check PNR Status</h2>
@@ -191,13 +155,64 @@ line-height:1.8;
 
 <button onclick="getPNR()">Check Status</button>
 
+<button onclick="fillRandom()">🎲 Try Random PNR</button>
+
 <div id="result"></div>
 
 </div>
 
 <script>
 
-async function getPNR() {
+/* DATABASE */
+const pnrDatabase = {
+"1234567890": {
+train_name: "Rajdhani Express",
+train_number: "12951",
+from: "Mumbai Central",
+to: "New Delhi",
+date: "12 Apr 2026",
+status: "CNF",
+coach: "B2",
+seat: "45",
+platform: "3"
+},
+"9876543210": {
+train_name: "Shatabdi Express",
+train_number: "12002",
+from: "Bhopal",
+to: "New Delhi",
+date: "15 Apr 2026",
+status: "WL 5",
+coach: "-",
+seat: "-",
+platform: "1"
+},
+"4567891230": {
+train_name: "Duronto Express",
+train_number: "12213",
+from: "Delhi",
+to: "Mumbai",
+date: "20 Apr 2026",
+status: "RAC",
+coach: "S5",
+seat: "23",
+platform: "5"
+},
+"1112223334": {
+train_name: "Garib Rath",
+train_number: "12909",
+from: "Indore",
+to: "Jaipur",
+date: "18 Apr 2026",
+status: "CNF",
+coach: "G3",
+seat: "12",
+platform: "2"
+}
+};
+
+/* MAIN FUNCTION */
+function getPNR(){
 
 const pnr = document.getElementById("pnrInput").value;
 const resultBox = document.getElementById("result");
@@ -208,36 +223,37 @@ resultBox.innerHTML="⚠️ Please enter PNR number";
 return;
 }
 
-const url = `https://irctc-indian-railway-pnr-status.p.rapidapi.com/getPNRStatus/${pnr}`;
-
-const options = {
-method:'GET',
-headers:{
-'X-RapidAPI-Key':'f03c4ace90msh47238dfc65dde83p1cd063jsna09071ee56c3',
-'X-RapidAPI-Host':'irctc-indian-railway-pnr-status.p.rapidapi.com'
-}
-};
-
-try{
-
-const response = await fetch(url,options);
-const data = await response.json();
-
-console.log(data); // debug
+const data = pnrDatabase[pnr];
 
 resultBox.style.display="block";
+
+if(data){
+
+let statusClass = "";
+
+if(data.status.includes("CNF")) statusClass = "cnf";
+else if(data.status.includes("WL")) statusClass = "wl";
+else statusClass = "rac";
 
 resultBox.innerHTML =
-"🚆 Train: " + data.data.train_name + "<br>" +
-"📍 Status: " + data.data.current_status;
+"🚆 <b>" + data.train_name + " (" + data.train_number + ")</b><br>" +
+"📍 " + data.from + " ➝ " + data.to + "<br>" +
+"📅 Date: " + data.date + "<br>" +
+"📊 Status: <span class='badge " + statusClass + "'>" + data.status + "</span><br>" +
+"💺 Seat: " + data.coach + "-" + data.seat + "<br>" +
+"🛤 Platform: " + data.platform;
 
-}catch(error){
-
-resultBox.style.display="block";
-resultBox.innerHTML="❌ Error fetching data";
+}else{
+resultBox.innerHTML = "❌ Invalid PNR Number";
+}
 
 }
 
+/* RANDOM PNR */
+function fillRandom(){
+const keys = Object.keys(pnrDatabase);
+const random = keys[Math.floor(Math.random()*keys.length)];
+document.getElementById("pnrInput").value = random;
 }
 
 </script>
