@@ -1,301 +1,1347 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Search Train – RailIntel</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+rel="stylesheet">
 
 <style>
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-  text-decoration: none;
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+    font-family: 'Poppins', sans-serif;
+
+    text-decoration: none;
+
 }
 
 body {
-  background: linear-gradient(135deg, #0f172a, #1e293b, #312e81, #6366f1);
-  color: white;
-  min-height: 100vh;
+
+    background: linear-gradient(
+        135deg,
+        #0f172a,
+        #1e293b,
+        #312e81,
+        #6366f1
+    );
+
+    color: white;
+
+    min-height: 100vh;
+
 }
+
 
 /* ── NAVBAR ── */
+
 nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 80px;
-  background: #020617;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 18px 80px;
+
+    background: #020617;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1000;
+
 }
+
 
 .logo {
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: #b026ff;
+
+    font-size: 2.4rem;
+
+    font-weight: 700;
+
+    color: #b026ff;
+
 }
+
 
 nav ul {
-  display: flex;
-  list-style: none;
-  gap: 32px;
+
+    display: flex;
+
+    list-style: none;
+
+    gap: 32px;
+
 }
+
 
 nav ul li a {
-  color: #94a3b8;
-  font-size: 0.95rem;
-  transition: color 0.2s;
-  position: relative;
+
+    color: #94a3b8;
+
+    font-size: 0.95rem;
+
+    transition: color 0.2s;
+
+    position: relative;
+
 }
+
 
 nav ul li a:hover {
-  color: white;
+
+    color: white;
+
 }
+
 
 /* underline effect on hover */
+
 nav ul li a::after {
-  content: '';
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: #b026ff;
-  transition: width 0.25s;
+
+    content: '';
+
+    position: absolute;
+
+    bottom: -3px;
+
+    left: 0;
+
+    width: 0;
+
+    height: 1px;
+
+    background: #b026ff;
+
+    transition: width 0.25s;
+
 }
+
 
 nav ul li a:hover::after {
-  width: 100%;
+
+    width: 100%;
+
 }
+
 
 /* TITLE */
+
 h2 {
-  text-align: center;
-  padding-top: 40px;
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #e2e8f0;
-  letter-spacing: 0.2px;
+
+    text-align: center;
+
+    padding-top: 40px;
+
+    font-size: 1.4rem;
+
+    font-weight: 600;
+
+    color: #e2e8f0;
+
+    letter-spacing: 0.2px;
+
 }
+
 
 /* BOX */
+
 .box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 28px;
-  gap: 4px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    margin-top: 28px;
+
+    gap: 4px;
+
 }
+
+
+/* ================= STATION INPUT AREA ================= */
+
+.station-input {
+
+    position: relative;
+
+    width: 280px;
+
+    margin-bottom: 8px;
+
+}
+
 
 input {
-  padding: 11px 16px;
-  width: 280px;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 9px;
-  background: rgba(15, 23, 42, 0.85);
-  color: white;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.9rem;
-  outline: none;
-  transition: border-color 0.25s;
+
+    padding: 11px 16px;
+
+    width: 280px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    border-radius: 9px;
+
+    background: rgba(15, 23, 42, 0.85);
+
+    color: white;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 0.9rem;
+
+    outline: none;
+
+    transition: border-color 0.25s;
+
 }
 
-input::placeholder { color: #475569; }
+
+input::placeholder {
+
+    color: #475569;
+
+}
+
 
 input:focus {
-  border-color: #2563eb;
-  background: rgba(15, 23, 42, 1);
+
+    border-color: #2563eb;
+
+    background: rgba(15, 23, 42, 1);
+
 }
+
+
+/* ================= SUGGESTIONS ================= */
+
+.suggestions {
+
+    position: absolute;
+
+    top: 48px;
+
+    left: 0;
+
+    width: 280px;
+
+    background: #020617;
+
+    border: 1px solid rgba(255,255,255,0.1);
+
+    border-radius: 9px;
+
+    overflow: hidden;
+
+    z-index: 100;
+
+    display: none;
+
+}
+
+
+.suggestion {
+
+    padding: 10px 14px;
+
+    cursor: pointer;
+
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+
+    text-align: left;
+
+    transition: background 0.2s;
+
+}
+
+
+.suggestion:last-child {
+
+    border-bottom: none;
+
+}
+
+
+.suggestion:hover {
+
+    background: rgba(99,102,241,0.2);
+
+}
+
+
+.suggestion-name {
+
+    color: #e2e8f0;
+
+    font-size: 0.85rem;
+
+    font-weight: 600;
+
+}
+
+
+.suggestion-code {
+
+    color: #64748b;
+
+    font-size: 0.72rem;
+
+    margin-top: 2px;
+
+}
+
+
+/* BUTTON */
 
 button {
-  margin-top: 8px;
-  padding: 11px 32px;
-  border: none;
-  border-radius: 25px;
-  background: #2563eb;
-  color: white;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.92rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
-  box-shadow: 0 4px 14px rgba(37,99,235,0.4);
+
+    margin-top: 8px;
+
+    padding: 11px 32px;
+
+    border: none;
+
+    border-radius: 25px;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 0.92rem;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+
+    box-shadow: 0 4px 14px rgba(37,99,235,0.4);
+
 }
+
 
 button:hover {
-  background: #1d4ed8;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(37,99,235,0.55);
+
+    background: #1d4ed8;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 6px 20px rgba(37,99,235,0.55);
+
 }
 
-button:active { transform: translateY(0); }
+
+button:active {
+
+    transform: translateY(0);
+
+}
+
 
 /* RESULT */
+
 #result {
-  margin-top: 20px;
-  font-size: 0.95rem;
-  color: #ffd166;
-  width: 300px;
-  text-align: center;
+
+    margin-top: 20px;
+
+    font-size: 0.95rem;
+
+    color: #ffd166;
+
+    width: 300px;
+
+    text-align: center;
+
 }
+
 
 /* CARD */
+
 .card {
-  background: rgba(2, 6, 23, 0.72);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(255,255,255,0.09);
-  padding: 20px 22px;
-  border-radius: 14px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  text-align: left;
-  color: #e2e8f0;
-  width: 100%;
+
+    background: rgba(2, 6, 23, 0.72);
+
+    backdrop-filter: blur(14px);
+
+    border: 1px solid rgba(255,255,255,0.09);
+
+    padding: 20px 22px;
+
+    border-radius: 14px;
+
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+
+    text-align: left;
+
+    color: #e2e8f0;
+
+    width: 100%;
+
 }
+
 
 .card .row {
-  display: flex;
-  justify-content: space-between;
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  font-size: 0.88rem;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 6px 0;
+
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+
+    font-size: 0.88rem;
+
 }
 
-.card .row:last-child { border-bottom: none; }
 
-.card .label { color: #94a3b8; }
-.card .value { font-weight: 600; text-align: right; max-width: 60%; }
+.card .row:last-child {
+
+    border-bottom: none;
+
+}
+
+
+.card .label {
+
+    color: #94a3b8;
+
+}
+
+
+.card .value {
+
+    font-weight: 600;
+
+    text-align: right;
+
+    max-width: 60%;
+
+}
+
 
 .route-row {
-  flex-direction: column !important;
-  gap: 4px;
+
+    flex-direction: column !important;
+
+    gap: 4px;
+
 }
+
 
 .route-row .value {
-  text-align: left !important;
-  max-width: 100% !important;
-  color: #a5b4fc;
-  font-size: 0.82rem;
-  font-weight: 400;
-  line-height: 1.6;
+
+    text-align: left !important;
+
+    max-width: 100% !important;
+
+    color: #a5b4fc;
+
+    font-size: 0.82rem;
+
+    font-weight: 400;
+
+    line-height: 1.6;
+
 }
 
+
 .not-found {
-  color: #f87171;
-  font-size: 0.95rem;
+
+    color: #f87171;
+
+    font-size: 0.95rem;
+
+}
+
+
+.loading {
+
+    color: #a5b4fc;
+
+    font-size: 0.95rem;
+
+}
+
+
+.error {
+
+    color: #f87171;
+
+    font-size: 0.95rem;
+
+}
+
+
+/* ── RESPONSIVE ── */
+
+@media (max-width: 600px) {
+
+    nav {
+
+        padding: 14px 20px;
+
+    }
+
+    .logo {
+
+        font-size: 1.8rem;
+
+    }
+
+    nav ul {
+
+        gap: 16px;
+
+    }
+
+    nav ul li a {
+
+        font-size: 0.8rem;
+
+    }
+
+    .station-input {
+
+        width: 85%;
+
+    }
+
+    input {
+
+        width: 100%;
+
+    }
+
+    .suggestions {
+
+        width: 100%;
+
+    }
+
 }
 
 </style>
+
 </head>
+
 
 <body>
 
-<!-- NAVBAR -->
+
+<!-- ================= NAVBAR ================= -->
+
 <nav>
-  <div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="#">About</a></li>
-    <li><a href="#">FAQs</a></li>
-    <li><a href="#">Contact</a></li>
-  </ul>
+
+    <div class="logo">
+
+        रेल<span style="color:#94a3b8;">Intel</span>
+
+    </div>
+
+
+    <ul>
+
+        <li>
+
+            <a href="index.html">
+
+                Home
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="index.html#about">
+
+                About
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="index.html#faqs">
+
+                FAQs
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="index.html#contact">
+
+                Contact
+
+            </a>
+
+        </li>
+
+    </ul>
+
 </nav>
 
-<!-- TITLE -->
-<h2>Search Train</h2>
 
-<!-- BOX -->
+<!-- ================= TITLE ================= -->
+
+<h2>
+
+    Search Train
+
+</h2>
+
+
+<!-- ================= SEARCH BOX ================= -->
+
 <div class="box">
 
-  <input id="trainNo" placeholder="Enter Train Number (e.g. 12345)">
 
-  <button onclick="searchTrain()">Search Train</button>
+    <!-- FROM -->
 
-  <div id="result"></div>
+    <div class="station-input">
+
+        <input
+            id="fromStation"
+            type="text"
+            placeholder="From City / Station"
+            autocomplete="off"
+        >
+
+        <div
+            id="fromSuggestions"
+            class="suggestions">
+        </div>
+
+    </div>
+
+
+    <!-- TO -->
+
+    <div class="station-input">
+
+        <input
+            id="toStation"
+            type="text"
+            placeholder="To City / Station"
+            autocomplete="off"
+        >
+
+        <div
+            id="toSuggestions"
+            class="suggestions">
+        </div>
+
+    </div>
+
+
+    <button onclick="searchTrain()">
+
+        Search Train
+
+    </button>
+
+
+    <div id="result"></div>
 
 </div>
 
+
 <script>
 
-const trains = {
-  12345: {
-    name: "Malwa Express",
-    from: "Indore",
-    to: "Delhi",
-    start: "08:30 AM",
-    days: "Daily",
-    type: "Express",
-    route: "Indore → Ujjain → Bhopal → Jhansi → Gwalior → Delhi"
-  },
-  12198: {
-    name: "Intercity",
-    from: "Bhopal",
-    to: "Gwalior",
-    start: "06:00 AM",
-    days: "Mon · Tue · Wed",
-    type: "Superfast",
-    route: "Bhopal → Vidisha → Guna → Shivpuri → Gwalior"
-  },
-  12919: {
-    name: "Mewar Express",
-    from: "Udaipur",
-    to: "Delhi",
-    start: "07:15 PM",
-    days: "Daily",
-    type: "Superfast",
-    route: "Udaipur → Chittor → Kota → Mathura → Delhi"
-  }
-};
 
-function searchTrain() {
-  const t    = document.getElementById("trainNo").value.trim();
-  const data = trains[t];
-  const box  = document.getElementById("result");
+/* =====================================================
+   SELECTED STATIONS
+===================================================== */
 
-  if (data) {
-    box.innerHTML = `
-      <div class="card">
-        <div class="row">
-          <span class="label">Train Name</span>
-          <span class="value">${data.name}</span>
-        </div>
-        <div class="row">
-          <span class="label">From</span>
-          <span class="value">${data.from}</span>
-        </div>
-        <div class="row">
-          <span class="label">To</span>
-          <span class="value">${data.to}</span>
-        </div>
-        <div class="row">
-          <span class="label">Departure</span>
-          <span class="value">${data.start}</span>
-        </div>
-        <div class="row">
-          <span class="label">Runs On</span>
-          <span class="value">${data.days}</span>
-        </div>
-        <div class="row">
-          <span class="label">Type</span>
-          <span class="value">${data.type}</span>
-        </div>
-        <div class="row route-row">
-          <span class="label">Route</span>
-          <span class="value">${data.route}</span>
-        </div>
-      </div>`;
-  } else {
-    box.innerHTML = `<span class="not-found">⚠️ Train not found. Try: 12345, 12198, 12919</span>`;
-  }
+let selectedFrom = null;
+
+let selectedTo = null;
+
+
+
+/* =====================================================
+   STATION AUTOCOMPLETE
+===================================================== */
+
+async function getStationSuggestions(
+    inputId,
+    suggestionsId,
+    type
+) {
+
+    const input =
+        document.getElementById(inputId);
+
+    const suggestions =
+        document.getElementById(suggestionsId);
+
+    const query =
+        input.value.trim();
+
+
+    // Clear selected station if user edits input
+
+    if (type === "from") {
+
+        selectedFrom = null;
+
+    } else {
+
+        selectedTo = null;
+
+    }
+
+
+    // Need at least 2 characters
+
+    if (query.length < 2) {
+
+        suggestions.style.display = "none";
+
+        suggestions.innerHTML = "";
+
+        return;
+
+    }
+
+
+    try {
+
+        const response = await fetch(
+            `http://localhost:5000/api/stations/search?q=${encodeURIComponent(query)}`
+        );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            suggestions.style.display = "none";
+
+            return;
+
+        }
+
+
+        /*
+         * RailRadar returns station suggestions.
+         */
+
+        const stations =
+            data?.data?.stations ||
+            data?.data ||
+            [];
+
+
+        if (!stations.length) {
+
+            suggestions.innerHTML = `
+                <div class="suggestion">
+
+                    <div class="suggestion-name">
+                        No station found
+                    </div>
+
+                </div>
+            `;
+
+            suggestions.style.display = "block";
+
+            return;
+
+        }
+
+
+        suggestions.innerHTML =
+            stations.map(station => {
+
+
+                /*
+                 * Supports different response shapes.
+                 */
+
+                const code =
+                    station.code ||
+                    station.stationCode ||
+                    "";
+
+
+                const name =
+                    station.name ||
+                    station.stationName ||
+                    "";
+
+
+                return `
+
+                    <div
+                        class="suggestion"
+                        onclick="selectStation(
+                            '${type}',
+                            '${code}',
+                            '${name.replace(/'/g, "\\'")}'
+                        )"
+                    >
+
+                        <div class="suggestion-name">
+
+                            ${name}
+
+                        </div>
+
+                        <div class="suggestion-code">
+
+                            Railway Station
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join("");
+
+
+        suggestions.style.display = "block";
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Station search error:",
+            error
+        );
+
+        suggestions.style.display = "none";
+
+    }
+
 }
+
+
+
+/* =====================================================
+   SELECT STATION
+===================================================== */
+
+function selectStation(
+    type,
+    code,
+    name
+) {
+
+
+    if (type === "from") {
+
+        document.getElementById(
+            "fromStation"
+        ).value = name;
+
+        selectedFrom = {
+
+            code: code,
+
+            name: name
+
+        };
+
+
+        document.getElementById(
+            "fromSuggestions"
+        ).style.display = "none";
+
+    }
+
+
+    else {
+
+        document.getElementById(
+            "toStation"
+        ).value = name;
+
+        selectedTo = {
+
+            code: code,
+
+            name: name
+
+        };
+
+
+        document.getElementById(
+            "toSuggestions"
+        ).style.display = "none";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   FROM INPUT
+===================================================== */
+
+document
+.getElementById("fromStation")
+.addEventListener(
+    "input",
+    function() {
+
+        getStationSuggestions(
+            "fromStation",
+            "fromSuggestions",
+            "from"
+        );
+
+    }
+);
+
+
+
+/* =====================================================
+   TO INPUT
+===================================================== */
+
+document
+.getElementById("toStation")
+.addEventListener(
+    "input",
+    function() {
+
+        getStationSuggestions(
+            "toStation",
+            "toSuggestions",
+            "to"
+        );
+
+    }
+);
+
+
+
+/* =====================================================
+   SEARCH TRAINS
+===================================================== */
+
+async function searchTrain() {
+
+
+    const result =
+        document.getElementById("result");
+
+
+    /* ================= VALIDATION ================= */
+
+
+    if (!selectedFrom) {
+
+        result.innerHTML = `
+
+            <span class="not-found">
+
+                ⚠️ Please select a From station
+                from the suggestions.
+
+            </span>
+
+        `;
+
+        return;
+
+    }
+
+
+    if (!selectedTo) {
+
+        result.innerHTML = `
+
+            <span class="not-found">
+
+                ⚠️ Please select a To station
+                from the suggestions.
+
+            </span>
+
+        `;
+
+        return;
+
+    }
+
+
+    if (
+        selectedFrom.code ===
+        selectedTo.code
+    ) {
+
+        result.innerHTML = `
+
+            <span class="not-found">
+
+                ⚠️ From and To stations
+                cannot be the same.
+
+            </span>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* ================= LOADING ================= */
+
+
+    result.innerHTML = `
+
+        <span class="loading">
+
+            🚆 Searching real trains...
+
+        </span>
+
+    `;
+
+
+    try {
+
+
+        /* ================= API REQUEST ================= */
+
+
+        const response = await fetch(
+
+            `http://localhost:5000/api/trains?from=${encodeURIComponent(selectedFrom.code)}&to=${encodeURIComponent(selectedTo.code)}`
+
+        );
+
+
+        const data =
+            await response.json();
+
+
+        /* ================= API ERROR ================= */
+
+
+        if (!response.ok) {
+
+            result.innerHTML = `
+
+                <span class="error">
+
+                    ⚠️ ${
+                        data.message ||
+                        "Unable to fetch train data."
+                    }
+
+                </span>
+
+            `;
+
+            return;
+
+        }
+
+
+        /* ================= TRAIN DATA ================= */
+
+
+        const trains =
+            data?.data?.trains || [];
+
+
+        if (!trains.length) {
+
+            result.innerHTML = `
+
+                <span class="not-found">
+
+                    ⚠️ No trains found between
+                    ${selectedFrom.name}
+                    and
+                    ${selectedTo.name}.
+
+                </span>
+
+            `;
+
+            return;
+
+        }
+
+
+        /* ================= DISPLAY RESULTS ================= */
+
+
+        result.innerHTML = trains.map(item => {
+
+
+            const train =
+                item.train || {};
+
+
+            const fromData =
+                item.from || {};
+
+
+            const toData =
+                item.to || {};
+
+
+            return `
+
+                <div class="card">
+
+
+                    <div class="row">
+
+                        <span class="label">
+
+                            Train Name
+
+                        </span>
+
+                        <span class="value">
+
+                            🚆
+                            ${train.name || "Unknown Train"}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <span class="label">
+
+                            Train Number
+
+                        </span>
+
+                        <span class="value">
+
+                            ${train.number || "N/A"}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <span class="label">
+
+                            From
+
+                        </span>
+
+                        <span class="value">
+
+                            ${selectedFrom.name}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <span class="label">
+
+                            To
+
+                        </span>
+
+                        <span class="value">
+
+                            ${selectedTo.name}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <span class="label">
+
+                            Departure
+
+                        </span>
+
+                        <span class="value">
+
+                            ${fromData.departure || "N/A"}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <span class="label">
+
+                            Arrival
+
+                        </span>
+
+                        <span class="value">
+
+                            ${toData.arrival || "N/A"}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <span class="label">
+
+                            Duration
+
+                        </span>
+
+                        <span class="value">
+
+                            ${
+                                item.duration
+                                ? item.duration + " min"
+                                : "N/A"
+                            }
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <span class="label">
+
+                            Type
+
+                        </span>
+
+                        <span class="value">
+
+                            ${train.type || "N/A"}
+
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+        }).join("");
+
+
+    }
+
+
+    catch (error) {
+
+
+        console.error(
+            "Train search error:",
+            error
+        );
+
+
+        result.innerHTML = `
+
+            <span class="error">
+
+                ❌ Cannot connect to
+                RailIntel backend.
+
+                <br><br>
+
+                Make sure
+                <b>node server.js</b>
+                is running.
+
+            </span>
+
+        `;
+
+    }
+
+}
+
+
+
+/* =====================================================
+   CLOSE SUGGESTIONS WHEN CLICKING OUTSIDE
+===================================================== */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            !event.target.closest(".station-input")
+        ) {
+
+            document.getElementById(
+                "fromSuggestions"
+            ).style.display = "none";
+
+
+            document.getElementById(
+                "toSuggestions"
+            ).style.display = "none";
+
+        }
+
+    }
+);
 
 </script>
 
+
 </body>
+
 </html>
