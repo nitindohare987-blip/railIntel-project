@@ -787,7 +787,7 @@ async function getStationSuggestions(
     try {
 
         const response = await fetch(
-            `http://localhost:5000/api/stations/search?q=${encodeURIComponent(query)}`
+          `https://railintel-project.onrender.com/api/stations/search?q=${encodeURIComponent(query)}`
         );
 
 
@@ -1096,7 +1096,7 @@ async function searchTrain() {
 
         const response = await fetch(
 
-            `http://localhost:5000/api/trains?from=${encodeURIComponent(selectedFrom.code)}&to=${encodeURIComponent(selectedTo.code)}`
+          `https://railintel-project.onrender.com/api/trains?from=${encodeURIComponent(selectedFrom.code)}&to=${encodeURIComponent(selectedTo.code)}`
 
         );
 
