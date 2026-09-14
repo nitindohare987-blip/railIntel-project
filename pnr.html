@@ -131,7 +131,54 @@ font-weight:600;
 .cnf{ background:#16a34a; }
 .wl{ background:#dc2626; }
 .rac{ background:#f59e0b; }
+/* ================= MOBILE RESPONSIVE ================= */
 
+@media (max-width: 768px) {
+
+  nav {
+    padding: 14px 20px;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .logo {
+    font-size: 2rem;
+  }
+
+  nav ul {
+    gap: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  nav ul li a {
+    font-size: 0.82rem;
+  }
+
+}
+
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width: 480px) {
+
+  nav {
+    padding: 12px 15px;
+  }
+
+  .logo {
+    font-size: 1.8rem;
+  }
+
+  nav ul {
+    gap: 12px;
+  }
+
+  nav ul li a {
+    font-size: 0.76rem;
+  }
+
+}
 </style>
 </head>
 
