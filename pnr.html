@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>RailIntel - PNR Status</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -10,149 +14,262 @@
 <style>
 
 /* RESET */
+
 *{
+
 margin:0;
+
 padding:0;
+
 box-sizing:border-box;
+
 font-family:'Poppins', sans-serif;
+
 }
+
 
 /* BODY */
+
 body{
+
 background:linear-gradient(135deg,#0f172a,#1e293b,#312e81,#6366f1);
+
 color:white;
+
 min-height:100vh;
+
 }
 
+
 /* NAVBAR */
+
 nav {
+
 display:flex;
+
 justify-content:space-between;
+
 align-items:center;
+
 padding:18px 80px;
+
 background:#020617;
+
 border-bottom:1px solid rgba(255,255,255,0.07);
+
 position:sticky;
+
 top:0;
+
 }
 
 .logo {
+
 font-size:2.2rem;
+
 font-weight:700;
+
 color:#b026ff;
+
 }
 
 nav ul {
+
 display:flex;
+
 list-style:none;
+
 gap:32px;
+
 }
 
 nav ul li a {
+
 color:#94a3b8;
+
 font-size:0.95rem;
+
 text-decoration:none;
+
 transition:0.2s;
+
 }
 
 nav ul li a:hover {
+
 color:white;
+
 }
+
 
 /* HEADING */
+
 h2{
+
 text-align:center;
+
 margin-top:40px;
+
 color:#e2e8f0;
+
 }
+
 
 /* CARD */
+
 .box{
+
 width:90%;
+
 max-width:420px;
+
 margin:30px auto;
+
 background:#020617;
+
 padding:28px;
+
 border-radius:14px;
+
 border:1px solid rgba(255,255,255,0.07);
+
 display:flex;
+
 flex-direction:column;
+
 gap:14px;
+
 }
 
+
 /* INPUT */
+
 input{
+
 padding:12px;
+
 border-radius:8px;
+
 border:1px solid rgba(255,255,255,0.1);
+
 background:#0f172a;
+
 color:white;
+
 outline:none;
+
 }
 
 input:focus{
+
 border-color:#6366f1;
+
 }
 
+
 /* BUTTON */
+
 button{
+
 padding:12px;
+
 border:none;
+
 border-radius:10px;
+
 background:#6366f1;
+
 color:white;
+
 font-weight:600;
+
 cursor:pointer;
+
 transition:0.3s;
+
 }
 
 button:hover{
+
 background:#4f46e5;
+
 transform:translateY(-2px);
+
 }
+
 
 /* RESULT */
+
 #result{
+
 display:none;
+
 padding:16px;
+
 background:#0f172a;
+
 border-radius:10px;
+
 border:1px solid rgba(255,255,255,0.07);
+
 line-height:1.8;
+
 }
 
+
 /* STATUS BADGES */
+
 .badge{
+
 padding:4px 10px;
+
 border-radius:6px;
+
 font-weight:600;
+
 }
 
 .cnf{ background:#16a34a; }
+
 .wl{ background:#dc2626; }
+
 .rac{ background:#f59e0b; }
+
+
 /* ================= MOBILE RESPONSIVE ================= */
 
 @media (max-width: 768px) {
 
   nav {
+
     padding: 14px 20px;
-    flex-direction: column;
-    gap: 12px;
+
+    flex-direction:column;
+
+    gap:12px;
+
   }
 
   .logo {
-    font-size: 2rem;
+
+    font-size:2rem;
+
   }
 
   nav ul {
-    gap: 18px;
-    flex-wrap: wrap;
-    justify-content: center;
+
+    gap:18px;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
   }
 
   nav ul li a {
-    font-size: 0.82rem;
+
+    font-size:0.82rem;
+
   }
 
 }
@@ -163,42 +280,69 @@ font-weight:600;
 @media (max-width: 480px) {
 
   nav {
-    padding: 12px 15px;
+
+    padding:12px 15px;
+
   }
 
   .logo {
-    font-size: 1.8rem;
+
+    font-size:1.8rem;
+
   }
 
   nav ul {
-    gap: 12px;
+
+    gap:12px;
+
   }
 
   nav ul li a {
-    font-size: 0.76rem;
+
+    font-size:0.76rem;
+
   }
 
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <nav>
+
 <div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
+
 <ul>
+
 <li><a href="#">Home</a></li>
+
 <li><a href="#">About</a></li>
+
 <li><a href="#">FAQs</a></li>
+
 <li><a href="#">Contact</a></li>
+
 </ul>
+
 </nav>
+
 
 <h2>Check PNR Status</h2>
 
+
 <div class="box">
 
-<input type="text" id="pnrInput" placeholder="Enter PNR Number">
+<input
+    type="text"
+    id="pnrInput"
+    placeholder="Enter PNR Number"
+    maxlength="10"
+>
 
 <button onclick="getPNR()">Check Status</button>
 
@@ -208,102 +352,309 @@ font-weight:600;
 
 </div>
 
+
 <script>
 
-/* DATABASE */
-const pnrDatabase = {
-"1234567890": {
-train_name: "Rajdhani Express",
-train_number: "12951",
-from: "Mumbai Central",
-to: "New Delhi",
-date: "12 Apr 2026",
-status: "CNF",
-coach: "B2",
-seat: "45",
-platform: "3"
-},
-"9876543210": {
-train_name: "Shatabdi Express",
-train_number: "12002",
-from: "Bhopal",
-to: "New Delhi",
-date: "15 Apr 2026",
-status: "WL 5",
-coach: "-",
-seat: "-",
-platform: "1"
-},
-"4567891230": {
-train_name: "Duronto Express",
-train_number: "12213",
-from: "Delhi",
-to: "Mumbai",
-date: "20 Apr 2026",
-status: "RAC",
-coach: "S5",
-seat: "23",
-platform: "5"
-},
-"1112223334": {
-train_name: "Garib Rath",
-train_number: "12909",
-from: "Indore",
-to: "Jaipur",
-date: "18 Apr 2026",
-status: "CNF",
-coach: "G3",
-seat: "12",
-platform: "2"
+/* ================= PNR STATUS ================= */
+
+async function getPNR(){
+
+    const pnr =
+        document.getElementById("pnrInput").value.trim();
+
+    const resultBox =
+        document.getElementById("result");
+
+
+    /* ================= VALIDATION ================= */
+
+    if(!pnr){
+
+        resultBox.style.display = "block";
+
+        resultBox.innerHTML =
+            "⚠️ Please enter PNR number";
+
+        return;
+
+    }
+
+
+    if(!/^\d{10}$/.test(pnr)){
+
+        resultBox.style.display = "block";
+
+        resultBox.innerHTML =
+            "⚠️ PNR must be exactly 10 digits";
+
+        return;
+
+    }
+
+
+    /* ================= LOADING ================= */
+
+    resultBox.style.display = "block";
+
+    resultBox.innerHTML =
+        "⏳ Checking real PNR status...";
+
+
+    try{
+
+
+        /* ================= LIVE BACKEND ================= */
+
+        const response = await fetch(
+
+            `https://railintel-project.onrender.com/api/pnr/${encodeURIComponent(pnr)}`
+
+        );
+
+
+        const data = await response.json();
+
+
+        /* ================= API ERROR ================= */
+
+        if(!response.ok || data.success === false){
+
+            const errorMessage =
+                data?.error?.message ||
+                data?.message ||
+                "Unable to fetch PNR status.";
+
+            resultBox.innerHTML =
+                "❌ " + errorMessage;
+
+            return;
+
+        }
+
+
+        /* ================= PNR DATA ================= */
+
+        const pnrData =
+            data?.data || data;
+
+
+        console.log("PNR API Response:", data);
+
+
+        /* ================= TRAIN ================= */
+
+        const train =
+            pnrData?.train ||
+            pnrData?.trainDetails ||
+            {};
+
+
+        const trainName =
+            train?.name ||
+            pnrData?.trainName ||
+            "Train";
+
+
+        const trainNumber =
+            train?.number ||
+            pnrData?.trainNumber ||
+            "-";
+
+
+        /* ================= STATIONS ================= */
+
+        const from =
+            pnrData?.from?.name ||
+            pnrData?.fromStation?.name ||
+            pnrData?.fromStation ||
+            pnrData?.boardingStation?.name ||
+            "-";
+
+
+        const to =
+            pnrData?.to?.name ||
+            pnrData?.toStation?.name ||
+            pnrData?.toStation ||
+            pnrData?.destinationStation?.name ||
+            "-";
+
+
+        /* ================= DATE ================= */
+
+        const date =
+            pnrData?.journeyDate ||
+            pnrData?.date ||
+            "-";
+
+
+        /* ================= PASSENGER ================= */
+
+        const passengers =
+            pnrData?.passengers ||
+            pnrData?.passengerDetails ||
+            [];
+
+
+        /* ================= RESULT HTML ================= */
+
+        let html =
+
+            "🚆 <b>" +
+            trainName +
+            " (" +
+            trainNumber +
+            ")</b><br>" +
+
+            "📍 " +
+            from +
+            " ➝ " +
+            to +
+            "<br>" +
+
+            "📅 Date: " +
+            date +
+            "<br>";
+
+
+        /* ================= PASSENGER STATUS ================= */
+
+        if(Array.isArray(passengers) && passengers.length > 0){
+
+            html += "<br><b>👤 Passenger Details</b><br>";
+
+
+            passengers.forEach((passenger, index) => {
+
+                const status =
+                    passenger?.currentStatus ||
+                    passenger?.status ||
+                    passenger?.bookingStatus ||
+                    "-";
+
+
+                let statusClass = "rac";
+
+
+                if(
+                    status.toUpperCase().includes("CNF") ||
+                    status.toUpperCase().includes("CONFIRM")
+                ){
+
+                    statusClass = "cnf";
+
+                }
+
+                else if(
+                    status.toUpperCase().includes("WL") ||
+                    status.toUpperCase().includes("WAIT")
+                ){
+
+                    statusClass = "wl";
+
+                }
+
+
+                html +=
+
+                    "Passenger " +
+                    (index + 1) +
+                    ": " +
+
+                    "<span class='badge " +
+                    statusClass +
+                    "'>" +
+                    status +
+                    "</span><br>";
+
+            });
+
+        }
+
+
+        /* ================= FALLBACK STATUS ================= */
+
+        else{
+
+            const status =
+                pnrData?.status ||
+                pnrData?.bookingStatus ||
+                pnrData?.currentStatus ||
+                "-";
+
+
+            let statusClass = "rac";
+
+
+            if(
+                status.toUpperCase().includes("CNF") ||
+                status.toUpperCase().includes("CONFIRM")
+            ){
+
+                statusClass = "cnf";
+
+            }
+
+            else if(
+                status.toUpperCase().includes("WL") ||
+                status.toUpperCase().includes("WAIT")
+            ){
+
+                statusClass = "wl";
+
+            }
+
+
+            html +=
+
+                "📊 Status: " +
+
+                "<span class='badge " +
+                statusClass +
+                "'>" +
+                status +
+                "</span>";
+
+        }
+
+
+        resultBox.innerHTML = html;
+
+
+    }
+
+
+    catch(error){
+
+        console.error("PNR Error:", error);
+
+
+        resultBox.innerHTML =
+            "❌ Unable to connect to railway server.";
+
+    }
+
 }
-};
 
-/* MAIN FUNCTION */
-function getPNR(){
 
-const pnr = document.getElementById("pnrInput").value;
-const resultBox = document.getElementById("result");
+/* ================= RANDOM PNR ================= */
 
-if(!pnr){
-resultBox.style.display="block";
-resultBox.innerHTML="⚠️ Please enter PNR number";
-return;
-}
-
-const data = pnrDatabase[pnr];
-
-resultBox.style.display="block";
-
-if(data){
-
-let statusClass = "";
-
-if(data.status.includes("CNF")) statusClass = "cnf";
-else if(data.status.includes("WL")) statusClass = "wl";
-else statusClass = "rac";
-
-resultBox.innerHTML =
-"🚆 <b>" + data.train_name + " (" + data.train_number + ")</b><br>" +
-"📍 " + data.from + " ➝ " + data.to + "<br>" +
-"📅 Date: " + data.date + "<br>" +
-"📊 Status: <span class='badge " + statusClass + "'>" + data.status + "</span><br>" +
-"💺 Seat: " + data.coach + "-" + data.seat + "<br>" +
-"🛤 Platform: " + data.platform;
-
-}else{
-resultBox.innerHTML = "❌ Invalid PNR Number";
-}
-
-}
-
-/* RANDOM PNR */
 function fillRandom(){
-const keys = Object.keys(pnrDatabase);
-const random = keys[Math.floor(Math.random()*keys.length)];
-document.getElementById("pnrInput").value = random;
+
+    const randomPNR =
+        Math.floor(
+            1000000000 +
+            Math.random() * 9000000000
+        ).toString();
+
+
+    document.getElementById("pnrInput").value =
+        randomPNR;
+
 }
 
 </script>
 
+
 </body>
+
 </html>

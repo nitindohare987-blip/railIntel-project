@@ -306,6 +306,91 @@ app.get("/api/running/:trainNumber", async (req, res) => {
     }
 
 });
+// ================= PNR STATUS =================
+
+app.get("/api/pnr/:pnr", async (req, res) => {
+
+    try {
+
+        const { pnr } = req.params;
+
+
+        // ================= PNR VALIDATION =================
+
+        if (!pnr || !/^\d{10}$/.test(pnr)) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message: "Please provide a valid 10-digit PNR number."
+
+            });
+
+        }
+
+
+        // ================= RAILRADAR PNR API =================
+
+        const url =
+            `https://api.railradar.in/v1/pnr/${encodeURIComponent(pnr)}`;
+
+
+        const response = await fetch(url, {
+
+            method: "GET",
+
+            headers: {
+
+                "Authorization":
+                    `Bearer ${process.env.RAILRADAR_API_KEY}`,
+
+                "Content-Type": "application/json"
+
+            }
+
+        });
+
+
+        const data = await response.json();
+
+
+        // ================= API ERROR =================
+
+        if (!response.ok) {
+
+            return res.status(response.status).json(data);
+
+        }
+
+
+        // ================= REAL PNR DATA =================
+
+        res.json(data);
+
+
+    } catch (error) {
+
+        console.error(
+            "PNR API Error:",
+            error
+        );
+
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "Railway PNR request failed.",
+
+            error: error.message
+
+        });
+
+    }
+
+});
 // ================= START SERVER =================
 
 const PORT = 5000;
