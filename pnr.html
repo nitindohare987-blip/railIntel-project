@@ -352,7 +352,6 @@ font-weight:600;
 
 </div>
 
-
 <script>
 
 /* ================= PNR STATUS ================= */
@@ -402,7 +401,6 @@ async function getPNR(){
 
     try{
 
-
         /* ================= LIVE BACKEND ================= */
 
         const response = await fetch(
@@ -432,67 +430,47 @@ async function getPNR(){
         }
 
 
-        /* ================= PNR DATA ================= */
+        /* ================= REAL PNR DATA ================= */
 
-        const pnrData =
-            data?.data || data;
-
-
-        console.log("PNR API Response:", data);
+        const pnrData = data.data;
 
 
-        /* ================= TRAIN ================= */
+        /* ================= TRAIN DETAILS ================= */
 
         const train =
-            pnrData?.train ||
-            pnrData?.trainDetails ||
-            {};
+            pnrData.train || {};
 
 
         const trainName =
-            train?.name ||
-            pnrData?.trainName ||
-            "Train";
+            train.name || "-";
 
 
         const trainNumber =
-            train?.number ||
-            pnrData?.trainNumber ||
-            "-";
+            train.number || "-";
 
 
-        /* ================= STATIONS ================= */
+        /* ================= FROM / TO ================= */
 
         const from =
-            pnrData?.from?.name ||
-            pnrData?.fromStation?.name ||
-            pnrData?.fromStation ||
-            pnrData?.boardingStation?.name ||
-            "-";
+            train.source?.name || "-";
 
 
         const to =
-            pnrData?.to?.name ||
-            pnrData?.toStation?.name ||
-            pnrData?.toStation ||
-            pnrData?.destinationStation?.name ||
-            "-";
+            train.destination?.name || "-";
 
 
-        /* ================= DATE ================= */
+        /* ================= JOURNEY DATE ================= */
 
-        const date =
-            pnrData?.journeyDate ||
-            pnrData?.date ||
-            "-";
+        const journeyDate =
+            pnrData.journey?.date || "-";
 
 
-        /* ================= PASSENGER ================= */
+        /* ================= PASSENGERS ================= */
 
         const passengers =
-            pnrData?.passengers ||
-            pnrData?.passengerDetails ||
-            [];
+            Array.isArray(pnrData.passengers)
+                ? pnrData.passengers
+                : [];
 
 
         /* ================= RESULT HTML ================= */
@@ -512,25 +490,42 @@ async function getPNR(){
             "<br>" +
 
             "📅 Date: " +
-            date +
+            journeyDate +
             "<br>";
 
 
-        /* ================= PASSENGER STATUS ================= */
+        /* ================= PASSENGER DETAILS ================= */
 
-        if(Array.isArray(passengers) && passengers.length > 0){
+        if(passengers.length > 0){
 
-            html += "<br><b>👤 Passenger Details</b><br>";
+            html +=
+                "<br><b>👤 Passenger Details</b><br>";
 
 
             passengers.forEach((passenger, index) => {
 
+
                 const status =
-                    passenger?.currentStatus ||
-                    passenger?.status ||
-                    passenger?.bookingStatus ||
+                    passenger.currentStatus ||
                     "-";
 
+
+                const coach =
+                    passenger.coach ||
+                    "-";
+
+
+                const berth =
+                    passenger.berthNumber ||
+                    "-";
+
+
+                const berthCode =
+                    passenger.berthCode ||
+                    "";
+
+
+                /* ================= STATUS COLOR ================= */
 
                 let statusClass = "rac";
 
@@ -554,10 +549,12 @@ async function getPNR(){
                 }
 
 
+                /* ================= PASSENGER ================= */
+
                 html +=
 
                     "Passenger " +
-                    (index + 1) +
+                    passenger.passengerNumber +
                     ": " +
 
                     "<span class='badge " +
@@ -566,56 +563,58 @@ async function getPNR(){
                     status +
                     "</span><br>";
 
+
+                /* ================= SEAT DETAILS ================= */
+
+                html +=
+
+                    "💺 Coach: " +
+                    coach +
+                    " | Berth: " +
+                    berth;
+
+
+                if(berthCode){
+
+                    html +=
+                        " (" +
+                        berthCode +
+                        ")";
+
+                }
+
+
+                html += "<br><br>";
+
             });
 
         }
 
-
-        /* ================= FALLBACK STATUS ================= */
-
         else{
 
-            const status =
-                pnrData?.status ||
-                pnrData?.bookingStatus ||
-                pnrData?.currentStatus ||
-                "-";
-
-
-            let statusClass = "rac";
-
-
-            if(
-                status.toUpperCase().includes("CNF") ||
-                status.toUpperCase().includes("CONFIRM")
-            ){
-
-                statusClass = "cnf";
-
-            }
-
-            else if(
-                status.toUpperCase().includes("WL") ||
-                status.toUpperCase().includes("WAIT")
-            ){
-
-                statusClass = "wl";
-
-            }
-
-
             html +=
-
-                "📊 Status: " +
-
-                "<span class='badge " +
-                statusClass +
-                "'>" +
-                status +
-                "</span>";
+                "<br>👤 No passenger details available.";
 
         }
 
+
+        /* ================= CHART STATUS ================= */
+
+        if(pnrData.charting){
+
+            html +=
+
+                "📋 Chart: " +
+
+                (
+                    pnrData.charting.status ||
+                    "-"
+                );
+
+        }
+
+
+        /* ================= SHOW RESULT ================= */
 
         resultBox.innerHTML = html;
 
@@ -625,7 +624,10 @@ async function getPNR(){
 
     catch(error){
 
-        console.error("PNR Error:", error);
+        console.error(
+            "PNR Error:",
+            error
+        );
 
 
         resultBox.innerHTML =
@@ -641,6 +643,7 @@ async function getPNR(){
 function fillRandom(){
 
     const randomPNR =
+
         Math.floor(
             1000000000 +
             Math.random() * 9000000000
