@@ -16,261 +16,175 @@
 /* RESET */
 
 *{
-
-margin:0;
-
-padding:0;
-
-box-sizing:border-box;
-
-font-family:'Poppins', sans-serif;
-
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
 }
 
 
 /* BODY */
 
 body{
-
-background:linear-gradient(135deg,#0f172a,#1e293b,#312e81,#6366f1);
-
-color:white;
-
-min-height:100vh;
-
+    background:linear-gradient(135deg,#0f172a,#1e293b,#312e81,#6366f1);
+    color:white;
+    min-height:100vh;
 }
 
 
 /* NAVBAR */
 
 nav {
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:18px 80px;
-
-background:#020617;
-
-border-bottom:1px solid rgba(255,255,255,0.07);
-
-position:sticky;
-
-top:0;
-
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 80px;
+    background:#020617;
+    border-bottom:1px solid rgba(255,255,255,0.07);
+    position:sticky;
+    top:0;
 }
 
 .logo {
-
-font-size:2.2rem;
-
-font-weight:700;
-
-color:#b026ff;
-
+    font-size:2.2rem;
+    font-weight:700;
+    color:#b026ff;
 }
 
 nav ul {
-
-display:flex;
-
-list-style:none;
-
-gap:32px;
-
+    display:flex;
+    list-style:none;
+    gap:32px;
 }
 
 nav ul li a {
-
-color:#94a3b8;
-
-font-size:0.95rem;
-
-text-decoration:none;
-
-transition:0.2s;
-
+    color:#94a3b8;
+    font-size:0.95rem;
+    text-decoration:none;
+    transition:0.2s;
 }
 
 nav ul li a:hover {
-
-color:white;
-
+    color:white;
 }
 
 
 /* HEADING */
 
 h2{
-
-text-align:center;
-
-margin-top:40px;
-
-color:#e2e8f0;
-
+    text-align:center;
+    margin-top:40px;
+    color:#e2e8f0;
 }
 
 
 /* CARD */
 
 .box{
-
-width:90%;
-
-max-width:420px;
-
-margin:30px auto;
-
-background:#020617;
-
-padding:28px;
-
-border-radius:14px;
-
-border:1px solid rgba(255,255,255,0.07);
-
-display:flex;
-
-flex-direction:column;
-
-gap:14px;
-
+    width:90%;
+    max-width:420px;
+    margin:30px auto;
+    background:#020617;
+    padding:28px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,0.07);
+    display:flex;
+    flex-direction:column;
+    gap:14px;
 }
 
 
 /* INPUT */
 
 input{
-
-padding:12px;
-
-border-radius:8px;
-
-border:1px solid rgba(255,255,255,0.1);
-
-background:#0f172a;
-
-color:white;
-
-outline:none;
-
+    padding:12px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.1);
+    background:#0f172a;
+    color:white;
+    outline:none;
 }
 
 input:focus{
-
-border-color:#6366f1;
-
+    border-color:#6366f1;
 }
 
 
 /* BUTTON */
 
 button{
-
-padding:12px;
-
-border:none;
-
-border-radius:10px;
-
-background:#6366f1;
-
-color:white;
-
-font-weight:600;
-
-cursor:pointer;
-
-transition:0.3s;
-
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#6366f1;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
 }
 
 button:hover{
-
-background:#4f46e5;
-
-transform:translateY(-2px);
-
+    background:#4f46e5;
+    transform:translateY(-2px);
 }
 
 
 /* RESULT */
 
 #result{
-
-display:none;
-
-padding:16px;
-
-background:#0f172a;
-
-border-radius:10px;
-
-border:1px solid rgba(255,255,255,0.07);
-
-line-height:1.8;
-
+    display:none;
+    padding:16px;
+    background:#0f172a;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.07);
+    line-height:1.8;
 }
 
 
 /* STATUS BADGES */
 
 .badge{
-
-padding:4px 10px;
-
-border-radius:6px;
-
-font-weight:600;
-
+    padding:4px 10px;
+    border-radius:6px;
+    font-weight:600;
 }
 
-.cnf{ background:#16a34a; }
+.cnf{
+    background:#16a34a;
+}
 
-.wl{ background:#dc2626; }
+.wl{
+    background:#dc2626;
+}
 
-.rac{ background:#f59e0b; }
+.rac{
+    background:#f59e0b;
+}
 
 
 /* ================= MOBILE RESPONSIVE ================= */
 
 @media (max-width: 768px) {
 
-  nav {
+    nav {
+        padding:14px 20px;
+        flex-direction:column;
+        gap:12px;
+    }
 
-    padding: 14px 20px;
+    .logo {
+        font-size:2rem;
+    }
 
-    flex-direction:column;
+    nav ul {
+        gap:18px;
+        flex-wrap:wrap;
+        justify-content:center;
+    }
 
-    gap:12px;
-
-  }
-
-  .logo {
-
-    font-size:2rem;
-
-  }
-
-  nav ul {
-
-    gap:18px;
-
-    flex-wrap:wrap;
-
-    justify-content:center;
-
-  }
-
-  nav ul li a {
-
-    font-size:0.82rem;
-
-  }
+    nav ul li a {
+        font-size:0.82rem;
+    }
 
 }
 
@@ -279,29 +193,21 @@ font-weight:600;
 
 @media (max-width: 480px) {
 
-  nav {
+    nav {
+        padding:12px 15px;
+    }
 
-    padding:12px 15px;
+    .logo {
+        font-size:1.8rem;
+    }
 
-  }
+    nav ul {
+        gap:12px;
+    }
 
-  .logo {
-
-    font-size:1.8rem;
-
-  }
-
-  nav ul {
-
-    gap:12px;
-
-  }
-
-  nav ul li a {
-
-    font-size:0.76rem;
-
-  }
+    nav ul li a {
+        font-size:0.76rem;
+    }
 
 }
 
@@ -315,19 +221,16 @@ font-weight:600;
 
 <nav>
 
-<div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
+    <div class="logo">
+        रेल<span style="color:#94a3b8;">Intel</span>
+    </div>
 
-<ul>
-
-<li><a href="#">Home</a></li>
-
-<li><a href="#">About</a></li>
-
-<li><a href="#">FAQs</a></li>
-
-<li><a href="#">Contact</a></li>
-
-</ul>
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">FAQs</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
 
 </nav>
 
@@ -337,24 +240,32 @@ font-weight:600;
 
 <div class="box">
 
-<input
-    type="text"
-    id="pnrInput"
-    placeholder="Enter PNR Number"
-    maxlength="10"
->
+    <input
+        type="text"
+        id="pnrInput"
+        placeholder="Enter PNR Number"
+        maxlength="10"
+    >
 
-<button onclick="getPNR()">Check Status</button>
+    <button onclick="getPNR()">
+        Check Status
+    </button>
 
-<button onclick="fillRandom()">🎲 Try Random PNR</button>
+    <button onclick="fillRandom()">
+        🎲 Try Random PNR
+    </button>
 
-<div id="result"></div>
+    <div id="result"></div>
 
 </div>
 
+
 <script>
 
-/* ================= PNR STATUS ================= */
+
+/* =====================================================
+   PNR STATUS
+===================================================== */
 
 async function getPNR(){
 
@@ -365,7 +276,9 @@ async function getPNR(){
         document.getElementById("result");
 
 
-    /* ================= VALIDATION ================= */
+    /* =====================================================
+       VALIDATION
+    ===================================================== */
 
     if(!pnr){
 
@@ -391,7 +304,9 @@ async function getPNR(){
     }
 
 
-    /* ================= LOADING ================= */
+    /* =====================================================
+       LOADING
+    ===================================================== */
 
     resultBox.style.display = "block";
 
@@ -401,7 +316,10 @@ async function getPNR(){
 
     try{
 
-        /* ================= LIVE BACKEND ================= */
+
+        /* =====================================================
+           LIVE BACKEND
+        ===================================================== */
 
         const response = await fetch(
 
@@ -413,7 +331,26 @@ async function getPNR(){
         const data = await response.json();
 
 
-        /* ================= API ERROR ================= */
+        /* =====================================================
+           FULL API RESPONSE
+        ===================================================== */
+
+        console.clear();
+
+        console.log("=================================");
+        console.log("PNR API RESPONSE - FULL");
+        console.log("=================================");
+
+        console.log(
+            JSON.stringify(data, null, 2)
+        );
+
+        console.log("=================================");
+
+
+        /* =====================================================
+           API ERROR
+        ===================================================== */
 
         if(!response.ok || data.success === false){
 
@@ -430,50 +367,119 @@ async function getPNR(){
         }
 
 
-        /* ================= REAL PNR DATA ================= */
+        /* =====================================================
+           MAIN DATA
+        ===================================================== */
 
-        const pnrData = data.data;
+        const pnrData =
+            data?.data || {};
 
 
-        /* ================= TRAIN DETAILS ================= */
+        console.log(
+            "PNR DATA FULL:"
+        );
+
+        console.log(
+            JSON.stringify(
+                pnrData,
+                null,
+                2
+            )
+        );
+
+
+        /* =====================================================
+           TRAIN DETAILS
+        ===================================================== */
 
         const train =
-            pnrData.train || {};
+            pnrData?.train || {};
 
 
         const trainName =
-            train.name || "-";
+            train?.name ||
+            pnrData?.trainName ||
+            "-";
 
 
         const trainNumber =
-            train.number || "-";
+            train?.number ||
+            pnrData?.trainNumber ||
+            "-";
 
 
-        /* ================= FROM / TO ================= */
+        /* =====================================================
+           SOURCE
+        ===================================================== */
 
         const from =
-            train.source?.name || "-";
+            train?.source?.name ||
+            train?.source?.stationName ||
+            pnrData?.source?.name ||
+            pnrData?.from?.name ||
+            pnrData?.fromStation?.name ||
+            "-";
 
+
+        /* =====================================================
+           DESTINATION
+        ===================================================== */
 
         const to =
-            train.destination?.name || "-";
+            train?.destination?.name ||
+            train?.destination?.stationName ||
+            pnrData?.destination?.name ||
+            pnrData?.to?.name ||
+            pnrData?.toStation?.name ||
+            "-";
 
 
-        /* ================= JOURNEY DATE ================= */
+        /* =====================================================
+           DATE - MULTIPLE POSSIBILITIES
+        ===================================================== */
 
         const journeyDate =
-            pnrData.journey?.date || "-";
+            pnrData?.journeyDate ||
+            pnrData?.journey?.date ||
+            pnrData?.journey?.journeyDate ||
+            pnrData?.date ||
+            pnrData?.travelDate ||
+            pnrData?.journeyDetails?.date ||
+            "-";
 
 
-        /* ================= PASSENGERS ================= */
+        console.log(
+            "Journey Date:",
+            journeyDate
+        );
+
+
+        /* =====================================================
+           PASSENGERS
+        ===================================================== */
 
         const passengers =
-            Array.isArray(pnrData.passengers)
+            Array.isArray(pnrData?.passengers)
                 ? pnrData.passengers
                 : [];
 
 
-        /* ================= RESULT HTML ================= */
+        console.log(
+            "PASSENGERS FULL:"
+        );
+
+        console.log(
+            JSON.stringify(
+                passengers,
+                null,
+                2
+            )
+        );
+
+
+        /* =====================================================
+           RESULT
+        ===================================================== */
 
         let html =
 
@@ -494,7 +500,9 @@ async function getPNR(){
             "<br>";
 
 
-        /* ================= PASSENGER DETAILS ================= */
+        /* =====================================================
+           PASSENGER DETAILS
+        ===================================================== */
 
         if(passengers.length > 0){
 
@@ -502,121 +510,227 @@ async function getPNR(){
                 "<br><b>👤 Passenger Details</b><br>";
 
 
-            passengers.forEach((passenger, index) => {
+            passengers.forEach(
+                (passenger, index) => {
 
 
-                const status =
-                    passenger.currentStatus ||
-                    "-";
+                    /* =========================================
+                       PASSENGER NUMBER
+                    ========================================= */
+
+                    const passengerNumber =
+                        passenger?.passengerNumber ||
+                        passenger?.number ||
+                        passenger?.passengerIndex ||
+                        (index + 1);
 
 
-                const coach =
-                    passenger.coach ||
-                    "-";
+                    /* =========================================
+                       STATUS
+                    ========================================= */
+
+                    let status =
+                        passenger?.currentStatus ||
+                        passenger?.bookingStatus ||
+                        passenger?.status ||
+                        "-";
 
 
-                const berth =
-                    passenger.berthNumber ||
-                    "-";
+                    /* =========================================
+                       IF STATUS IS OBJECT
+                    ========================================= */
+
+                    if(
+                        typeof status === "object"
+                    ){
+
+                        status =
+                            status?.status ||
+                            status?.code ||
+                            status?.label ||
+                            "-";
+
+                    }
 
 
-                const berthCode =
-                    passenger.berthCode ||
-                    "";
+                    /* =========================================
+                       COACH
+                    ========================================= */
+
+                    const coach =
+                        passenger?.coach ||
+                        passenger?.coachNumber ||
+                        passenger?.coachName ||
+                        "-";
 
 
-                /* ================= STATUS COLOR ================= */
+                    /* =========================================
+                       BERTH
+                    ========================================= */
 
-                let statusClass = "rac";
-
-
-                if(
-                    status.toUpperCase().includes("CNF") ||
-                    status.toUpperCase().includes("CONFIRM")
-                ){
-
-                    statusClass = "cnf";
-
-                }
-
-                else if(
-                    status.toUpperCase().includes("WL") ||
-                    status.toUpperCase().includes("WAIT")
-                ){
-
-                    statusClass = "wl";
-
-                }
+                    const berth =
+                        passenger?.berthNumber ??
+                        passenger?.seatNumber ??
+                        passenger?.berth ??
+                        passenger?.seat ??
+                        "-";
 
 
-                /* ================= PASSENGER ================= */
+                    /* =========================================
+                       BERTH CODE
+                    ========================================= */
 
-                html +=
-
-                    "Passenger " +
-                    passenger.passengerNumber +
-                    ": " +
-
-                    "<span class='badge " +
-                    statusClass +
-                    "'>" +
-                    status +
-                    "</span><br>";
+                    const berthCode =
+                        passenger?.berthCode ||
+                        passenger?.berthType ||
+                        "";
 
 
-                /* ================= SEAT DETAILS ================= */
+                    /* =========================================
+                       STATUS CLASS
+                    ========================================= */
 
-                html +=
-
-                    "💺 Coach: " +
-                    coach +
-                    " | Berth: " +
-                    berth;
+                    let statusClass =
+                        "rac";
 
 
-                if(berthCode){
+                    const statusText =
+                        String(status)
+                        .toUpperCase();
+
+
+                    if(
+                        statusText.includes("CNF") ||
+                        statusText.includes("CONFIRM")
+                    ){
+
+                        statusClass =
+                            "cnf";
+
+                    }
+
+                    else if(
+                        statusText.includes("WL") ||
+                        statusText.includes("WAIT")
+                    ){
+
+                        statusClass =
+                            "wl";
+
+                    }
+
+
+                    /* =========================================
+                       PASSENGER
+                    ========================================= */
 
                     html +=
-                        " (" +
-                        berthCode +
-                        ")";
+
+                        "<br>" +
+
+                        "Passenger " +
+                        passengerNumber +
+                        ": " +
+
+                        "<span class='badge " +
+                        statusClass +
+                        "'>" +
+                        status +
+                        "</span><br>";
+
+
+                    /* =========================================
+                       COACH + BERTH
+                    ========================================= */
+
+                    html +=
+
+                        "💺 Coach: " +
+                        coach +
+                        " | Berth: " +
+                        berth;
+
+
+                    if(berthCode){
+
+                        html +=
+
+                            " (" +
+                            berthCode +
+                            ")";
+
+                    }
+
+
+                    html += "<br>";
 
                 }
-
-
-                html += "<br><br>";
-
-            });
+            );
 
         }
 
         else{
 
             html +=
+
                 "<br>👤 No passenger details available.";
 
         }
 
 
-        /* ================= CHART STATUS ================= */
+        /* =====================================================
+           CHART STATUS
+        ===================================================== */
 
-        if(pnrData.charting){
+        const charting =
+            pnrData?.charting ||
+            pnrData?.chart ||
+            null;
+
+
+        if(charting){
+
+            const chartStatus =
+                charting?.status ||
+                charting?.chartStatus ||
+                "-";
+
 
             html +=
 
-                "📋 Chart: " +
+                "<br>📋 Chart: " +
+                chartStatus;
 
+        }
+
+
+        /* =====================================================
+           WAITLIST STATUS
+        ===================================================== */
+
+        if(
+            typeof pnrData?.isWaitlisted !==
+            "undefined"
+        ){
+
+            html +=
+
+                "<br>⏳ Waitlisted: " +
                 (
-                    pnrData.charting.status ||
-                    "-"
+                    pnrData.isWaitlisted
+                        ? "Yes"
+                        : "No"
                 );
 
         }
 
 
-        /* ================= SHOW RESULT ================= */
+        /* =====================================================
+           DISPLAY
+        ===================================================== */
 
-        resultBox.innerHTML = html;
+        resultBox.innerHTML =
+            html;
 
 
     }
@@ -625,7 +739,7 @@ async function getPNR(){
     catch(error){
 
         console.error(
-            "PNR Error:",
+            "PNR ERROR:",
             error
         );
 
@@ -638,7 +752,9 @@ async function getPNR(){
 }
 
 
-/* ================= RANDOM PNR ================= */
+/* =====================================================
+   RANDOM PNR
+===================================================== */
 
 function fillRandom(){
 
