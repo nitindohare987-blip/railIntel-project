@@ -1,8 +1,13 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Reliability Indicator – RailIntel</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -23,6 +28,7 @@ body {
 }
 
 /* ── NAVBAR ── */
+
 nav {
   display: flex;
   justify-content: space-between;
@@ -33,6 +39,7 @@ nav {
   position: sticky;
   top: 0;
   z-index: 1000;
+  
 }
 
 .logo {
@@ -45,6 +52,7 @@ nav ul {
   display: flex;
   list-style: none;
   gap: 32px;
+  
 }
 
 nav ul li a {
@@ -56,9 +64,11 @@ nav ul li a {
 
 nav ul li a:hover {
   color: white;
+  text-decoration: none;
 }
 
 /* underline effect on hover */
+
 nav ul li a::after {
   content: '';
   position: absolute;
@@ -75,6 +85,7 @@ nav ul li a:hover::after {
 }
 
 /* PAGE TITLE */
+
 h2 {
   text-align: center;
   margin-top: 36px;
@@ -85,6 +96,7 @@ h2 {
 }
 
 /* CARD */
+
 .box1 {
   width: 370px;
   margin: 32px auto 60px;
@@ -100,6 +112,7 @@ h2 {
 }
 
 /* LABELS */
+
 label {
   font-size: 0.78rem;
   color: #94a3b8;
@@ -109,6 +122,7 @@ label {
 }
 
 /* INPUTS */
+
 input, select {
   padding: 11px 14px;
   border: 1px solid rgba(255,255,255,0.08);
@@ -122,16 +136,21 @@ input, select {
   width: 100%;
 }
 
-input::placeholder { color: #475569; }
+input::placeholder {
+  color: #475569;
+}
 
 input:focus, select:focus {
   border-color: #6366f1;
   background: rgba(15, 23, 42, 1);
 }
 
-select option { background: #0f172a; }
+select option {
+  background: #0f172a;
+}
 
 /* BUTTON */
+
 button {
   padding: 12px;
   background: #6366f1;
@@ -158,12 +177,14 @@ button:active {
 }
 
 /* DIVIDER */
+
 hr {
   border: none;
   border-top: 1px solid rgba(255,255,255,0.07);
 }
 
 /* RESULT */
+
 #result {
   margin-top: 4px;
   text-align: center;
@@ -173,11 +194,20 @@ hr {
   transition: all 0.3s;
 }
 
-.high  { color: #4ade80; }
-.medium{ color: #fb923c; }
-.low   { color: #f87171; }
+.high {
+  color: #4ade80;
+}
+
+.medium {
+  color: #fb923c;
+}
+
+.low {
+  color: #f87171;
+}
 
 /* SCORE BAR */
+
 #bar-wrap {
   display: none;
   flex-direction: column;
@@ -204,6 +234,7 @@ hr {
   border-radius: 99px;
   transition: width 0.7s cubic-bezier(.4,0,.2,1), background 0.4s;
 }
+
 /* ================= MOBILE RESPONSIVE ================= */
 
 @media (max-width: 768px) {
@@ -230,7 +261,6 @@ hr {
 
 }
 
-
 /* ================= SMALL MOBILE ================= */
 
 @media (max-width: 480px) {
@@ -252,101 +282,566 @@ hr {
   }
 
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <!-- NAV -->
+
 <nav>
-  <div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
+
+  <div class="logo">
+    रेल<span style="color:#94a3b8;">Intel</span>
+  </div>
+
   <ul>
-    <li><a href="index.html">Home</a></li>
-    <li>About</li>
-    <li>FAQs</li>
-    <li>Contact</li>
+
+    <li><a href="index.html">home</a></li>
+  
+    <li><a href="about.html">About</a></li>
+
+    <li><a href="faqs.html">FAQs</a></li>
+
+    <li><a href="lintact.html">Contact</a></li>
+
   </ul>
+
 </nav>
 
+
 <!-- TITLE -->
+
 <h2>Smart Reliability Analyzer</h2>
 
+
 <!-- CARD -->
+
 <div class="box1">
 
-  <input type="text" id="trainno" placeholder="Train Number">
-
-  <label>Train Type</label>
-  <select id="type">
-    <option>Superfast</option>
-    <option>Express</option>
-    <option>Passenger</option>
-    <option>Local</option>
-  </select>
-
-  <label>Delay (minutes)</label>
-  <input type="text" id="delay" placeholder="Enter delay in minutes">
+  <input
+    type="text"
+    id="trainno"
+    placeholder="Train Number"
+    maxlength="5"
+  >
 
   <hr>
 
-  <button onclick="check()">Check Reliability</button>
+  <button onclick="check()">
+    Check Reliability
+  </button>
 
-  <!-- SCORE BAR -->
-  <div id="bar-wrap">
-    <span id="bar-label">0%</span>
-    <div id="bar-bg"><div id="bar-fill"></div></div>
-  </div>
+
+  <!-- RESULT -->
 
   <div id="result"></div>
 
+
+  <!-- SCORE BAR -->
+
+  <div id="bar-wrap">
+
+    <span id="bar-label">0%</span>
+
+    <div id="bar-bg">
+
+      <div id="bar-fill"></div>
+
+    </div>
+
+  </div>
+
 </div>
 
+
 <script>
-function check() {
-  let delay = Number(document.getElementById("delay").value);
-  let type  = document.getElementById("type").value;
 
-  let score = 100;
+/* =====================================================
+   RELIABILITY CHECK
+===================================================== */
 
-  score -= delay;
+async function check() {
 
-  if (type === "Superfast")     score += 10;
-  else if (type === "Express")  score += 0;
-  else if (type === "Passenger") score -= 10;
-  else if (type === "Local")    score -= 5;
+  const trainNumber =
+    document.getElementById("trainno").value.trim();
 
-  if (score > 100) score = 100;
-  if (score < 0)   score = 0;
+  const result =
+    document.getElementById("result");
 
-  let status, cls, barColor;
+  const barWrap =
+    document.getElementById("bar-wrap");
 
-  if (score > 80) {
-    status = "Very Reliable";   cls = "high";   barColor = "#4ade80";
-  } else if (score > 60) {
-    status = "Reliable";        cls = "high";   barColor = "#86efac";
-  } else if (score > 40) {
-    status = "Average";         cls = "medium"; barColor = "#fb923c";
-  } else {
-    status = "Unreliable";      cls = "low";    barColor = "#f87171";
+  const barFill =
+    document.getElementById("bar-fill");
+
+  const barLabel =
+    document.getElementById("bar-label");
+
+
+  /* =====================================================
+     VALIDATION
+  ===================================================== */
+
+  if (!trainNumber) {
+
+    result.innerHTML =
+      `<span class="low">⚠️ Please enter train number</span>`;
+
+    barWrap.style.display = "none";
+
+    return;
   }
 
-  // Result text
-  document.getElementById("result").innerHTML =
-    `<span class="${cls}">Score: ${score}%<br>${status}</span>`;
 
-  // Animated bar
-  const barWrap  = document.getElementById("bar-wrap");
-  const barFill  = document.getElementById("bar-fill");
-  const barLabel = document.getElementById("bar-label");
+  if (!/^\d+$/.test(trainNumber)) {
 
-  barWrap.style.display = "flex";
-  barLabel.textContent  = score + "%";
-  barFill.style.background = barColor;
+    result.innerHTML =
+      `<span class="low">⚠️ Train number must contain digits only</span>`;
 
-  // Trigger animation
-  setTimeout(() => { barFill.style.width = score + "%"; }, 50);
+    barWrap.style.display = "none";
+
+    return;
+  }
+
+
+  /* =====================================================
+     LOADING
+  ===================================================== */
+
+  result.innerHTML =
+    `<span class="medium">⏳ Analyzing real train reliability...</span>`;
+
+  barWrap.style.display = "none";
+
+
+  try {
+
+    /* =====================================================
+       CALL RAILINTEL BACKEND
+    ===================================================== */
+
+    const response = await fetch(
+
+      `https://railintel-project.onrender.com/api/reliability/${encodeURIComponent(trainNumber)}`
+
+    );
+
+
+    const data = await response.json();
+
+
+    console.log(
+      "Reliability API Response:",
+      data
+    );
+
+
+    /* =====================================================
+       API ERROR
+    ===================================================== */
+
+    if (!response.ok || data.success === false) {
+
+      const errorMessage =
+        data?.error?.message ||
+        data?.error ||
+        data?.message ||
+        "Unable to analyze train.";
+
+      result.innerHTML =
+        `<span class="low">❌ ${errorMessage}</span>`;
+
+      barWrap.style.display = "none";
+
+      return;
+    }
+
+
+    /* =====================================================
+       GET DATA
+    ===================================================== */
+
+    const trainData =
+      data?.data || {};
+
+
+    const trainName =
+      trainData?.trainName ||
+      "Train";
+
+
+    const trainNumberResult =
+      trainData?.trainNumber ||
+      trainNumber;
+
+
+    const currentDelay =
+      Number(trainData?.currentDelay || 0);
+
+
+    const averageDelay =
+      trainData?.averageDelay;
+
+
+    const medianDelay =
+      trainData?.medianDelay;
+
+
+    const lowDelayDays =
+      trainData?.lowDelayDays;
+
+
+    const lowDelayPercentage =
+      trainData?.lowDelayPercentage;
+
+
+    const majorDelayDays =
+      trainData?.majorDelayDays;
+
+
+    const majorDelayPercentage =
+      trainData?.majorDelayPercentage;
+
+
+    const score =
+      trainData?.reliabilityScore;
+
+
+    const reliabilityStatus =
+      trainData?.reliabilityStatus ||
+      "Unknown";
+
+
+    const currentStation =
+      trainData?.currentStation ||
+      "-";
+
+
+    const nextStation =
+      trainData?.nextStation ||
+      "-";
+
+
+    const currentComparison =
+      trainData?.currentComparison ||
+      "";
+
+
+    const historicalAvailable =
+      trainData?.historicalDataAvailable === true;
+
+
+    const totalRecords =
+      Number(trainData?.totalRecords || 0);
+
+
+    /* =====================================================
+       NOT ENOUGH HISTORICAL DATA
+    ===================================================== */
+
+    if (
+      !historicalAvailable ||
+      score === null ||
+      score === undefined
+    ) {
+
+      result.innerHTML = `
+
+        <span class="medium">
+
+          🚆 ${trainName}
+          (${trainNumberResult})
+
+          <br><br>
+
+          📊 Reliability Analysis
+
+          <br><br>
+
+          ⚠️ ${trainData?.message ||
+          "Not enough historical data yet."}
+
+          <br><br>
+
+          📚 Historical Records:
+          ${totalRecords}
+
+          <br><br>
+
+          ⏱️ Current Delay:
+          ${currentDelay} minutes
+
+          <br>
+
+          📡 Current Status:
+          ${trainData?.status || "Unknown"}
+
+          <br><br>
+
+          📍 Current Station:
+          ${currentStation}
+
+          <br>
+
+          🎯 Next Station:
+          ${nextStation}
+
+        </span>
+
+      `;
+
+      barWrap.style.display = "none";
+
+      return;
+    }
+
+
+    /* =====================================================
+       STATUS CLASS
+    ===================================================== */
+
+    let statusClass = "medium";
+
+    let barColor = "#fb923c";
+
+
+    if (score >= 75) {
+
+      statusClass = "high";
+
+      barColor = "#4ade80";
+
+    }
+
+    else if (score >= 50) {
+
+      statusClass = "medium";
+
+      barColor = "#fb923c";
+
+    }
+
+    else {
+
+      statusClass = "low";
+
+      barColor = "#f87171";
+
+    }
+
+
+    /* =====================================================
+       DAY-WISE PATTERN
+    ===================================================== */
+
+    const dayWisePattern =
+      trainData?.dayWisePattern || {};
+
+
+    const dayOrder = [
+
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+
+    ];
+
+
+    let dayPatternHTML = "";
+
+
+    dayOrder.forEach(day => {
+
+      if (
+        dayWisePattern[day] !== undefined
+      ) {
+
+        dayPatternHTML +=
+          `${day.slice(0, 3)}: ${dayWisePattern[day]} min<br>`;
+
+      }
+
+    });
+
+
+    if (!dayPatternHTML) {
+
+      dayPatternHTML =
+        "Not enough day-wise data yet.";
+
+    }
+
+
+    /* =====================================================
+       CURRENT COMPARISON
+    ===================================================== */
+
+    let comparisonClass = "medium";
+
+
+    if (
+      currentDelay >
+      Number(averageDelay) + 15
+    ) {
+
+      comparisonClass = "low";
+
+    }
+
+    else if (
+      currentDelay <
+      Number(averageDelay) - 15
+    ) {
+
+      comparisonClass = "high";
+
+    }
+
+
+    /* =====================================================
+       DISPLAY RESULT
+    ===================================================== */
+
+    result.innerHTML = `
+
+      <span class="${statusClass}">
+
+        🚆 ${trainName}
+        (${trainNumberResult})
+
+        <br><br>
+
+        📊 Reliability Score:
+        ${score}/100
+
+        <br>
+
+        ${reliabilityStatus}
+
+        <br><br>
+
+        📈 Delay Analysis
+
+        <br><br>
+
+        ⏱️ Average Delay:
+        ${averageDelay} minutes
+
+        <br>
+
+        📌 Median Delay:
+        ${medianDelay} minutes
+
+        <br>
+
+        🟢 Low-delay Days:
+        ${lowDelayPercentage}%
+        (${lowDelayDays} days)
+
+        <br>
+
+        🔴 Major Delay Days:
+        ${majorDelayDays}
+        (${majorDelayPercentage}%)
+
+        <br><br>
+
+        📅 Day-wise Pattern
+
+        <br>
+
+        ${dayPatternHTML}
+
+        <br>
+
+        📡 TODAY
+
+        <br>
+
+        Current Delay:
+        ${currentDelay} minutes
+
+        <br>
+
+        <span class="${comparisonClass}">
+          ${currentComparison}
+        </span>
+
+        <br><br>
+
+        📍 Current Station:
+        ${currentStation}
+
+        <br>
+
+        🎯 Next Station:
+        ${nextStation}
+
+      </span>
+
+    `;
+
+
+    /* =====================================================
+       SCORE BAR
+    ===================================================== */
+
+    barWrap.style.display =
+      "flex";
+
+
+    barLabel.textContent =
+      score + "/100";
+
+
+    barFill.style.background =
+      barColor;
+
+
+    barFill.style.width =
+      "0%";
+
+
+    setTimeout(() => {
+
+      barFill.style.width =
+        score + "%";
+
+    }, 50);
+
+  }
+
+
+  catch (error) {
+
+    console.error(
+      "Reliability Error:",
+      error
+    );
+
+
+    result.innerHTML =
+      `<span class="low">❌ Unable to connect to railway server.</span>`;
+
+    barWrap.style.display =
+      "none";
+
+  }
+
 }
+
 </script>
 
+
 </body>
+
 </html>
