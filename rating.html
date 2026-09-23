@@ -1,274 +1,602 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Feedback</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+    <title>Feedback</title>
 
-<style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-  text-decoration: none;
-}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-body {
-  background: linear-gradient(135deg, #0f172a, #1e293b, #312e81, #6366f1);
-  color: white;
-  min-height: 100vh;
-}
+        body {
+            font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, rgba(176, 38, 255, 0.15), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.12), transparent 30%),
+                #020617;
+            color: white;
+        }
 
-/* NAV */
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 80px;
-  background: #020617;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+        nav {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
 
-.logo {
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: #b026ff;
-}
+        .logo {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #b026ff;
+        }
 
-nav ul {
-  display: flex;
-  list-style: none;
-  gap: 28px;
-}
+        .back {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 15px;
+        }
 
-nav ul li a {
-  color: #94a3b8;
-  font-size: 0.95rem;
-  transition: color 0.2s;
-}
+        .back:hover {
+            color: white;
+        }
 
-nav ul li a:hover { color: white; }
+        .container {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
 
-/* HEADING */
-h2 {
-  text-align: center;
-  font-size: 1.4rem;
-  font-weight: 600;
-  padding: 32px 0 4px;
-  letter-spacing: 0.5px;
-  color: #e2e8f0;
-}
+        .div {
+            width: 100%;
+            max-width: 550px;
+            padding: 35px;
+            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            backdrop-filter: blur(15px);
+        }
 
-/* CARD */
-.div {
-  width: 90%;
-  max-width: 360px;
-  margin: 20px auto 60px;
-  background: #020617;
-  border: 1px solid rgba(255,255,255,0.07);
-  padding: 28px 24px;
-  border-radius: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
 
-/* INPUTS */
-input {
-  padding: 11px 14px;
-  width: 100%;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: #0f172a;
-  color: white;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.88rem;
-  outline: none;
-  transition: border-color 0.2s;
-}
+        .field {
+            margin-bottom: 20px;
+        }
 
-input::placeholder { color: #475569; }
-input:focus { border-color: #6366f1; }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            font-size: 14px;
+        }
 
-/* DIVIDER */
-.divider {
-  border: none;
-  border-top: 1px solid rgba(255,255,255,0.07);
-}
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 13px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: #0f172a;
+            color: white;
+            font-family: inherit;
+            outline: none;
+        }
 
-/* BUTTON */
-button {
-  padding: 12px;
-  background: #6366f1;
-  border: none;
-  border-radius: 10px;
-  color: white;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.92rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s;
-  width: 100%;
-}
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #b026ff;
+        }
 
-button:hover {
-  background: #4f46e5;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(99,102,241,0.35);
-}
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
 
-/* RESULT */
-#result {
-  text-align: center;
-  font-size: 0.92rem;
-  line-height: 1.9;
-  background: #0f172a;
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 10px;
-  padding: 14px 16px;
-  display: none;
-}
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #b026ff;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-/* RESPONSIVE */
-@media (max-width: 480px) {
-  nav { padding: 14px 20px; }
-  .logo { font-size: 1.8rem; }
-  nav ul { gap: 16px; }
-  nav ul li a { font-size: 0.8rem; }
-}
-/* ================= MOBILE RESPONSIVE ================= */
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
 
-@media (max-width: 768px) {
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
 
-  nav {
-    padding: 14px 20px;
-    flex-direction: column;
-    gap: 12px;
-  }
+        #result {
+            margin-top: 25px;
+        }
 
-  .logo {
-    font-size: 2rem;
-  }
+        .success {
+            padding: 18px;
+            border-radius: 12px;
+            background: rgba(34,197,94,0.1);
+            border: 1px solid rgba(34,197,94,0.3);
+        }
 
-  nav ul {
-    gap: 18px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+        .error {
+            padding: 18px;
+            border-radius: 12px;
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.3);
+        }
 
-  nav ul li a {
-    font-size: 0.82rem;
-  }
+        .stats {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
 
-}
+        .stats p {
+            margin: 7px 0;
+            color: #cbd5e1;
+        }
 
+        .rating-number {
+            color: #fbbf24;
+            font-weight: 700;
+        }
 
-/* ================= SMALL MOBILE ================= */
+        @media (max-width: 600px) {
+            .div {
+                padding: 25px 20px;
+            }
 
-@media (max-width: 480px) {
+            .logo {
+                font-size: 2rem;
+            }
 
-  nav {
-    padding: 12px 15px;
-  }
-
-  .logo {
-    font-size: 1.8rem;
-  }
-
-  nav ul {
-    gap: 12px;
-  }
-
-  nav ul li a {
-    font-size: 0.76rem;
-  }
-
-}
-</style>
+            h1 {
+                font-size: 1.7rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<nav>
-  <div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="#">About</a></li>
-    <li><a href="#">FAQs</a></li>
-    <li><a href="#">Contact</a></li>
-  </ul>
-</nav>
+    <nav>
+        <div class="logo">
+            रेल<span style="color:#94a3b8;">Intel</span>
+        </div>
 
-<h2>Passenger Rating</h2>
+        <a href="index.html" class="back">← Back</a>
+    </nav>
 
-<div class="div">
 
-  <input type="text"   id="train"   placeholder="Train Number">
-  <input type="number" id="comfort" placeholder="Comfort (1–5)">
-  <input type="number" id="food"    placeholder="Food (1–5)">
-  <input type="number" id="staff"   placeholder="Staff (1–5)">
-  <input type="number" id="delay"   placeholder="Delay (1–5)">
-  <input type="text"   id="other"   placeholder="Other Comments">
+    <div class="container">
 
-  <hr class="divider">
+        <div class="div">
 
-  <button onclick="submitFeedback()">Submit Feedback</button>
+            <h1>Passenger Rating</h1>
 
-  <div id="result"></div>
 
-</div>
+            <div class="field">
+                <label for="train">Train Number</label>
 
-<script>
+                <input
+                    type="text"
+                    id="train"
+                    placeholder="Enter train number"
+                    maxlength="5"
+                >
+            </div>
 
-function submitFeedback() {
 
-  var t = document.getElementById("train").value.trim();
-  var c = Number(document.getElementById("comfort").value);
-  var f = Number(document.getElementById("food").value);
-  var s = Number(document.getElementById("staff").value);
-  var d = Number(document.getElementById("delay").value);
-  var o = document.getElementById("other").value.trim();
+            <div class="field">
+                <label for="comfort">Comfort (1–5)</label>
 
-  var resultBox = document.getElementById("result");
+                <select id="comfort">
+                    <option value="">Select Rating</option>
+                    <option value="1">1 - Poor</option>
+                    <option value="2">2 - Below Average</option>
+                    <option value="3">3 - Average</option>
+                    <option value="4">4 - Good</option>
+                    <option value="5">5 - Excellent</option>
+                </select>
+            </div>
 
-  if (!t) {
-    resultBox.style.display = "block";
-    resultBox.style.color = "#f87171";
-    resultBox.innerHTML = "⚠️ Please enter train number.";
-    return;
-  }
 
-  var avg = (c + f + s + d) / 4;
+            <div class="field">
+                <label for="food">Food (1–5)</label>
 
-  var rating, emoji;
+                <select id="food">
+                    <option value="">Select Rating</option>
+                    <option value="1">1 - Poor</option>
+                    <option value="2">2 - Below Average</option>
+                    <option value="3">3 - Average</option>
+                    <option value="4">4 - Good</option>
+                    <option value="5">5 - Excellent</option>
+                </select>
+            </div>
 
-  if (avg >= 4) {
-    rating = "Excellent"; emoji = "🌟";
-  } else if (avg >= 3) {
-    rating = "Good"; emoji = "😊";
-  } else if (avg >= 2) {
-    rating = "Average"; emoji = "😐";
-  } else {
-    rating = "Poor"; emoji = "😞";
-  }
 
-  resultBox.style.display = "block";
-  resultBox.style.color = "#fde68a";
-  resultBox.innerHTML = 
-    "✅ <b>Feedback Submitted!</b><br>" +
-    "🚆 Train: " + t + "<br>" +
-    "⭐ Overall Rating: <b>" + rating + "</b> " + emoji + "<br>" +
-    (o ? "💬 Comment: " + o : "");
-}
-</script>
+            <div class="field">
+                <label for="staff">Staff (1–5)</label>
+
+                <select id="staff">
+                    <option value="">Select Rating</option>
+                    <option value="1">1 - Poor</option>
+                    <option value="2">2 - Below Average</option>
+                    <option value="3">3 - Average</option>
+                    <option value="4">4 - Good</option>
+                    <option value="5">5 - Excellent</option>
+                </select>
+            </div>
+
+
+            <div class="field">
+                <label for="delay">Delay Experience (1–5)</label>
+
+                <select id="delay">
+                    <option value="">Select Rating</option>
+                    <option value="1">1 - Very Bad</option>
+                    <option value="2">2 - Bad</option>
+                    <option value="3">3 - Average</option>
+                    <option value="4">4 - Good</option>
+                    <option value="5">5 - Excellent</option>
+                </select>
+            </div>
+
+
+            <div class="field">
+                <label for="other">Other Comments</label>
+
+                <textarea
+                    id="other"
+                    placeholder="Share your experience..."
+                ></textarea>
+            </div>
+
+
+            <button
+                id="submitBtn"
+                onclick="submitFeedback()"
+            >
+                Submit Feedback
+            </button>
+
+
+            <div id="result"></div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const API_BASE =
+            "https://railintel-project.onrender.com";
+
+
+        async function submitFeedback() {
+
+            const train =
+                document.getElementById("train").value.trim();
+
+            const comfort =
+                document.getElementById("comfort").value;
+
+            const food =
+                document.getElementById("food").value;
+
+            const staff =
+                document.getElementById("staff").value;
+
+            const delay =
+                document.getElementById("delay").value;
+
+            const other =
+                document.getElementById("other").value.trim();
+
+            const result =
+                document.getElementById("result");
+
+            const button =
+                document.getElementById("submitBtn");
+
+
+            // -----------------------------
+            // VALIDATION
+            // -----------------------------
+
+            if (!train) {
+
+                result.innerHTML = `
+                    <div class="error">
+                        Please enter train number.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            if (!/^\d+$/.test(train)) {
+
+                result.innerHTML = `
+                    <div class="error">
+                        Train number should contain only numbers.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            if (!comfort || !food || !staff || !delay) {
+
+                result.innerHTML = `
+                    <div class="error">
+                        Please give rating for all categories.
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            // Disable button while submitting
+
+            button.disabled = true;
+            button.innerText = "Submitting...";
+
+
+            try {
+
+                // -----------------------------
+                // SEND DATA TO BACKEND
+                // -----------------------------
+
+                const response =
+                    await fetch(`${API_BASE}/api/ratings`, {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            trainNumber: train,
+
+                            comfort: Number(comfort),
+
+                            food: Number(food),
+
+                            staff: Number(staff),
+
+                            delay: Number(delay),
+
+                            other: other
+
+                        })
+
+                    });
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok || !data.success) {
+
+                    throw new Error(
+                        data.message ||
+                        "Failed to submit feedback."
+                    );
+
+                }
+
+
+                // -----------------------------
+                // GET UPDATED TRAIN RATINGS
+                // -----------------------------
+
+                let ratingData = null;
+
+
+                try {
+
+                    const ratingResponse =
+                        await fetch(
+                            `${API_BASE}/api/ratings/${encodeURIComponent(train)}`
+                        );
+
+
+                    ratingData =
+                        await ratingResponse.json();
+
+                } catch (error) {
+
+                    console.log(
+                        "Could not fetch rating summary:",
+                        error
+                    );
+
+                }
+
+
+                // -----------------------------
+                // SHOW SUCCESS
+                // -----------------------------
+
+                let summaryHTML = "";
+
+
+                if (
+                    ratingData &&
+                    ratingData.success
+                ) {
+
+                    const average =
+                        Number(
+                            ratingData.averageRating || 0
+                        ).toFixed(1);
+
+
+                    const category =
+                        ratingData.categoryAverages || {};
+
+
+                    summaryHTML = `
+
+                        <div class="stats">
+
+                            <p>
+                                👥 Total Ratings:
+                                <strong>
+                                    ${ratingData.totalRatings}
+                                </strong>
+                            </p>
+
+                            <p>
+                                ⭐ Train Average:
+                                <span class="rating-number">
+                                    ${average} / 5
+                                </span>
+                            </p>
+
+                            <p>
+                                🛋️ Comfort:
+                                <strong>
+                                    ${Number(category.comfort || 0).toFixed(1)} / 5
+                                </strong>
+                            </p>
+
+                            <p>
+                                🍴 Food:
+                                <strong>
+                                    ${Number(category.food || 0).toFixed(1)} / 5
+                                </strong>
+                            </p>
+
+                            <p>
+                                👨‍✈️ Staff:
+                                <strong>
+                                    ${Number(category.staff || 0).toFixed(1)} / 5
+                                </strong>
+                            </p>
+
+                            <p>
+                                ⏱️ Delay Experience:
+                                <strong>
+                                    ${Number(category.delay || 0).toFixed(1)} / 5
+                                </strong>
+                            </p>
+
+                        </div>
+                    `;
+
+                }
+
+
+                result.innerHTML = `
+
+                    <div class="success">
+
+                        <strong>
+                            ✅ Feedback Submitted Successfully!
+                        </strong>
+
+                        <p style="margin-top:8px;color:#cbd5e1;">
+                            Your rating for train
+                            <strong>${train}</strong>
+                            has been saved.
+                        </p>
+
+                        <p style="margin-top:8px;">
+                            Your Overall Rating:
+                            <span class="rating-number">
+                                ${Number(data.overallRating).toFixed(1)} / 5
+                            </span>
+                        </p>
+
+                        ${summaryHTML}
+
+                    </div>
+
+                `;
+
+
+                // -----------------------------
+                // CLEAR FORM
+                // -----------------------------
+
+                document.getElementById("train").value = "";
+
+                document.getElementById("comfort").value = "";
+
+                document.getElementById("food").value = "";
+
+                document.getElementById("staff").value = "";
+
+                document.getElementById("delay").value = "";
+
+                document.getElementById("other").value = "";
+
+
+            } catch (error) {
+
+                console.error(error);
+
+
+                result.innerHTML = `
+
+                    <div class="error">
+
+                        ❌
+                        ${error.message || "Something went wrong."}
+
+                    </div>
+
+                `;
+
+            } finally {
+
+                button.disabled = false;
+
+                button.innerText =
+                    "Submit Feedback";
+
+            }
+
+        }
+
+    </script>
 
 </body>
 </html>
