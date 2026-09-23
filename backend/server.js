@@ -2,9 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const cron = require("node-cron");
 
-
 const connectDB = require("./db");
 const DelayHistory = require("./models/DelayHistory");
+const Rating = require("./models/Rating");
 
 require("dotenv").config();
 
@@ -12,7 +12,7 @@ const app = express();
 
 
 // ======================================================
-// ===================== MIDDLEWARE =====================
+// MIDDLEWARE
 // ======================================================
 
 app.use(cors());
@@ -20,15 +20,13 @@ app.use(express.json());
 
 
 // ======================================================
-// ===================== CONFIG =========================
+// CONFIG
 // ======================================================
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 const API_KEY = process.env.RAILRADAR_API_KEY;
 
-// Trains whose reliability data we want to collect
-// Later we can make this dynamic from MongoDB.
 const TRACKED_TRAINS = (
     process.env.TRACKED_TRAINS || "12919"
 )
@@ -38,7 +36,7 @@ const TRACKED_TRAINS = (
 
 
 // ======================================================
-// ===================== RAILRADAR =======================
+// RAILRADAR - LIVE TRAIN
 // ======================================================
 
 async function getLiveTrain(trainNumber) {
@@ -49,14 +47,11 @@ async function getLiveTrain(trainNumber) {
         )}/live?authoritative=true&haltsOnly=true`;
 
     const response = await fetch(url, {
-
         method: "GET",
-
         headers: {
             "Authorization": `Bearer ${API_KEY}`,
             "Content-Type": "application/json"
         }
-
     });
 
     const data = await response.json();
@@ -78,7 +73,7 @@ async function getLiveTrain(trainNumber) {
 
 
 // ======================================================
-// ===================== HOME ===========================
+// HOME
 // ======================================================
 
 app.get("/", (req, res) => {
@@ -89,32 +84,30 @@ app.get("/", (req, res) => {
 
 
 // ======================================================
-// ===================== API TEST =======================
+// API TEST
 // ======================================================
 
 app.get("/api/test", (req, res) => {
 
-    if (API_KEY) {
+    if (!API_KEY) {
 
-        res.json({
-            success: true,
-            message: "RailRadar API key is connected!"
-        });
-
-    } else {
-
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "RailRadar API key not found!"
         });
 
     }
 
+    res.json({
+        success: true,
+        message: "RailRadar API key is connected!"
+    });
+
 });
 
 
 // ======================================================
-// ================= STATION SEARCH =====================
+// STATION SEARCH
 // ======================================================
 
 app.get("/api/stations/search", async (req, res) => {
@@ -156,12 +149,21 @@ app.get("/api/stations/search", async (req, res) => {
 
     catch (error) {
 
-        console.error("Station Search Error:", error);
+        console.error(
+            "Station Search Error:",
+            error.message
+        );
 
         res.status(500).json({
+
             success: false,
-            message: "Unable to search stations.",
-            error: error.message
+
+            message:
+                "Unable to search stations.",
+
+            error:
+                error.message
+
         });
 
     }
@@ -170,7 +172,7 @@ app.get("/api/stations/search", async (req, res) => {
 
 
 // ======================================================
-// ============== TRAINS BETWEEN STATIONS ==============
+// TRAINS BETWEEN STATIONS
 // ======================================================
 
 app.get("/api/trains", async (req, res) => {
@@ -182,8 +184,12 @@ app.get("/api/trains", async (req, res) => {
         if (!from || !to) {
 
             return res.status(400).json({
+
                 success: false,
-                message: "Please provide from and to station codes."
+
+                message:
+                    "Please provide from and to station codes."
+
             });
 
         }
@@ -191,7 +197,9 @@ app.get("/api/trains", async (req, res) => {
         const url =
             `https://api.railradar.in/v1/trains/between/${encodeURIComponent(
                 from
-            )}/${encodeURIComponent(to)}`;
+            )}/${encodeURIComponent(
+                to
+            )}`;
 
         const response = await fetch(url, {
 
@@ -210,12 +218,21 @@ app.get("/api/trains", async (req, res) => {
 
     catch (error) {
 
-        console.error("Train Search Error:", error);
+        console.error(
+            "Train Search Error:",
+            error.message
+        );
 
         res.status(500).json({
+
             success: false,
-            message: "Railway API request failed.",
-            error: error.message
+
+            message:
+                "Railway API request failed.",
+
+            error:
+                error.message
+
         });
 
     }
@@ -224,7 +241,7 @@ app.get("/api/trains", async (req, res) => {
 
 
 // ======================================================
-// ================= LIVE TRAIN STATUS ==================
+// RUNNING STATUS
 // ======================================================
 
 app.get("/api/running/:trainNumber", async (req, res) => {
@@ -236,20 +253,27 @@ app.get("/api/running/:trainNumber", async (req, res) => {
         if (!trainNumber) {
 
             return res.status(400).json({
+
                 success: false,
-                message: "Please provide train number."
+
+                message:
+                    "Please provide train number."
+
             });
 
         }
 
-        const data = await getLiveTrain(trainNumber);
+        const data =
+            await getLiveTrain(trainNumber);
 
-        const liveData = data?.data || {};
+        const liveData =
+            data?.data || {};
 
         const train =
             liveData?.train ||
-            data?.train ||
             {};
+
+        // Current day in India
 
         const today =
             new Intl.DateTimeFormat(
@@ -265,10 +289,10 @@ app.get("/api/running/:trainNumber", async (req, res) => {
         const runDays =
             train?.runDays ||
             liveData?.runDays ||
-            data?.runDays ||
             [];
 
         // Train does not run today
+
         if (
             Array.isArray(runDays) &&
             runDays.length > 0 &&
@@ -295,7 +319,8 @@ app.get("/api/running/:trainNumber", async (req, res) => {
                         liveData?.trainName ||
                         "Train",
 
-                    runDays
+                    runDays:
+                        runDays
 
                 }
 
@@ -309,9 +334,14 @@ app.get("/api/running/:trainNumber", async (req, res) => {
 
     catch (error) {
 
-        console.error("Live Train API Error:", error);
+        console.error(
+            "Live Train Error:",
+            error.message
+        );
 
-        res.status(error.status || 500).json({
+        res.status(
+            error.status || 500
+        ).json({
 
             success: false,
 
@@ -329,7 +359,7 @@ app.get("/api/running/:trainNumber", async (req, res) => {
 
 
 // ======================================================
-// ======================== PNR ==========================
+// PNR STATUS
 // ======================================================
 
 app.get("/api/pnr/:pnr", async (req, res) => {
@@ -338,7 +368,10 @@ app.get("/api/pnr/:pnr", async (req, res) => {
 
         const { pnr } = req.params;
 
-        if (!pnr || !/^\d{10}$/.test(pnr)) {
+        if (
+            !pnr ||
+            !/^\d{10}$/.test(pnr)
+        ) {
 
             return res.status(400).json({
 
@@ -352,7 +385,9 @@ app.get("/api/pnr/:pnr", async (req, res) => {
         }
 
         const url =
-            `https://api.railradar.in/v1/pnr/${encodeURIComponent(pnr)}`;
+            `https://api.railradar.in/v1/pnr/${encodeURIComponent(
+                pnr
+            )}`;
 
         const response = await fetch(url, {
 
@@ -368,15 +403,21 @@ app.get("/api/pnr/:pnr", async (req, res) => {
 
         });
 
-        const data = await response.json();
+        const data =
+            await response.json();
 
-        res.status(response.status).json(data);
+        res.status(
+            response.status
+        ).json(data);
 
     }
 
     catch (error) {
 
-        console.error("PNR API Error:", error);
+        console.error(
+            "PNR Error:",
+            error.message
+        );
 
         res.status(500).json({
 
@@ -396,42 +437,414 @@ app.get("/api/pnr/:pnr", async (req, res) => {
 
 
 // ======================================================
-// ============ COLLECT ONE TRAIN SNAPSHOT ==============
+// ================= RATINGS =============================
 // ======================================================
 
-async function collectTrainDelay(trainNumber) {
 
-    const data = await getLiveTrain(trainNumber);
+// ------------------------------------------------------
+// SUBMIT RATING
+// ------------------------------------------------------
 
-    const liveData = data?.data || {};
+app.post("/api/ratings", async (req, res) => {
+
+    try {
+
+        const {
+            trainNumber,
+            comfort,
+            food,
+            staff,
+            delay,
+            other
+        } = req.body;
+
+
+        // Train number validation
+
+        if (
+            !trainNumber ||
+            !String(trainNumber).trim()
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Please provide train number."
+
+            });
+
+        }
+
+
+        // Convert ratings to numbers
+
+        const values = {
+
+            comfort:
+                Number(comfort),
+
+            food:
+                Number(food),
+
+            staff:
+                Number(staff),
+
+            delay:
+                Number(delay)
+
+        };
+
+
+        // Validate 1-5
+
+        for (
+            const [key, value]
+            of Object.entries(values)
+        ) {
+
+            if (
+                !Number.isFinite(value) ||
+                value < 1 ||
+                value > 5
+            ) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        `${key} rating must be between 1 and 5.`
+
+                });
+
+            }
+
+        }
+
+
+        // Overall rating
+
+        const overallRating =
+            (
+                values.comfort +
+                values.food +
+                values.staff +
+                values.delay
+            ) / 4;
+
+
+        // Save in MongoDB
+
+        const rating =
+            await Rating.create({
+
+                trainNumber:
+                    String(trainNumber).trim(),
+
+                comfort:
+                    values.comfort,
+
+                food:
+                    values.food,
+
+                staff:
+                    values.staff,
+
+                delay:
+                    values.delay,
+
+                other:
+                    String(other || "").trim(),
+
+                overallRating:
+                    Number(
+                        overallRating.toFixed(1)
+                    )
+
+            });
+
+
+        res.status(201).json({
+
+            success: true,
+
+            message:
+                "Feedback submitted successfully.",
+
+            overallRating:
+                rating.overallRating,
+
+            data: {
+
+                id:
+                    rating._id,
+
+                trainNumber:
+                    rating.trainNumber,
+
+                overallRating:
+                    rating.overallRating
+
+            }
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Rating Submit Error:",
+            error
+        );
+
+        res.status(500).json({
+
+            success: false,
+
+            message:
+                "Unable to submit feedback.",
+
+            error:
+                error.message
+
+        });
+
+    }
+
+});
+
+
+// ------------------------------------------------------
+// GET TRAIN RATINGS
+// ------------------------------------------------------
+
+app.get(
+    "/api/ratings/:trainNumber",
+    async (req, res) => {
+
+        try {
+
+            const { trainNumber } =
+                req.params;
+
+
+            if (!trainNumber) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "Please provide train number."
+
+                });
+
+            }
+
+
+            const ratings =
+                await Rating.find({
+
+                    trainNumber:
+                        String(trainNumber).trim()
+
+                })
+                    .sort({
+                        createdAt: -1
+                    })
+                    .limit(100);
+
+
+            // No ratings yet
+
+            if (ratings.length === 0) {
+
+                return res.json({
+
+                    success: true,
+
+                    trainNumber:
+                        trainNumber,
+
+                    totalRatings:
+                        0,
+
+                    averageRating:
+                        0,
+
+                    categoryAverages: {
+
+                        comfort: 0,
+
+                        food: 0,
+
+                        staff: 0,
+
+                        delay: 0
+
+                    },
+
+                    data: []
+
+                });
+
+            }
+
+
+            // Average helper
+
+            const average = (field) => {
+
+                return (
+                    ratings.reduce(
+                        (sum, rating) =>
+                            sum +
+                            Number(
+                                rating[field] || 0
+                            ),
+                        0
+                    ) /
+                    ratings.length
+                );
+
+            };
+
+
+            res.json({
+
+                success: true,
+
+                trainNumber:
+                    trainNumber,
+
+                totalRatings:
+                    ratings.length,
+
+                averageRating:
+                    Number(
+                        average(
+                            "overallRating"
+                        ).toFixed(1)
+                    ),
+
+                categoryAverages: {
+
+                    comfort:
+                        Number(
+                            average(
+                                "comfort"
+                            ).toFixed(1)
+                        ),
+
+                    food:
+                        Number(
+                            average(
+                                "food"
+                            ).toFixed(1)
+                        ),
+
+                    staff:
+                        Number(
+                            average(
+                                "staff"
+                            ).toFixed(1)
+                        ),
+
+                    delay:
+                        Number(
+                            average(
+                                "delay"
+                            ).toFixed(1)
+                        )
+
+                },
+
+                data:
+                    ratings
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Rating Fetch Error:",
+                error
+            );
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to fetch ratings.",
+
+                error:
+                    error.message
+
+            });
+
+        }
+
+    }
+);
+
+
+// ======================================================
+// ============ SAVE TRAIN DELAY SNAPSHOT ===============
+// ======================================================
+
+async function collectTrainDelay(
+    trainNumber
+) {
+
+    const data =
+        await getLiveTrain(
+            trainNumber
+        );
+
+
+    const liveData =
+        data?.data || {};
+
 
     const train =
         liveData?.train || {};
+
 
     const realTrainNumber =
         train?.number ||
         liveData?.trainNumber ||
         trainNumber;
 
+
     const trainName =
         train?.name ||
         liveData?.trainName ||
         "Unknown Train";
+
 
     const delayMinutes =
         Number(
             liveData?.delayMinutes || 0
         );
 
+
     const status =
         liveData?.status ||
         "unknown";
+
 
     const currentStation =
         liveData
             ?.currentLocation
             ?.stationCode ||
         "-";
+
 
     const nextStation =
         liveData
@@ -440,9 +853,7 @@ async function collectTrainDelay(trainNumber) {
         "-";
 
 
-    // ==============================================
-    // JOURNEY DATE
-    // ==============================================
+    // Journey date
 
     const journeyDate =
         liveData?.startDate ||
@@ -452,12 +863,12 @@ async function collectTrainDelay(trainNumber) {
                 timeZone:
                     "Asia/Kolkata"
             }
-        ).format(new Date());
+        ).format(
+            new Date()
+        );
 
 
-    // ==============================================
-    // DAY OF WEEK
-    // ==============================================
+    // Day of week
 
     const dayOfWeek =
         new Intl.DateTimeFormat(
@@ -467,12 +878,12 @@ async function collectTrainDelay(trainNumber) {
                 timeZone:
                     "Asia/Kolkata"
             }
-        ).format(new Date());
+        ).format(
+            new Date()
+        );
 
 
-    // ==============================================
-    // UPDATE EXISTING JOURNEY
-    // ==============================================
+    // Check existing record
 
     const existingRecord =
         await DelayHistory.findOne({
@@ -484,9 +895,6 @@ async function collectTrainDelay(trainNumber) {
                 journeyDate
 
         });
-
-
-    let savedRecord;
 
 
     if (existingRecord) {
@@ -512,60 +920,50 @@ async function collectTrainDelay(trainNumber) {
         existingRecord.capturedAt =
             new Date();
 
-        savedRecord =
-            await existingRecord.save();
+
+        return await existingRecord.save();
 
     }
 
 
-    // ==============================================
-    // CREATE NEW JOURNEY
-    // ==============================================
+    // Create new record
 
-    else {
+    return await DelayHistory.create({
 
-        savedRecord =
-            await DelayHistory.create({
+        trainNumber:
+            realTrainNumber,
 
-                trainNumber:
-                    realTrainNumber,
+        trainName:
+            trainName,
 
-                trainName:
-                    trainName,
+        journeyDate:
+            journeyDate,
 
-                journeyDate:
-                    journeyDate,
+        delayMinutes:
+            delayMinutes,
 
-                delayMinutes:
-                    delayMinutes,
+        status:
+            status,
 
-                status:
-                    status,
+        currentStation:
+            currentStation,
 
-                currentStation:
-                    currentStation,
+        nextStation:
+            nextStation,
 
-                nextStation:
-                    nextStation,
+        capturedAt:
+            new Date(),
 
-                capturedAt:
-                    new Date(),
+        dayOfWeek:
+            dayOfWeek
 
-                dayOfWeek:
-                    dayOfWeek
-
-            });
-
-    }
-
-
-    return savedRecord;
+    });
 
 }
 
 
 // ======================================================
-// ============== MANUAL COLLECTION API ================
+// MANUAL RELIABILITY COLLECTION
 // ======================================================
 
 app.get(
@@ -576,6 +974,7 @@ app.get(
 
             const { trainNumber } =
                 req.params;
+
 
             if (!trainNumber) {
 
@@ -590,10 +989,12 @@ app.get(
 
             }
 
+
             const savedRecord =
                 await collectTrainDelay(
                     trainNumber
                 );
+
 
             res.json({
 
@@ -637,7 +1038,7 @@ app.get(
 
 
 // ======================================================
-// ================= GET DELAY HISTORY ==================
+// GET DELAY HISTORY
 // ======================================================
 
 app.get(
@@ -649,18 +1050,6 @@ app.get(
             const { trainNumber } =
                 req.params;
 
-            if (!trainNumber) {
-
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "Please provide train number."
-
-                });
-
-            }
 
             const history =
                 await DelayHistory.find({
@@ -718,7 +1107,7 @@ app.get(
 
 
 // ======================================================
-// ================ RELIABILITY ANALYZER ===============
+// RELIABILITY ANALYZER
 // ======================================================
 
 app.get(
@@ -730,34 +1119,24 @@ app.get(
             const { trainNumber } =
                 req.params;
 
-            if (!trainNumber) {
 
-                return res.status(400).json({
-
-                    success: false,
-
-                    message:
-                        "Please provide train number."
-
-                });
-
-            }
-
-
-            // ==========================================
-            // GET CURRENT LIVE DATA
-            // ==========================================
+            // ------------------------------------------
+            // CURRENT LIVE DATA
+            // ------------------------------------------
 
             const liveResponse =
                 await getLiveTrain(
                     trainNumber
                 );
 
+
             const liveData =
                 liveResponse?.data || {};
 
+
             const train =
                 liveData?.train || {};
+
 
             const currentDelay =
                 Number(
@@ -765,18 +1144,18 @@ app.get(
                 );
 
 
-            // ==========================================
-            // SAVE TODAY'S DATA
-            // ==========================================
+            // ------------------------------------------
+            // SAVE CURRENT SNAPSHOT
+            // ------------------------------------------
 
             await collectTrainDelay(
                 trainNumber
             );
 
 
-            // ==========================================
+            // ------------------------------------------
             // GET HISTORY
-            // ==========================================
+            // ------------------------------------------
 
             const history =
                 await DelayHistory.find({
@@ -791,9 +1170,9 @@ app.get(
                     .limit(90);
 
 
-            // ==========================================
+            // ------------------------------------------
             // NOT ENOUGH DATA
-            // ==========================================
+            // ------------------------------------------
 
             if (history.length < 2) {
 
@@ -815,32 +1194,14 @@ app.get(
                         historicalDataAvailable:
                             false,
 
+                        message:
+                            "Not enough historical data yet. Collect more daily snapshots.",
+
                         totalRecords:
                             history.length,
 
-                        message:
-                            "Not enough historical data yet. Keep collecting real train data.",
-
-                        reliabilityScore:
-                            null,
-
-                        reliabilityStatus:
-                            "Insufficient Data",
-
                         currentDelay:
-                            currentDelay,
-
-                        currentStation:
-                            liveData
-                                ?.currentLocation
-                                ?.stationCode ||
-                            "-",
-
-                        nextStation:
-                            liveData
-                                ?.nextHalt
-                                ?.stationName ||
-                            "-"
+                            currentDelay
 
                     }
 
@@ -849,64 +1210,82 @@ app.get(
             }
 
 
-            // ==========================================
-            // DELAY ARRAY
-            // ==========================================
+            // ------------------------------------------
+            // DELAY VALUES
+            // ------------------------------------------
 
             const delays =
-                history.map(record =>
-                    Number(
-                        record.delayMinutes || 0
-                    )
+                history.map(
+                    record =>
+                        Number(
+                            record.delayMinutes || 0
+                        )
                 );
 
 
-            // ==========================================
-            // AVERAGE DELAY
-            // ==========================================
+            // ------------------------------------------
+            // AVERAGE
+            // ------------------------------------------
 
             const averageDelay =
                 delays.reduce(
                     (sum, value) =>
                         sum + value,
                     0
-                ) / delays.length;
+                ) /
+                delays.length;
 
 
-            // ==========================================
-            // MEDIAN DELAY
-            // ==========================================
+            // ------------------------------------------
+            // MEDIAN
+            // ------------------------------------------
 
             const sortedDelays =
                 [...delays].sort(
                     (a, b) => a - b
                 );
 
+
             const middle =
                 Math.floor(
                     sortedDelays.length / 2
                 );
 
-            const medianDelay =
-                sortedDelays.length % 2 === 0
 
-                    ? (
+            let medianDelay;
+
+
+            if (
+                sortedDelays.length % 2 === 0
+            ) {
+
+                medianDelay =
+                    (
                         sortedDelays[middle - 1] +
                         sortedDelays[middle]
-                    ) / 2
+                    ) / 2;
 
-                    : sortedDelays[middle];
+            }
+
+            else {
+
+                medianDelay =
+                    sortedDelays[middle];
+
+            }
 
 
-            // ==========================================
+            // ------------------------------------------
             // LOW DELAY DAYS
-            // <= 15 MINUTES
-            // ==========================================
+            // <= 15 MIN
+            // ------------------------------------------
 
             const lowDelayDays =
                 delays.filter(
-                    delay => delay <= 15
+                    delay =>
+                        delay <= 15
                 ).length;
+
 
             const lowDelayPercentage =
                 (
@@ -915,15 +1294,17 @@ app.get(
                 ) * 100;
 
 
-            // ==========================================
+            // ------------------------------------------
             // MAJOR DELAY DAYS
-            // > 60 MINUTES
-            // ==========================================
+            // > 60 MIN
+            // ------------------------------------------
 
             const majorDelayDays =
                 delays.filter(
-                    delay => delay > 60
+                    delay =>
+                        delay > 60
                 ).length;
+
 
             const majorDelayPercentage =
                 (
@@ -932,67 +1313,75 @@ app.get(
                 ) * 100;
 
 
-            // ==========================================
+            // ------------------------------------------
             // DAY-WISE PATTERN
-            // ==========================================
+            // ------------------------------------------
 
             const dayGroups = {};
 
-            history.forEach(record => {
 
-                const day =
-                    record.dayOfWeek ||
-                    "Unknown";
+            history.forEach(
+                record => {
 
-                if (!dayGroups[day]) {
-
-                    dayGroups[day] = [];
-
-                }
-
-                dayGroups[day].push(
-                    Number(
-                        record.delayMinutes || 0
-                    )
-                );
-
-            });
+                    const day =
+                        record.dayOfWeek ||
+                        "Unknown";
 
 
-            const dayWisePattern = {};
+                    if (!dayGroups[day]) {
 
-            Object.keys(dayGroups).forEach(
-                day => {
+                        dayGroups[day] = [];
 
-                    const values =
-                        dayGroups[day];
+                    }
 
-                    const avg =
-                        values.reduce(
-                            (sum, value) =>
-                                sum + value,
-                            0
-                        ) / values.length;
 
-                    dayWisePattern[day] =
+                    dayGroups[day].push(
                         Number(
-                            avg.toFixed(1)
-                        );
+                            record.delayMinutes || 0
+                        )
+                    );
 
                 }
             );
 
 
-            // ==========================================
-            // RAILINTEL RELIABILITY INDICATOR
-            // ==========================================
-            // This is our calculated indicator.
-            // It is NOT an official railway rating.
+            const dayWisePattern = {};
+
+
+            Object.keys(dayGroups)
+                .forEach(
+                    day => {
+
+                        const values =
+                            dayGroups[day];
+
+
+                        const avg =
+                            values.reduce(
+                                (sum, value) =>
+                                    sum + value,
+                                0
+                            ) /
+                            values.length;
+
+
+                        dayWisePattern[day] =
+                            Number(
+                                avg.toFixed(1)
+                            );
+
+                    }
+                );
+
+
+            // ------------------------------------------
+            // RAILINTEL SCORE
+            // ------------------------------------------
 
             let score = 100;
 
 
-            // Average delay effect
+            // Average delay
 
             if (averageDelay <= 5) {
 
@@ -1029,7 +1418,7 @@ app.get(
 
             if (lowDelayPercentage >= 80) {
 
-                score += 0;
+                score -= 0;
 
             }
 
@@ -1052,7 +1441,7 @@ app.get(
             }
 
 
-            // Major delays
+            // Major delay frequency
 
             if (majorDelayPercentage >= 30) {
 
@@ -1076,15 +1465,19 @@ app.get(
             score =
                 Math.max(
                     0,
-                    Math.min(100, Math.round(score))
+                    Math.min(
+                        100,
+                        Math.round(score)
+                    )
                 );
 
 
-            // ==========================================
-            // RELIABILITY STATUS
-            // ==========================================
+            // ------------------------------------------
+            // STATUS
+            // ------------------------------------------
 
             let reliabilityStatus;
+
 
             if (score >= 85) {
 
@@ -1115,12 +1508,13 @@ app.get(
             }
 
 
-            // ==========================================
-            // CURRENT VS HISTORICAL
-            // ==========================================
+            // ------------------------------------------
+            // CURRENT VS AVERAGE
+            // ------------------------------------------
 
             let currentComparison =
                 "Currently close to its historical average.";
+
 
             if (
                 currentDelay >
@@ -1143,9 +1537,9 @@ app.get(
             }
 
 
-            // ==========================================
+            // ------------------------------------------
             // FINAL RESPONSE
-            // ==========================================
+            // ------------------------------------------
 
             res.json({
 
@@ -1162,20 +1556,17 @@ app.get(
                         liveData?.trainName ||
                         "Train",
 
-
                     historicalDataAvailable:
                         true,
 
                     totalRecords:
                         history.length,
 
-
                     reliabilityScore:
                         score,
 
                     reliabilityStatus:
                         reliabilityStatus,
-
 
                     averageDelay:
                         Number(
@@ -1187,7 +1578,6 @@ app.get(
                             medianDelay.toFixed(1)
                         ),
 
-
                     lowDelayDays:
                         lowDelayDays,
 
@@ -1195,7 +1585,6 @@ app.get(
                         Number(
                             lowDelayPercentage.toFixed(1)
                         ),
-
 
                     majorDelayDays:
                         majorDelayDays,
@@ -1205,17 +1594,14 @@ app.get(
                             majorDelayPercentage.toFixed(1)
                         ),
 
-
                     dayWisePattern:
                         dayWisePattern,
-
 
                     currentDelay:
                         currentDelay,
 
                     currentComparison:
                         currentComparison,
-
 
                     currentStation:
                         liveData
@@ -1263,22 +1649,14 @@ app.get(
 
 
 // ======================================================
-// =============== AUTOMATIC DATA COLLECTOR =============
+// AUTOMATIC DELAY COLLECTION
 // ======================================================
 
-// Runs every 12 hours.
-//
-// Example:
-// 12919
-//     ↓
-// RailRadar Live API
-//     ↓
-// MongoDB
-//
-// This slowly builds real historical data.
+// Every 12 hours
 
 cron.schedule(
     "0 */12 * * *",
+
     async () => {
 
         console.log(
@@ -1316,10 +1694,12 @@ cron.schedule(
                     `Collecting ${trainNumber}...`
                 );
 
+
                 const record =
                     await collectTrainDelay(
                         trainNumber
                     );
+
 
                 console.log(
                     `✅ ${trainNumber} saved | Delay: ${record.delayMinutes} min`
@@ -1339,15 +1719,17 @@ cron.schedule(
         }
 
     },
+
     {
         timezone:
             "Asia/Kolkata"
     }
+
 );
 
 
 // ======================================================
-// ===================== START SERVER ===================
+// START SERVER
 // ======================================================
 
 async function startServer() {
@@ -1356,17 +1738,21 @@ async function startServer() {
 
         await connectDB();
 
+
         app.listen(
             PORT,
+
             () => {
 
                 console.log(
                     `\n🚆 RailIntel server running on http://localhost:${PORT}`
                 );
 
+
                 console.log(
                     `📊 Tracking trains: ${TRACKED_TRAINS.join(", ")}`
                 );
+
 
                 console.log(
                     "⏰ Automatic collection: Every 12 hours"
@@ -1387,5 +1773,6 @@ async function startServer() {
     }
 
 }
+
 
 startServer();
