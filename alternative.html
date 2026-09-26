@@ -2,13 +2,20 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Alternative Route</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+        rel="stylesheet"
+    >
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -17,302 +24,2131 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0f172a, #1e293b, #312e81, #6366f1);
+            background: linear-gradient(
+                135deg,
+                #0f172a,
+                #1e293b,
+                #312e81,
+                #6366f1
+            );
             color: white;
             min-height: 100vh;
         }
 
-       
-/* ── NAVBAR ── */
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 80px;
-  background: #020617;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
 
-.logo {
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: #b026ff;
-}
+        /* ================= NAVBAR ================= */
 
-nav ul {
-  display: flex;
-  list-style: none;
-  gap: 32px;
-}
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
 
-nav ul li a {
-  color: #94a3b8;
-  font-size: 0.95rem;
-  transition: color 0.2s;
-  position: relative;
-}
+            padding: 18px 80px;
 
-nav ul li a:hover {
-  color: white;
-}
+            background: #020617;
 
-/* underline effect on hover */
-nav ul li a::after {
-  content: '';
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: #b026ff;
-  transition: width 0.25s;
-}
+            border-bottom: 1px solid rgba(255,255,255,0.07);
 
-nav ul li a:hover::after {
-  width: 100%;
-}
+            position: sticky;
+            top: 0;
+
+            z-index: 1000;
+        }
 
 
-        /* HEADING */
+        .logo {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #b026ff;
+        }
+
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+
+        nav ul li a {
+            color: #94a3b8;
+            font-size: 0.95rem;
+
+            transition: color 0.2s;
+
+            position: relative;
+
+            text-decoration: none;
+        }
+
+
+        nav ul li a:hover {
+            color: white;
+        }
+
+
+        nav ul li a::after {
+            content: '';
+
+            position: absolute;
+
+            bottom: -3px;
+            left: 0;
+
+            width: 0;
+            height: 1px;
+
+            background: #b026ff;
+
+            transition: width 0.25s;
+        }
+
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+
+
+        /* ================= HEADING ================= */
+
         h1 {
             text-align: center;
+
             margin-top: 40px;
             margin-bottom: 24px;
+
             font-size: 1.5rem;
+
             font-weight: 600;
+
             letter-spacing: 0.5px;
         }
 
-        /* CARD */
+
+
+        /* ================= CARD ================= */
+
         .box1 {
+
             width: 350px;
+
             margin: 0 auto 60px;
+
             background: #020617;
+
             padding: 28px 24px;
+
             border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.07);
+
+            border: 1px solid rgba(255,255,255,0.07);
+
             display: flex;
+
             flex-direction: column;
+
             gap: 14px;
         }
 
-        /* INPUTS */
-        input,
-        select {
-            padding: 10px 14px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 8px;
-            background: #0f172a;
-            color: white;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.88rem;
-            outline: none;
-            transition: border-color 0.2s;
+
+
+        /* ================= INPUT WRAPPER ================= */
+
+        .input-wrapper {
+
+            position: relative;
+
             width: 100%;
         }
+
+
+
+        /* ================= INPUT ================= */
+
+        input {
+
+            padding: 10px 14px;
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            border-radius: 8px;
+
+            background: #0f172a;
+
+            color: white;
+
+            font-family: 'Poppins', sans-serif;
+
+            font-size: 0.88rem;
+
+            outline: none;
+
+            transition: border-color 0.2s;
+
+            width: 100%;
+        }
+
 
         input::placeholder {
             color: #475569;
         }
 
-        input:focus,
-        select:focus {
+
+        input:focus {
             border-color: #6366f1;
         }
 
-        select option {
-            background: #0f172a;
+
+
+        /* ================= SUGGESTIONS ================= */
+
+        .suggestions {
+
+            position: absolute;
+
+            top: calc(100% + 5px);
+
+            left: 0;
+
+            width: 100%;
+
+            background: #020617;
+
+            border: 1px solid rgba(255,255,255,0.1);
+
+            border-radius: 9px;
+
+            overflow: hidden;
+
+            z-index: 100;
+
+            display: none;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.35);
         }
 
-        label {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            margin-bottom: -6px;
-        }
 
-        /* DIVIDER */
-        .divider {
-            border: none;
-            border-top: 1px solid rgba(255, 255, 255, 0.07);
-        }
+        .suggestion {
 
-        /* BUTTON */
-        #btn {
-            padding: 11px;
-            border: none;
-            border-radius: 10px;
-            background: #6366f1;
-            color: white;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.92rem;
-            font-weight: 600;
+            padding: 10px 14px;
+
             cursor: pointer;
+
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+
+            text-align: left;
+
+            transition: background 0.2s;
+        }
+
+
+        .suggestion:last-child {
+            border-bottom: none;
+        }
+
+
+        .suggestion:hover {
+            background: rgba(99,102,241,0.2);
+        }
+
+
+        .suggestion-name {
+
+            color: #e2e8f0;
+
+            font-size: 0.84rem;
+
+            font-weight: 600;
+        }
+
+
+        .suggestion-code {
+
+            color: #64748b;
+
+            font-size: 0.72rem;
+
+            margin-top: 2px;
+        }
+
+
+
+        /* ================= DIVIDER ================= */
+
+        .divider {
+
+            border: none;
+
+            border-top:
+                1px solid rgba(255,255,255,0.07);
+        }
+
+
+
+        /* ================= BUTTON ================= */
+
+        #btn {
+
+            padding: 11px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #6366f1;
+
+            color: white;
+
+            font-family: 'Poppins', sans-serif;
+
+            font-size: 0.92rem;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
             transition: 0.3s;
+
             width: 100%;
         }
 
+
         #btn:hover {
+
             background: #4f46e5;
+
             transform: scale(1.03);
         }
 
-        /* RESULT */
-        #result {
-            text-align: center;
-            font-size: 0.95rem;
-            line-height: 1.7;
-            background: #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 10px;
-            padding: 14px 16px;
-            display: none;
+
+        #btn:disabled {
+
+            opacity: 0.6;
+
+            cursor: not-allowed;
+
+            transform: none;
         }
-        /* ================= MOBILE RESPONSIVE ================= */
-
-@media (max-width: 768px) {
-
-  nav {
-    padding: 14px 20px;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .logo {
-    font-size: 2rem;
-  }
-
-  nav ul {
-    gap: 18px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  nav ul li a {
-    font-size: 0.82rem;
-  }
-
-}
 
 
-/* ================= SMALL MOBILE ================= */
 
-@media (max-width: 480px) {
+        /* ================= RESULT ================= */
 
-  nav {
-    padding: 12px 15px;
-  }
+        #result {
 
-  .logo {
-    font-size: 1.8rem;
-  }
+            text-align: left;
 
-  nav ul {
-    gap: 12px;
-  }
+            font-size: 0.85rem;
 
-  nav ul li a {
-    font-size: 0.76rem;
-  }
+            line-height: 1.7;
 
-}
+            background: #0f172a;
+
+            border: 1px solid rgba(255,255,255,0.07);
+
+            border-radius: 10px;
+
+            padding: 14px 16px;
+
+            display: none;
+
+            max-height: 550px;
+
+            overflow-y: auto;
+        }
+
+
+
+        /* ================= ROUTE CARD ================= */
+
+        .route-card {
+
+            background: rgba(2,6,23,0.75);
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            border-radius: 10px;
+
+            padding: 14px;
+
+            margin-top: 12px;
+        }
+
+
+        .route-title {
+
+            color: #a5b4fc;
+
+            font-weight: 600;
+
+            margin-bottom: 8px;
+
+            font-size: 0.9rem;
+        }
+
+
+        .route-path {
+
+            color: #e2e8f0;
+
+            font-weight: 600;
+
+            margin-bottom: 10px;
+        }
+
+
+        .route-message {
+
+            color: #94a3b8;
+
+            font-size: 0.78rem;
+
+            line-height: 1.6;
+        }
+
+
+        .leg {
+
+            border-top:
+                1px solid rgba(255,255,255,0.06);
+
+            padding-top: 8px;
+
+            margin-top: 8px;
+        }
+
+
+        .leg-title {
+
+            color: #94a3b8;
+
+            font-size: 0.75rem;
+
+            margin-bottom: 4px;
+        }
+
+
+        .train {
+
+            color: #e2e8f0;
+
+            font-size: 0.82rem;
+
+            margin-top: 3px;
+        }
+
+
+        .train-number {
+
+            color: #818cf8;
+
+            font-weight: 600;
+        }
+
+
+        .train-details {
+
+            color: #64748b;
+
+            font-size: 0.72rem;
+
+            margin-left: 4px;
+        }
+
+
+        .loading {
+
+            color: #facc15;
+
+            text-align: center;
+        }
+
+
+        .success {
+            color: #4ade80;
+        }
+
+
+        .warning {
+            color: #facc15;
+        }
+
+
+        .error {
+            color: #f87171;
+        }
+
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 768px) {
+
+            nav {
+
+                padding: 14px 20px;
+
+                flex-direction: column;
+
+                gap: 12px;
+            }
+
+
+            .logo {
+                font-size: 2rem;
+            }
+
+
+            nav ul {
+
+                gap: 18px;
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+            }
+
+
+            nav ul li a {
+                font-size: 0.82rem;
+            }
+
+
+            .box1 {
+
+                width: calc(100% - 30px);
+
+                max-width: 350px;
+            }
+
+        }
+
+
+
+        /* ================= SMALL MOBILE ================= */
+
+        @media (max-width: 480px) {
+
+            nav {
+                padding: 12px 15px;
+            }
+
+
+            .logo {
+                font-size: 1.8rem;
+            }
+
+
+            nav ul {
+                gap: 12px;
+            }
+
+
+            nav ul li a {
+                font-size: 0.76rem;
+            }
+
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
+
+    <!-- ================= NAVBAR ================= -->
+
     <nav>
-        <div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
+
+        <div class="logo">
+            रेल<span style="color:#94a3b8;">Intel</span>
+        </div>
+
+
         <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">FAQs</a></li>
-            <li><a href="#">Contact</a></li>
+
+            <li>
+                <a href="#">Home</a>
+            </li>
+
+            <li>
+                <a href="#">About</a>
+            </li>
+
+            <li>
+                <a href="#">FAQs</a>
+            </li>
+
+            <li>
+                <a href="#">Contact</a>
+            </li>
+
         </ul>
+
     </nav>
+
+
 
     <h1>Alternative Route Finder</h1>
 
+
+
     <div class="box1">
 
-        <input type="text" id="from" placeholder="From (e.g. Gwalior)">
-        <input type="text" id="to" placeholder="To (e.g. Indore)">
 
-        <label>Seat Available</label>
-        <select id="seat">
-            <option>Yes</option>
-            <option>No</option>
-        </select>
+        <!-- ================= FROM ================= -->
+
+        <div class="input-wrapper">
+
+            <input
+                type="text"
+                id="from"
+                placeholder="From (e.g. Gwalior)"
+                autocomplete="off"
+            >
+
+
+            <div
+                id="fromSuggestions"
+                class="suggestions"
+            ></div>
+
+        </div>
+
+
+
+        <!-- ================= TO ================= -->
+
+        <div class="input-wrapper">
+
+            <input
+                type="text"
+                id="to"
+                placeholder="To (e.g. Indore)"
+                autocomplete="off"
+            >
+
+
+            <div
+                id="toSuggestions"
+                class="suggestions"
+            ></div>
+
+        </div>
+
+
 
         <hr class="divider">
 
-        <button id="btn" onclick="route()">Find Route</button>
+
+
+        <button
+            id="btn"
+            onclick="route()"
+        >
+            Find Route
+        </button>
+
+
 
         <div id="result"></div>
 
     </div>
 
+
+
     <script>
 
-        function route() {
 
-            var from = document.getElementById("from").value.trim().toLowerCase();
-            var to = document.getElementById("to").value.trim().toLowerCase();
-            var seat = document.getElementById("seat").value;
-            var ans = "";
+        /* =====================================================
+           BACKEND
+        ===================================================== */
 
-            var resultBox = document.getElementById("result");
+        const API_BASE =
+            "https://railintel-project.onrender.com";
 
-            if (!from || !to) {
-                resultBox.style.display = "block";
-                resultBox.innerHTML = "⚠️ Please enter From and To stations.";
+
+
+        /* =====================================================
+           SELECTED STATIONS
+        ===================================================== */
+
+        let selectedFromStation = null;
+
+        let selectedToStation = null;
+
+
+
+        /* =====================================================
+           INTERCHANGE STATIONS
+        ===================================================== */
+
+        const INTERCHANGE_STATIONS = [
+
+            {
+                name: "Bhopal",
+                code: "BPL"
+            },
+
+            {
+                name: "Ujjain",
+                code: "UJN"
+            },
+
+            {
+                name: "Jhansi",
+                code: "VGLJ"
+            },
+
+            {
+                name: "Agra",
+                code: "AGC"
+            },
+
+            {
+                name: "Kota",
+                code: "KOTA"
+            }
+
+        ];
+
+
+
+        /* =====================================================
+           FETCH JSON
+        ===================================================== */
+
+        async function fetchJSON(url) {
+
+            const response =
+                await fetch(url);
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data?.message ||
+                    data?.error?.message ||
+                    `HTTP ${response.status}`
+                );
+
+            }
+
+
+            return data;
+
+        }
+
+
+
+        /* =====================================================
+           STATION SEARCH RESPONSE
+        ===================================================== */
+
+        function extractStationArray(data) {
+
+            if (
+                data?.data?.stations &&
+                Array.isArray(data.data.stations)
+            ) {
+
+                return data.data.stations;
+
+            }
+
+
+            if (
+                data?.stations &&
+                Array.isArray(data.stations)
+            ) {
+
+                return data.stations;
+
+            }
+
+
+            if (Array.isArray(data)) {
+
+                return data;
+
+            }
+
+
+            return [];
+
+        }
+
+
+
+        /* =====================================================
+           TRAIN RESPONSE
+        ===================================================== */
+
+        function extractTrainArray(data) {
+
+            /*
+                RailRadar:
+
+                {
+                    success: true,
+                    data: {
+                        trains: [
+                            {
+                                train: {
+                                    number: "12919",
+                                    name: "Malwa SF Express"
+                                }
+                            }
+                        ]
+                    }
+                }
+            */
+
+
+            if (
+                data?.data?.trains &&
+                Array.isArray(data.data.trains)
+            ) {
+
+                return data.data.trains;
+
+            }
+
+
+            if (
+                data?.trains &&
+                Array.isArray(data.trains)
+            ) {
+
+                return data.trains;
+
+            }
+
+
+            if (
+                Array.isArray(data?.data)
+            ) {
+
+                return data.data;
+
+            }
+
+
+            if (
+                Array.isArray(data)
+            ) {
+
+                return data;
+
+            }
+
+
+            return [];
+
+        }
+
+
+
+        /* =====================================================
+           SEARCH STATIONS
+        ===================================================== */
+
+        async function searchStations(
+            searchText
+        ) {
+
+            const data =
+                await fetchJSON(
+
+                    `${API_BASE}/api/stations/search?q=${encodeURIComponent(searchText)}&limit=8`
+
+                );
+
+
+            return extractStationArray(data);
+
+        }
+
+
+
+        /* =====================================================
+           STATION NAME
+        ===================================================== */
+
+        function stationName(station) {
+
+            return (
+
+                station?.name ||
+
+                station?.stationName ||
+
+                station?.title ||
+
+                station?.station_name ||
+
+                "Unknown Station"
+
+            );
+
+        }
+
+
+
+        /* =====================================================
+           STATION CODE
+        ===================================================== */
+
+        function stationCode(station) {
+
+            return (
+
+                station?.code ||
+
+                station?.stationCode ||
+
+                station?.station_code ||
+
+                station?.codeName ||
+
+                ""
+
+            );
+
+        }
+
+
+
+        /* =====================================================
+           SHOW STATION SUGGESTIONS
+        ===================================================== */
+
+        function showSuggestions(
+            suggestionsBox,
+            stations,
+            inputElement,
+            type
+        ) {
+
+            suggestionsBox.innerHTML = "";
+
+
+            if (!stations.length) {
+
+                suggestionsBox.style.display =
+                    "none";
+
                 return;
+
             }
 
-            /* DIRECT ROUTES */
 
-            if (from == "gwalior" && to == "indore") {
-                ans = seat == "Yes"
-                    ? "🚆 Train: <b>Malwa Express</b> (Direct)"
-                    : "🔁 Try: Gwalior → Bhopal (Intercity) → Indore (Express)";
+            stations.forEach(
+                station => {
+
+                    const name =
+                        stationName(station);
+
+
+                    const code =
+                        stationCode(station);
+
+
+                    if (!code) {
+                        return;
+                    }
+
+
+                    const div =
+                        document.createElement("div");
+
+
+                    div.className =
+                        "suggestion";
+
+
+                    div.innerHTML = `
+
+                        <div class="suggestion-name">
+
+                            ${name}
+
+                        </div>
+
+                        <div class="suggestion-code">
+
+                            ${code}
+
+                        </div>
+
+                    `;
+
+
+                    div.addEventListener(
+                        "mousedown",
+                        function(event) {
+
+                            event.preventDefault();
+
+
+                            inputElement.value =
+                                name;
+
+
+                            if (type === "from") {
+
+                                selectedFromStation = {
+
+                                    name: name,
+
+                                    code: code
+
+                                };
+
+                            }
+
+                            else {
+
+                                selectedToStation = {
+
+                                    name: name,
+
+                                    code: code
+
+                                };
+
+                            }
+
+
+                            suggestionsBox.style.display =
+                                "none";
+
+                        }
+                    );
+
+
+                    suggestionsBox.appendChild(div);
+
+                }
+            );
+
+
+            suggestionsBox.style.display =
+                "block";
+
+        }
+
+
+
+        /* =====================================================
+           AUTOCOMPLETE
+        ===================================================== */
+
+        function setupAutocomplete(
+            inputId,
+            suggestionsId,
+            type
+        ) {
+
+            const input =
+                document.getElementById(inputId);
+
+
+            const suggestions =
+                document.getElementById(
+                    suggestionsId
+                );
+
+
+            let timer = null;
+
+
+
+            input.addEventListener(
+                "input",
+                function() {
+
+
+                    if (type === "from") {
+
+                        selectedFromStation =
+                            null;
+
+                    }
+
+                    else {
+
+                        selectedToStation =
+                            null;
+
+                    }
+
+
+                    const value =
+                        input.value.trim();
+
+
+                    if (value.length < 2) {
+
+                        suggestions.style.display =
+                            "none";
+
+                        return;
+
+                    }
+
+
+                    clearTimeout(timer);
+
+
+                    timer =
+                        setTimeout(
+                            async function() {
+
+                                try {
+
+                                    const stations =
+                                        await searchStations(
+                                            value
+                                        );
+
+
+                                    showSuggestions(
+                                        suggestions,
+                                        stations,
+                                        input,
+                                        type
+                                    );
+
+                                }
+
+                                catch (error) {
+
+                                    console.error(
+                                        "Station search error:",
+                                        error
+                                    );
+
+
+                                    suggestions.style.display =
+                                        "none";
+
+                                }
+
+                            },
+                            300
+                        );
+
+                }
+            );
+
+
+
+            input.addEventListener(
+                "focus",
+                async function() {
+
+                    const value =
+                        input.value.trim();
+
+
+                    if (value.length < 2) {
+                        return;
+                    }
+
+
+                    try {
+
+                        const stations =
+                            await searchStations(
+                                value
+                            );
+
+
+                        showSuggestions(
+                            suggestions,
+                            stations,
+                            input,
+                            type
+                        );
+
+                    }
+
+                    catch (error) {
+
+                        console.error(error);
+
+                    }
+
+                }
+            );
+
+        }
+
+
+
+        /* =====================================================
+           CLOSE SUGGESTIONS
+        ===================================================== */
+
+        document.addEventListener(
+            "click",
+            function(event) {
+
+                if (
+                    !event.target.closest(
+                        ".input-wrapper"
+                    )
+                ) {
+
+                    document
+                        .getElementById(
+                            "fromSuggestions"
+                        )
+                        .style.display =
+                        "none";
+
+
+                    document
+                        .getElementById(
+                            "toSuggestions"
+                        )
+                        .style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+
+
+        /* =====================================================
+           INITIALIZE AUTOCOMPLETE
+        ===================================================== */
+
+        setupAutocomplete(
+            "from",
+            "fromSuggestions",
+            "from"
+        );
+
+
+        setupAutocomplete(
+            "to",
+            "toSuggestions",
+            "to"
+        );
+
+
+
+        /* =====================================================
+           RESOLVE STATION
+        ===================================================== */
+
+        async function resolveStation(
+            inputValue,
+            selectedStation
+        ) {
+
+            if (
+                selectedStation &&
+                inputValue.toLowerCase() ===
+                selectedStation.name.toLowerCase()
+            ) {
+
+                return selectedStation;
+
             }
 
-            else if (from == "gwalior" && to == "delhi") {
-                ans = seat == "Yes"
-                    ? "🚆 Train: <b>Taj Express</b> (Direct)"
-                    : "🔁 Try: Gwalior → Agra → Delhi";
+
+            const stations =
+                await searchStations(
+                    inputValue
+                );
+
+
+            if (!stations.length) {
+
+                return null;
+
             }
 
-            else if (from == "bhopal" && to == "indore") {
-                ans = seat == "Yes"
-                    ? "🚆 Train: <b>Intercity Express</b> (Direct)"
-                    : "🔁 Try: Bhopal → Ujjain → Indore";
+
+            const text =
+                inputValue
+                    .trim()
+                    .toLowerCase();
+
+
+            const exact =
+                stations.find(
+                    station => {
+
+                        const name =
+                            stationName(
+                                station
+                            )
+                            .toLowerCase();
+
+
+                        const code =
+                            stationCode(
+                                station
+                            )
+                            .toLowerCase();
+
+
+                        return (
+                            name === text ||
+                            code === text
+                        );
+
+                    }
+                );
+
+
+            const station =
+                exact ||
+                stations[0];
+
+
+            return {
+
+                name:
+                    stationName(
+                        station
+                    ),
+
+                code:
+                    stationCode(
+                        station
+                    )
+
+            };
+
+        }
+
+
+
+        /* =====================================================
+           GET REAL TRAINS
+        ===================================================== */
+
+        async function getTrains(
+            fromCode,
+            toCode
+        ) {
+
+            const url =
+                `${API_BASE}/api/trains?from=${encodeURIComponent(fromCode)}&to=${encodeURIComponent(toCode)}`;
+
+
+            console.log(
+                "🚆 Requesting:",
+                url
+            );
+
+
+            const data =
+                await fetchJSON(url);
+
+
+            console.log(
+                `🚆 Raw response ${fromCode} → ${toCode}:`,
+                data
+            );
+
+
+            const trains =
+                extractTrainArray(data);
+
+
+            console.log(
+                `🚆 Parsed trains ${fromCode} → ${toCode}:`,
+                trains
+            );
+
+
+            return trains;
+
+        }
+
+
+
+        /* =====================================================
+           TRAIN NUMBER
+        ===================================================== */
+
+        function getTrainNumber(train) {
+
+            return (
+
+                train?.train?.number ||
+
+                train?.train?.trainNumber ||
+
+                train?.train?.trainNo ||
+
+                train?.trainNumber ||
+
+                train?.number ||
+
+                train?.trainNo ||
+
+                train?.train_number ||
+
+                "-"
+
+            );
+
+        }
+
+
+
+        /* =====================================================
+           TRAIN NAME
+        ===================================================== */
+
+        function getTrainName(train) {
+
+            return (
+
+                train?.train?.name ||
+
+                train?.train?.trainName ||
+
+                train?.trainName ||
+
+                train?.name ||
+
+                train?.train_name ||
+
+                train?.title ||
+
+                "Train"
+
+            );
+
+        }
+
+
+
+        /* =====================================================
+           TRAIN TYPE
+        ===================================================== */
+
+        function getTrainType(train) {
+
+            return (
+
+                train?.train?.type ||
+
+                train?.train?.trainType ||
+
+                train?.trainType ||
+
+                train?.type ||
+
+                ""
+
+            );
+
+        }
+
+
+
+        /* =====================================================
+           TRAIN HTML
+        ===================================================== */
+
+        function createTrainHTML(
+            trains
+        ) {
+
+            if (
+                !trains ||
+                !trains.length
+            ) {
+
+                return `
+
+                    <div class="warning">
+
+                        No train found for this leg.
+
+                    </div>
+
+                `;
+
             }
 
-            else if (from == "jhansi" && to == "indore") {
-                ans = seat == "Yes"
-                    ? "🚆 Train: <b>Express</b> (Direct)"
-                    : "🔁 Try: Jhansi → Bhopal → Indore";
+
+            /*
+                Show maximum 5 real trains.
+            */
+
+            const limited =
+                trains.slice(0, 5);
+
+
+            return limited
+                .map(
+                    train => {
+
+                        const number =
+                            getTrainNumber(
+                                train
+                            );
+
+
+                        const name =
+                            getTrainName(
+                                train
+                            );
+
+
+                        const type =
+                            getTrainType(
+                                train
+                            );
+
+
+                        return `
+
+                            <div class="train">
+
+                                🚆
+
+                                <span class="train-number">
+
+                                    ${number}
+
+                                </span>
+
+                                -
+
+                                ${name}
+
+                                ${
+                                    type
+                                    ?
+                                    `<span class="train-details">
+                                        (${type})
+                                    </span>`
+                                    :
+                                    ""
+                                }
+
+                            </div>
+
+                        `;
+
+                    }
+                )
+                .join("");
+
+        }
+
+
+
+        /* =====================================================
+           FIND ALTERNATIVE ROUTES
+        ===================================================== */
+
+        async function findAlternativeRoutes(
+            fromStation,
+            toStation
+        ) {
+
+            const routes = [];
+
+
+            /*
+                Check every interchange station.
+
+                Example:
+
+                Gwalior → Bhopal
+                Bhopal → Indore
+
+                Both legs MUST have real trains.
+            */
+
+
+            for (
+                const hub
+                of INTERCHANGE_STATIONS
+            ) {
+
+
+                if (
+                    hub.code ===
+                        fromStation.code ||
+
+                    hub.code ===
+                        toStation.code
+                ) {
+
+                    continue;
+
+                }
+
+
+                try {
+
+                    const [
+                        firstLeg,
+                        secondLeg
+                    ] = await Promise.all([
+
+                        getTrains(
+                            fromStation.code,
+                            hub.code
+                        ),
+
+                        getTrains(
+                            hub.code,
+                            toStation.code
+                        )
+
+                    ]);
+
+
+                    console.log(
+                        `🔁 Alternative via ${hub.name}:`,
+                        {
+                            firstLeg,
+                            secondLeg
+                        }
+                    );
+
+
+                    /*
+                        Only accept route when
+                        BOTH legs have real trains.
+                    */
+
+                    if (
+                        firstLeg.length > 0 &&
+                        secondLeg.length > 0
+                    ) {
+
+                        routes.push({
+
+                            hub: hub,
+
+                            firstLeg:
+                                firstLeg,
+
+                            secondLeg:
+                                secondLeg
+
+                        });
+
+                    }
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        `Alternative route error through ${hub.name}:`,
+                        error
+                    );
+
+                }
+
             }
 
-            else if (from == "indore" && to == "delhi") {
-                ans = seat == "Yes"
-                    ? "🚆 Train: <b>Indore Delhi Express</b> (Direct)"
-                    : "🔁 Try: Indore → Bhopal → Delhi";
+
+            return routes;
+
+        }
+
+
+
+        /* =====================================================
+           MAIN ROUTE
+        ===================================================== */
+
+        async function route() {
+
+
+            const fromInput =
+                document
+                    .getElementById("from")
+                    .value
+                    .trim();
+
+
+            const toInput =
+                document
+                    .getElementById("to")
+                    .value
+                    .trim();
+
+
+            const resultBox =
+                document
+                    .getElementById("result");
+
+
+            const button =
+                document
+                    .getElementById("btn");
+
+
+
+            /* ================= VALIDATION ================= */
+
+            if (
+                !fromInput ||
+                !toInput
+            ) {
+
+                resultBox.style.display =
+                    "block";
+
+
+                resultBox.innerHTML = `
+
+                    <div class="error">
+
+                        ⚠️ Please enter From
+                        and To stations.
+
+                    </div>
+
+                `;
+
+
+                return;
+
             }
 
-            else {
-                ans = "❌ No route found. Try via <b>Bhopal / Jhansi / Agra</b>";
+
+
+            if (
+                fromInput.toLowerCase() ===
+                toInput.toLowerCase()
+            ) {
+
+                resultBox.style.display =
+                    "block";
+
+
+                resultBox.innerHTML = `
+
+                    <div class="error">
+
+                        ⚠️ From and To stations
+                        cannot be same.
+
+                    </div>
+
+                `;
+
+
+                return;
+
             }
 
-            resultBox.style.display = "block";
-            resultBox.innerHTML = ans;
+
+
+            /* ================= LOADING ================= */
+
+            button.disabled = true;
+
+            button.innerText =
+                "Finding Routes...";
+
+
+            resultBox.style.display =
+                "block";
+
+
+            resultBox.innerHTML = `
+
+                <div class="loading">
+
+                    🔍 Searching real railway
+                    routes...
+
+                    <br>
+
+                    Please wait...
+
+                </div>
+
+            `;
+
+
+
+            try {
+
+
+                /* ================= STATIONS ================= */
+
+                const [
+                    fromStation,
+                    toStation
+                ] = await Promise.all([
+
+                    resolveStation(
+                        fromInput,
+                        selectedFromStation
+                    ),
+
+                    resolveStation(
+                        toInput,
+                        selectedToStation
+                    )
+
+                ]);
+
+
+
+                if (!fromStation) {
+
+                    throw new Error(
+                        `From station "${fromInput}" not found.`
+                    );
+
+                }
+
+
+                if (!toStation) {
+
+                    throw new Error(
+                        `To station "${toInput}" not found.`
+                    );
+
+                }
+
+
+
+                console.log(
+                    "📍 From:",
+                    fromStation
+                );
+
+
+                console.log(
+                    "📍 To:",
+                    toStation
+                );
+
+
+
+                /* ================= DIRECT ================= */
+
+                const directTrains =
+                    await getTrains(
+                        fromStation.code,
+                        toStation.code
+                    );
+
+
+
+                /* ================= ALTERNATIVES ================= */
+
+                const alternatives =
+                    await findAlternativeRoutes(
+                        fromStation,
+                        toStation
+                    );
+
+
+
+                let html = `
+
+                    <div style="
+                        color:#94a3b8;
+                        font-size:0.75rem;
+                        margin-bottom:10px;
+                    ">
+
+                        ${fromStation.name}
+                        (${fromStation.code})
+
+                        →
+
+                        ${toStation.name}
+                        (${toStation.code})
+
+                    </div>
+
+                `;
+
+
+
+                /* ================= DIRECT ROUTE ================= */
+
+                if (
+                    directTrains.length > 0
+                ) {
+
+                    html += `
+
+                        <div class="route-card">
+
+                            <div class="route-title">
+
+                                🚆 Direct Route Available
+
+                            </div>
+
+
+                            <div class="route-path">
+
+                                ${fromStation.name}
+
+                                →
+
+                                ${toStation.name}
+
+                            </div>
+
+
+                            <div class="route-message">
+
+                                Real trains available
+                                for this direct route.
+
+                            </div>
+
+
+                            ${createTrainHTML(
+                                directTrains
+                            )}
+
+                        </div>
+
+                    `;
+
+                }
+
+
+
+                /* ================= ALTERNATIVE ROUTES ================= */
+
+                if (
+                    alternatives.length > 0
+                ) {
+
+
+                    html += `
+
+                        <div
+                            class="success"
+                            style="
+                                margin-top:18px;
+                                margin-bottom:8px;
+                            "
+                        >
+
+                            🔁 You can also try
+
+                        </div>
+
+                    `;
+
+
+
+                    alternatives.forEach(
+                        (routeData, index) => {
+
+
+                            html += `
+
+                                <div class="route-card">
+
+                                    <div class="route-title">
+
+                                        Alternative
+                                        ${index + 1}
+
+                                    </div>
+
+
+                                    <div class="route-path">
+
+                                        ${fromStation.name}
+
+                                        →
+
+                                        ${routeData.hub.name}
+
+                                        →
+
+                                        ${toStation.name}
+
+                                    </div>
+
+
+                                    <div class="route-message">
+
+                                        You can try going through
+                                        ${routeData.hub.name}
+                                        and then continue to
+                                        ${toStation.name}.
+
+                                    </div>
+
+
+                                    <!-- LEG 1 -->
+
+                                    <div class="leg">
+
+                                        <div class="leg-title">
+
+                                            LEG 1
+
+                                        </div>
+
+
+                                        <div>
+
+                                            ${fromStation.name}
+
+                                            →
+
+                                            ${routeData.hub.name}
+
+                                        </div>
+
+
+                                        ${createTrainHTML(
+                                            routeData.firstLeg
+                                        )}
+
+                                    </div>
+
+
+                                    <!-- LEG 2 -->
+
+                                    <div class="leg">
+
+                                        <div class="leg-title">
+
+                                            LEG 2
+
+                                        </div>
+
+
+                                        <div>
+
+                                            ${routeData.hub.name}
+
+                                            →
+
+                                            ${toStation.name}
+
+                                        </div>
+
+
+                                        ${createTrainHTML(
+                                            routeData.secondLeg
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+                            `;
+
+                        }
+                    );
+
+                }
+
+
+
+                /* ================= NO ROUTE ================= */
+
+                if (
+                    directTrains.length === 0 &&
+                    alternatives.length === 0
+                ) {
+
+                    html += `
+
+                        <div class="route-card">
+
+                            <div class="warning">
+
+                                ⚠️ No direct or
+                                alternative route found.
+
+                            </div>
+
+
+                            <div class="route-message">
+
+                                No train was returned by
+                                the railway API for the
+                                checked routes.
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+
+
+
+                resultBox.innerHTML =
+                    html;
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Alternative Route Error:",
+                    error
+                );
+
+
+                resultBox.innerHTML = `
+
+                    <div class="error">
+
+                        ❌ ${error.message}
+
+                    </div>
+
+                `;
+
+            }
+
+
+            finally {
+
+                button.disabled =
+                    false;
+
+                button.innerText =
+                    "Find Route";
+
+            }
+
         }
 
     </script>
 
 </body>
 
-</html>
+</html>       
