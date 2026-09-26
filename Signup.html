@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sign Up | RailIntel</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f172a,
+                    #1e293b,
+                    #312e81,
+                    #6366f1
+                );
+
+            color: white;
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 18px 80px;
+
+            background: #020617;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.07);
+        }
+
+
+        .logo {
+
+            font-size: 2.4rem;
+
+            font-weight: 700;
+
+            color: #b026ff;
+        }
+
+
+        nav ul {
+
+            display: flex;
+
+            list-style: none;
+
+            gap: 30px;
+        }
+
+
+        nav ul li a {
+
+            color: #94a3b8;
+
+            text-decoration: none;
+
+            font-size: 0.95rem;
+
+            transition: 0.2s;
+        }
+
+
+        nav ul li a:hover {
+
+            color: white;
+        }
+
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+
+            flex: 1;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 40px 20px;
+        }
+
+
+        /* ================= CARD ================= */
+
+        .signup-card {
+
+            width: 100%;
+
+            max-width: 400px;
+
+            background: #020617;
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            border-radius: 15px;
+
+            padding: 30px 28px;
+
+            box-shadow:
+                0 15px 40px rgba(0,0,0,0.25);
+        }
+
+
+        .title {
+
+            text-align: center;
+
+            font-size: 1.5rem;
+
+            font-weight: 600;
+
+            margin-bottom: 5px;
+        }
+
+
+        .subtitle {
+
+            text-align: center;
+
+            color: #94a3b8;
+
+            font-size: 0.8rem;
+
+            margin-bottom: 25px;
+        }
+
+
+        /* ================= INPUT ================= */
+
+        .input-group {
+
+            margin-bottom: 15px;
+        }
+
+
+        label {
+
+            display: block;
+
+            color: #94a3b8;
+
+            font-size: 0.78rem;
+
+            margin-bottom: 6px;
+        }
+
+
+        input {
+
+            width: 100%;
+
+            padding: 11px 13px;
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            border-radius: 8px;
+
+            background: #0f172a;
+
+            color: white;
+
+            font-size: 0.86rem;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+
+        input::placeholder {
+
+            color: #475569;
+        }
+
+
+        input:focus {
+
+            border-color: #6366f1;
+        }
+
+
+        /* ================= BUTTON ================= */
+
+        button {
+
+            width: 100%;
+
+            padding: 11px;
+
+            margin-top: 5px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #6366f1;
+
+            color: white;
+
+            font-size: 0.9rem;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+
+        button:hover {
+
+            background: #4f46e5;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 6px 18px rgba(99,102,241,0.35);
+        }
+
+
+        button:disabled {
+
+            opacity: 0.6;
+
+            cursor: not-allowed;
+
+            transform: none;
+
+            box-shadow: none;
+        }
+
+
+        /* ================= RESULT ================= */
+
+        #result {
+
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 10px;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            font-size: 0.8rem;
+
+            line-height: 1.5;
+        }
+
+
+        .success {
+
+            display: block !important;
+
+            color: #86efac;
+
+            background:
+                rgba(34,197,94,0.08);
+
+            border:
+                1px solid rgba(34,197,94,0.2);
+        }
+
+
+        .error {
+
+            display: block !important;
+
+            color: #fca5a5;
+
+            background:
+                rgba(239,68,68,0.08);
+
+            border:
+                1px solid rgba(239,68,68,0.2);
+        }
+
+
+        /* ================= LOGIN LINK ================= */
+
+        .login-link {
+
+            text-align: center;
+
+            margin-top: 20px;
+
+            color: #94a3b8;
+
+            font-size: 0.8rem;
+        }
+
+
+        .login-link a {
+
+            color: #a78bfa;
+
+            text-decoration: none;
+
+            font-weight: 500;
+        }
+
+
+        .login-link a:hover {
+
+            color: #c4b5fd;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 768px) {
+
+            nav {
+
+                padding: 14px 20px;
+
+                flex-direction: column;
+
+                gap: 10px;
+            }
+
+
+            .logo {
+
+                font-size: 2rem;
+            }
+
+
+            nav ul {
+
+                gap: 18px;
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+            }
+
+
+            nav ul li a {
+
+                font-size: 0.82rem;
+            }
+        }
+
+
+        @media (max-width: 480px) {
+
+            nav {
+
+                padding: 12px 15px;
+            }
+
+
+            .logo {
+
+                font-size: 1.8rem;
+            }
+
+
+            nav ul {
+
+                gap: 12px;
+            }
+
+
+            nav ul li a {
+
+                font-size: 0.76rem;
+            }
+
+
+            .signup-card {
+
+                padding: 25px 20px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav>
+
+    <div class="logo">
+
+        रेल<span style="color:#94a3b8;">
+            Intel
+        </span>
+
+    </div>
+
+
+    <ul>
+
+        <li>
+            <a href="index.html">
+                Home
+            </a>
+        </li>
+
+        <li>
+            <a href="#">
+                About
+            </a>
+        </li>
+
+        <li>
+            <a href="#">
+                FAQs
+            </a>
+        </li>
+
+        <li>
+            <a href="#">
+                Contact
+            </a>
+        </li>
+
+    </ul>
+
+</nav>
+
+
+<!-- ================= SIGNUP ================= -->
+
+<div class="container">
+
+
+    <div class="signup-card">
+
+
+        <div class="title">
+            Create Account
+        </div>
+
+
+        <div class="subtitle">
+            Join RailIntel
+        </div>
+
+
+        <!-- NAME -->
+
+        <div class="input-group">
+
+            <label>
+                Name
+            </label>
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter your name"
+            >
+
+        </div>
+
+
+        <!-- EMAIL -->
+
+        <div class="input-group">
+
+            <label>
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+            >
+
+        </div>
+
+
+        <!-- PASSWORD -->
+
+        <div class="input-group">
+
+            <label>
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Minimum 6 characters"
+            >
+
+        </div>
+
+
+        <!-- CONFIRM PASSWORD -->
+
+        <div class="input-group">
+
+            <label>
+                Confirm Password
+            </label>
+
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Re-enter your password"
+            >
+
+        </div>
+
+
+        <!-- BUTTON -->
+
+        <button
+            id="signupBtn"
+            onclick="signup()"
+        >
+            Create Account
+        </button>
+
+
+        <!-- RESULT -->
+
+        <div id="result"></div>
+
+
+        <!-- LOGIN -->
+
+        <div class="login-link">
+
+            Already have an account?
+
+            <a href="login.html">
+                Login
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   RENDER BACKEND
+   ===================================================== */
+
+const API_BASE =
+    "https://railintel-project.onrender.com";
+
+
+/* =====================================================
+   SIGNUP
+   ===================================================== */
+
+async function signup() {
+
+
+    const name =
+        document
+            .getElementById("name")
+            .value
+            .trim();
+
+
+    const email =
+        document
+            .getElementById("email")
+            .value
+            .trim();
+
+
+    const password =
+        document
+            .getElementById("password")
+            .value;
+
+
+    const confirmPassword =
+        document
+            .getElementById("confirmPassword")
+            .value;
+
+
+    const result =
+        document.getElementById("result");
+
+
+    const button =
+        document.getElementById("signupBtn");
+
+
+    /* ================= VALIDATION ================= */
+
+
+    if (
+        !name ||
+        !email ||
+        !password ||
+        !confirmPassword
+    ) {
+
+        showResult(
+            "⚠️ Please fill all fields.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (password.length < 6) {
+
+        showResult(
+            "⚠️ Password must be at least 6 characters.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (
+        password !==
+        confirmPassword
+    ) {
+
+        showResult(
+            "⚠️ Passwords do not match.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    /* ================= LOADING ================= */
+
+    button.disabled = true;
+
+    button.innerText =
+        "Creating Account...";
+
+
+    try {
+
+
+        /* ================= API ================= */
+
+        const response =
+            await fetch(
+                `${API_BASE}/api/signup`,
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        name:
+                            name,
+
+                        email:
+                            email,
+
+                        password:
+                            password
+
+                    })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Signup response:",
+            data
+        );
+
+
+        /* ================= RESPONSE ================= */
+
+        if (!response.ok || !data.success) {
+
+            showResult(
+                "❌ " +
+                (
+                    data.message ||
+                    "Unable to create account."
+                ),
+                "error"
+            );
+
+            return;
+        }
+
+
+        showResult(
+            "✅ Account created successfully! Redirecting to login...",
+            "success"
+        );
+
+
+        /* ================= REDIRECT ================= */
+
+        setTimeout(
+            () => {
+
+                window.location.href =
+                    "login.html";
+
+            },
+            1500
+        );
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Signup error:",
+            error
+        );
+
+
+        showResult(
+            "❌ Unable to connect to server.",
+            "error"
+        );
+
+    }
+
+    finally {
+
+        button.disabled = false;
+
+        button.innerText =
+            "Create Account";
+
+    }
+
+}
+
+
+/* =====================================================
+   SHOW RESULT
+   ===================================================== */
+
+function showResult(
+    message,
+    type
+) {
+
+    const result =
+        document.getElementById("result");
+
+
+    result.className =
+        type;
+
+
+    result.innerHTML =
+        message;
+
+
+    result.style.display =
+        "block";
+}
+
+
+/* =====================================================
+   ENTER KEY
+   ===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Enter"
+        ) {
+
+            signup();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

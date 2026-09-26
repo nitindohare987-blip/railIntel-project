@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -18,76 +19,177 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
+
 </head>
 
+
 <body>
+
 
     <!-- ================= NAVBAR ================= -->
 
     <nav>
+
         <div class="logo">
-    रेल<span style="color:#94a3b8;">Intel</span>
-</div>
+            रेल<span style="color:#94a3b8;">Intel</span>
+        </div>
+
 
         <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#faqs">FAQs</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="#" id="login-btn">Login</a></li>
-            <li><a href="#" id="signup-btn">Sign Up</a></li>
+
+            <li>
+                <a href="#home">
+                    Home
+                </a>
+            </li>
+
+
+            <li>
+                <a href="#about">
+                    About
+                </a>
+            </li>
+
+
+            <li>
+                <a href="#faqs">
+                    FAQs
+                </a>
+            </li>
+
+
+            <li>
+                <a href="#contact">
+                    Contact
+                </a>
+            </li>
+
+
+            <!-- LOGIN -->
+
+            <li>
+                <a
+                    href="login.html"
+                    id="login-btn">
+                    Login
+                </a>
+            </li>
+
+
+            <!-- SIGN UP -->
+
+            <li>
+                <a
+                    href="signup.html"
+                    id="signup-btn">
+                    Sign Up
+                </a>
+            </li>
+
         </ul>
+
     </nav>
+
 
 
     <!-- ================= HERO SECTION ================= -->
 
     <section id="home" class="hero">
 
-        <button class="ticket" onclick="bookTicket()">
+
+        <button
+            class="ticket"
+            onclick="bookTicket()">
+
             Book Ticket
+
         </button>
 
-        <button class="search" onclick="searchTrain()">
+
+        <button
+            class="search"
+            onclick="searchTrain()">
+
             Search Train
+
         </button>
 
-        <button class="pnr" onclick="pnr()">
+
+        <button
+            class="pnr"
+            onclick="pnr()">
+
             PNR Status
+
         </button>
 
-        <button class="runningstatus" onclick="runningStatus()">
+
+        <button
+            class="runningstatus"
+            onclick="runningStatus()">
+
             Running Status
+
         </button>
 
-        <button class="Delay" onclick="Delay()">
+
+        <button
+            class="Delay"
+            onclick="Delay()">
+
             Delay Intelligence
+
         </button>
 
-        <button class="reliability" onclick="Reliability()">
+
+        <button
+            class="reliability"
+            onclick="Reliability()">
+
             Reliability Score
+
         </button>
 
-        <button class="rating" onclick="rating()">
+
+        <button
+            class="rating"
+            onclick="rating()">
+
             Passenger Rating
+
         </button>
 
-        <button class="alternative" onclick="alternative()">
+
+        <button
+            class="alternative"
+            onclick="alternative()">
+
             Alternative
+
         </button>
 
-        <button class="food" onclick="food()">
+
+        <button
+            class="food"
+            onclick="food()">
+
             Food
+
         </button>
+
 
     </section>
+
 
 
     <!-- ================= RESULT BOX ================= -->
 
     <div id="resultbox">
+
         <p id="output"></p>
+
     </div>
+
 
 
     <!-- ================= IMAGE SECTION ================= -->
@@ -98,112 +200,176 @@
             src="mo-indian-railways-keyvisual-original-en.jpg"
             alt="Indian Railways">
 
+
         <div class="photo-text">
-            <h1>RailIntel</h1>
-            <p>Train Reliability &amp; Delay Analyzer</p>
+
+            <h1>
+                RailIntel
+            </h1>
+
+
+            <p>
+                Train Reliability &amp; Delay Analyzer
+            </p>
+
         </div>
 
     </div>
+
 
 
     <!-- ================= ABOUT SECTION ================= -->
 
     <section id="about">
 
-        <h2>About RailIntel</h2>
+
+        <h2>
+            About RailIntel
+        </h2>
+
 
         <p>
+
             RailIntel is a train reliability analyzer designed to help
             passengers understand train delay trends, travel risk, and
             passenger experience before starting their journey.
 
+
             <span>
+
                 This platform analyzes train performance and provides
                 insights such as reliability score, delay patterns,
                 and risk indicators.
+
             </span>
+
         </p>
 
+
     </section>
+
 
 
     <!-- ================= FAQ SECTION ================= -->
 
     <section id="faqs">
 
-        <h2>FAQs</h2>
+
+        <h2>
+            FAQs
+        </h2>
+
 
         <div class="faq-item">
 
-            <h4>What is RailIntel?</h4>
+
+            <h4>
+                What is RailIntel?
+            </h4>
+
 
             <p>
+
                 RailIntel is a platform that analyzes train reliability
                 and delay trends.
+
             </p>
+
 
         </div>
 
 
+
         <div class="faq-item">
 
-            <h4>How does the reliability score work?</h4>
+
+            <h4>
+                How does the reliability score work?
+            </h4>
+
 
             <p>
+
                 The reliability score is calculated using delay trends
                 and on-time performance.
+
             </p>
 
+
         </div>
+
 
 
         <div class="faq-item">
 
-            <h4>Is this connected to IRCTC?</h4>
+
+            <h4>
+                Is this connected to IRCTC?
+            </h4>
+
 
             <p>
+
                 No, RailIntel is an independent analytics project.
+
             </p>
+
 
         </div>
 
+
     </section>
+
 
 
     <!-- ================= CONTACT SECTION ================= -->
 
     <section id="contact">
 
-        <h2>Contact Us</h2>
+
+        <h2>
+            Contact Us
+        </h2>
+
 
         <form id="contact-form">
+
 
             <input
                 type="text"
                 placeholder="Your Name"
                 required>
 
+
             <input
                 type="email"
                 placeholder="Your Email"
                 required>
 
+
             <textarea
                 placeholder="Your Message"
                 required></textarea>
 
+
             <button type="submit">
+
                 Send Message
+
             </button>
+
 
         </form>
 
+
     </section>
+
 
 
     <!-- ================= JAVASCRIPT ================= -->
 
     <script src="script.js"></script>
+
 
 </body>
 
