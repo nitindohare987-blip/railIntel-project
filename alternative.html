@@ -5,10 +5,7 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Alternative Route | RailIntel</title>
 
@@ -93,11 +90,37 @@
             font-size: 0.95rem;
 
             transition: 0.2s;
+
+            position: relative;
         }
 
         nav ul li a:hover {
 
             color: white;
+        }
+
+        nav ul li a::after {
+
+            content: "";
+
+            position: absolute;
+
+            bottom: -4px;
+
+            left: 0;
+
+            width: 0;
+
+            height: 1px;
+
+            background: #b026ff;
+
+            transition: 0.25s;
+        }
+
+        nav ul li a:hover::after {
+
+            width: 100%;
         }
 
         /* ================= HEADING ================= */
@@ -113,9 +136,11 @@
             font-size: 1.5rem;
 
             font-weight: 600;
+
+            letter-spacing: 0.5px;
         }
 
-        /* ================= MAIN CARD ================= */
+        /* ================= CARD ================= */
 
         .box1 {
 
@@ -141,18 +166,22 @@
             gap: 14px;
         }
 
-        /* ================= INPUT AREA ================= */
+        /* ================= INPUT GROUP ================= */
 
         .input-group {
 
             position: relative;
+
+            width: 100%;
         }
+
+        /* ================= INPUT ================= */
 
         input {
 
             width: 100%;
 
-            padding: 12px 14px;
+            padding: 11px 14px;
 
             border:
                 1px solid rgba(255,255,255,0.08);
@@ -163,14 +192,16 @@
 
             color: white;
 
-            font-size: 0.9rem;
+            font-size: 0.88rem;
 
             outline: none;
+
+            transition: 0.2s;
         }
 
         input::placeholder {
 
-            color: #64748b;
+            color: #475569;
         }
 
         input:focus {
@@ -193,28 +224,30 @@
             background: #0f172a;
 
             border:
-                1px solid rgba(255,255,255,0.1);
+                1px solid rgba(255,255,255,0.08);
 
             border-radius: 9px;
 
             overflow: hidden;
 
-            z-index: 100;
-
             display: none;
 
+            z-index: 2000;
+
             box-shadow:
-                0 10px 30px rgba(0,0,0,0.35);
+                0 10px 30px rgba(0,0,0,0.4);
         }
 
         .suggestion {
 
-            padding: 11px 14px;
+            padding: 10px 13px;
 
             cursor: pointer;
 
             border-bottom:
                 1px solid rgba(255,255,255,0.05);
+
+            transition: 0.2s;
         }
 
         .suggestion:last-child {
@@ -229,9 +262,9 @@
 
         .station-name {
 
-            color: white;
+            color: #f8fafc;
 
-            font-size: 0.9rem;
+            font-size: 0.87rem;
 
             font-weight: 500;
         }
@@ -240,7 +273,7 @@
 
             color: #94a3b8;
 
-            font-size: 0.75rem;
+            font-size: 0.73rem;
 
             margin-top: 2px;
         }
@@ -261,7 +294,9 @@
 
         #btn {
 
-            padding: 12px;
+            width: 100%;
+
+            padding: 11px;
 
             border: none;
 
@@ -284,7 +319,10 @@
 
             background: #4f46e5;
 
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 6px 18px rgba(99,102,241,0.35);
         }
 
         #btn:disabled {
@@ -294,6 +332,8 @@
             cursor: not-allowed;
 
             transform: none;
+
+            box-shadow: none;
         }
 
         /* ================= RESULT ================= */
@@ -302,6 +342,12 @@
 
             display: none;
 
+            text-align: left;
+
+            font-size: 0.85rem;
+
+            line-height: 1.6;
+
             background: #0f172a;
 
             border:
@@ -309,29 +355,31 @@
 
             border-radius: 10px;
 
-            padding: 16px;
-
-            line-height: 1.7;
+            padding: 15px;
         }
 
-        /* ================= ROUTE TITLE ================= */
+        /* ================= RESULT HEADER ================= */
 
-        .route-title {
+        .result-title {
 
-            color: #c4b5fd;
+            text-align: center;
+
+            color: #e2e8f0;
 
             font-size: 0.95rem;
 
             font-weight: 600;
 
-            margin-bottom: 12px;
+            margin-bottom: 6px;
         }
 
         .route-path {
 
-            color: #f8fafc;
+            text-align: center;
 
-            font-size: 0.9rem;
+            color: #94a3b8;
+
+            font-size: 0.78rem;
 
             margin-bottom: 15px;
         }
@@ -340,66 +388,94 @@
 
         .direct-box {
 
-            padding: 13px;
-
-            border-radius: 9px;
-
-            background: rgba(34,197,94,0.08);
+            background:
+                rgba(34,197,94,0.08);
 
             border:
                 1px solid rgba(34,197,94,0.25);
 
+            border-radius: 9px;
+
+            padding: 12px;
+
             margin-bottom: 15px;
         }
 
-        /* ================= ALTERNATIVE ================= */
+        .direct-title {
 
-        .alternative {
+            color: #86efac;
 
-            padding: 14px;
+            font-weight: 600;
 
-            margin-top: 12px;
+            margin-bottom: 8px;
+        }
 
-            border-radius: 10px;
+        /* ================= ALTERNATIVE TITLE ================= */
+
+        .alternative-heading {
+
+            color: #facc15;
+
+            font-weight: 600;
+
+            margin: 12px 0;
+        }
+
+        /* ================= ALTERNATIVE CARD ================= */
+
+        .alternative-card {
 
             background: #111827;
 
             border:
-                1px solid rgba(255,255,255,0.08);
+                1px solid rgba(255,255,255,0.07);
+
+            border-radius: 10px;
+
+            padding: 13px;
+
+            margin-top: 12px;
         }
 
-        .alternative h3 {
+        .alternative-title {
 
             color: #facc15;
 
-            font-size: 0.95rem;
+            font-size: 0.88rem;
+
+            font-weight: 600;
 
             margin-bottom: 10px;
         }
 
+        /* ================= LEG ================= */
+
         .leg {
-
-            margin-top: 12px;
-
-            padding: 11px;
 
             background: #0f172a;
 
-            border-radius: 8px;
+            border-left:
+                3px solid #6366f1;
 
-            border-left: 3px solid #6366f1;
+            border-radius: 7px;
+
+            padding: 10px;
+
+            margin-top: 9px;
         }
 
         .leg-title {
 
             color: #c4b5fd;
 
-            font-size: 0.85rem;
+            font-size: 0.8rem;
 
             font-weight: 600;
 
             margin-bottom: 7px;
         }
+
+        /* ================= TRAIN ================= */
 
         .train {
 
@@ -407,13 +483,16 @@
 
             border-bottom:
                 1px solid rgba(255,255,255,0.05);
-
-            font-size: 0.82rem;
         }
 
         .train:last-child {
 
             border-bottom: none;
+        }
+
+        .train-main {
+
+            font-size: 0.8rem;
         }
 
         .train-number {
@@ -425,18 +504,29 @@
 
         .train-name {
 
-            color: white;
+            color: #f8fafc;
 
             font-weight: 500;
         }
 
-        .train-time {
+        .train-details {
 
             color: #94a3b8;
 
-            font-size: 0.75rem;
+            font-size: 0.72rem;
 
             margin-top: 2px;
+        }
+
+        /* ================= LOADING ================= */
+
+        .loading {
+
+            text-align: center;
+
+            color: #c4b5fd;
+
+            padding: 8px;
         }
 
         /* ================= ERROR ================= */
@@ -445,23 +535,28 @@
 
             color: #fca5a5;
 
-            background: rgba(239,68,68,0.1);
+            background:
+                rgba(239,68,68,0.08);
 
             border:
-                1px solid rgba(239,68,68,0.3);
-
-            padding: 12px;
+                1px solid rgba(239,68,68,0.25);
 
             border-radius: 8px;
+
+            padding: 11px;
+
+            text-align: center;
         }
 
-        .loading {
+        /* ================= NO RESULT ================= */
+
+        .no-result {
+
+            color: #facc15;
 
             text-align: center;
 
-            color: #c4b5fd;
-
-            padding: 10px;
+            padding: 8px;
         }
 
         /* ================= MOBILE ================= */
@@ -495,6 +590,14 @@
 
                 font-size: 0.82rem;
             }
+
+            h1 {
+
+                margin-top: 30px;
+
+                font-size: 1.35rem;
+            }
+
         }
 
         @media (max-width: 480px) {
@@ -521,8 +624,16 @@
 
             .box1 {
 
+                width: 92%;
+
                 padding: 22px 18px;
             }
+
+            h1 {
+
+                font-size: 1.25rem;
+            }
+
         }
 
     </style>
@@ -532,117 +643,127 @@
 
 <body>
 
-    <!-- ================= NAVBAR ================= -->
 
-    <nav>
+<!-- ================= NAVBAR ================= -->
 
-        <div class="logo">
-            रेल<span style="color:#94a3b8;">Intel</span>
-        </div>
+<nav>
 
-        <ul>
+    <div class="logo">
+        रेल<span style="color:#94a3b8;">Intel</span>
+    </div>
 
-            <li>
-                <a href="index.html">Home</a>
-            </li>
+    <ul>
 
-            <li>
-                <a href="#">About</a>
-            </li>
+        <li>
+            <a href="index.html">
+                Home
+            </a>
+        </li>
 
-            <li>
-                <a href="#">FAQs</a>
-            </li>
+        <li>
+            <a href="#">
+                About
+            </a>
+        </li>
 
-            <li>
-                <a href="#">Contact</a>
-            </li>
+        <li>
+            <a href="#">
+                FAQs
+            </a>
+        </li>
 
-        </ul>
+        <li>
+            <a href="#">
+                Contact
+            </a>
+        </li>
 
-    </nav>
+    </ul>
 
-
-    <!-- ================= TITLE ================= -->
-
-    <h1>
-        Alternative Route Finder
-    </h1>
-
-
-    <!-- ================= CARD ================= -->
-
-    <div class="box1">
-
-        <!-- FROM -->
-
-        <div class="input-group">
-
-            <input
-                type="text"
-                id="from"
-                placeholder="From (e.g. Gwalior)"
-                autocomplete="off"
-            >
-
-            <div
-                id="fromSuggestions"
-                class="suggestions"
-            ></div>
-
-        </div>
+</nav>
 
 
-        <!-- TO -->
+<!-- ================= HEADING ================= -->
 
-        <div class="input-group">
-
-            <input
-                type="text"
-                id="to"
-                placeholder="To (e.g. Indore)"
-                autocomplete="off"
-            >
-
-            <div
-                id="toSuggestions"
-                class="suggestions"
-            ></div>
-
-        </div>
+<h1>
+    Alternative Route Finder
+</h1>
 
 
-        <hr class="divider">
+<!-- ================= MAIN CARD ================= -->
+
+<div class="box1">
 
 
-        <!-- BUTTON -->
+    <!-- FROM -->
 
-        <button
-            id="btn"
-            onclick="findRoute()"
+    <div class="input-group">
+
+        <input
+            type="text"
+            id="from"
+            placeholder="From (e.g. Gwalior)"
+            autocomplete="off"
         >
-            Find Route
-        </button>
 
-
-        <!-- RESULT -->
-
-        <div id="result"></div>
+        <div
+            id="fromSuggestions"
+            class="suggestions"
+        ></div>
 
     </div>
 
 
+    <!-- TO -->
+
+    <div class="input-group">
+
+        <input
+            type="text"
+            id="to"
+            placeholder="To (e.g. Indore)"
+            autocomplete="off"
+        >
+
+        <div
+            id="toSuggestions"
+            class="suggestions"
+        ></div>
+
+    </div>
+
+
+    <hr class="divider">
+
+
+    <!-- BUTTON -->
+
+    <button
+        id="btn"
+        onclick="findAlternativeRoute()"
+    >
+        Find Route
+    </button>
+
+
+    <!-- RESULT -->
+
+    <div id="result"></div>
+
+
+</div>
+
+
+
 <script>
 
+
 /* =====================================================
-   BACKEND URL
+   RENDER BACKEND
    ===================================================== */
 
-// LOCAL DEVELOPMENT
-const API_BASE = "http://localhost:5000";
-
-// WHEN DEPLOYING:
-// const API_BASE = "https://railintel-project.onrender.com";
+const API_BASE =
+    "https://railintel-project.onrender.com";
 
 
 /* =====================================================
@@ -650,6 +771,7 @@ const API_BASE = "http://localhost:5000";
    ===================================================== */
 
 let selectedFrom = null;
+
 let selectedTo = null;
 
 
@@ -689,83 +811,149 @@ async function searchStations(
 
     if (query.length < 2) {
 
-        container.style.display = "none";
+        container.style.display =
+            "none";
 
         return;
     }
 
+
     try {
 
-        const response = await fetch(
-            `${API_BASE}/api/stations/search?q=${encodeURIComponent(query)}`
-        );
+        const response =
+            await fetch(
+                `${API_BASE}/api/stations/search?q=${encodeURIComponent(query)}`
+            );
 
-        const result = await response.json();
 
-        if (
-            !result.success ||
-            !Array.isArray(result.data)
-        ) {
+        const data =
+            await response.json();
 
-            container.style.display = "none";
+
+        /*
+            Your backend may return the
+            stations inside data.data.
+        */
+
+        const stations =
+            Array.isArray(data.data)
+                ? data.data
+                : Array.isArray(data.data?.stations)
+                    ? data.data.stations
+                    : [];
+
+
+        container.innerHTML = "";
+
+
+        if (stations.length === 0) {
+
+            container.style.display =
+                "none";
 
             return;
         }
 
-        container.innerHTML = "";
 
-        result.data.forEach(station => {
+        stations.slice(0, 8).forEach(
+            station => {
 
-            const div =
-                document.createElement("div");
+                const item =
+                    document.createElement("div");
 
-            div.className = "suggestion";
+                item.className =
+                    "suggestion";
 
-            div.innerHTML = `
-                <div class="station-name">
-                    ${station.name}
-                </div>
 
-                <div class="station-code">
-                    ${station.code}
-                    ${station.city ? " • " + station.city : ""}
-                </div>
-            `;
+                const stationName =
+                    station.name ||
+                    station.stationName ||
+                    station.station_name ||
+                    "Unknown Station";
 
-            div.addEventListener(
-                "click",
-                () => {
 
-                    input.value =
-                        station.name;
+                const stationCode =
+                    station.code ||
+                    station.stationCode ||
+                    station.station_code ||
+                    "";
 
-                    if (type === "from") {
 
-                        selectedFrom = station;
+                const city =
+                    station.city ||
+                    station.cityName ||
+                    "";
 
-                    } else {
 
-                        selectedTo = station;
+                item.innerHTML = `
+
+                    <div class="station-name">
+                        ${escapeHTML(stationName)}
+                    </div>
+
+                    <div class="station-code">
+                        ${escapeHTML(stationCode)}
+                        ${city
+                            ? " • " +
+                              escapeHTML(city)
+                            : ""
+                        }
+                    </div>
+
+                `;
+
+
+                item.addEventListener(
+                    "click",
+                    () => {
+
+
+                        input.value =
+                            stationName;
+
+
+                        const selected = {
+
+                            name:
+                                stationName,
+
+                            code:
+                                stationCode,
+
+                            city:
+                                city
+
+                        };
+
+
+                        if (type === "from") {
+
+                            selectedFrom =
+                                selected;
+
+                        } else {
+
+                            selectedTo =
+                                selected;
+                        }
+
+
+                        container.style.display =
+                            "none";
+
                     }
+                );
 
-                    container.style.display =
-                        "none";
-                }
-            );
 
-            container.appendChild(div);
-        });
+                container.appendChild(item);
 
-        if (result.data.length > 0) {
+            }
+        );
 
-            container.style.display =
-                "block";
 
-        } else {
+        container.style.display =
+            "block";
 
-            container.style.display =
-                "none";
-        }
 
     } catch (error) {
 
@@ -777,6 +965,7 @@ async function searchStations(
         container.style.display =
             "none";
     }
+
 }
 
 
@@ -796,6 +985,7 @@ fromInput.addEventListener(
             fromInput,
             "from"
         );
+
     }
 );
 
@@ -816,36 +1006,69 @@ toInput.addEventListener(
             toInput,
             "to"
         );
+
     }
 );
 
 
 /* =====================================================
-   FIND ROUTE
+   FIND ALTERNATIVE ROUTE
    ===================================================== */
 
-async function findRoute() {
+async function findAlternativeRoute() {
 
-    resultBox.style.display = "block";
+
+    resultBox.style.display =
+        "block";
+
 
     resultBox.innerHTML = `
+
         <div class="loading">
-            🔎 Finding real trains...
+            🔎 Finding real routes...
         </div>
+
     `;
+
 
     button.disabled = true;
 
+
     try {
 
+
         /* ---------------------------------------------
-           CHECK STATIONS
+           CHECK SELECTION
         --------------------------------------------- */
 
-        if (!selectedFrom || !selectedTo) {
+        if (!selectedFrom) {
 
             throw new Error(
-                "Please select From and To stations from the suggestions."
+                "Please select a From station from the suggestions."
+            );
+        }
+
+
+        if (!selectedTo) {
+
+            throw new Error(
+                "Please select a To station from the suggestions."
+            );
+        }
+
+
+        if (!selectedFrom.code) {
+
+            throw new Error(
+                "From station code not found."
+            );
+        }
+
+
+        if (!selectedTo.code) {
+
+            throw new Error(
+                "To station code not found."
             );
         }
 
@@ -856,13 +1079,13 @@ async function findRoute() {
         ) {
 
             throw new Error(
-                "From and To stations cannot be the same."
+                "From and To stations cannot be same."
             );
         }
 
 
         /* ---------------------------------------------
-           API REQUEST
+           API URL
         --------------------------------------------- */
 
         const url =
@@ -870,18 +1093,40 @@ async function findRoute() {
             `?from=${encodeURIComponent(selectedFrom.code)}` +
             `&to=${encodeURIComponent(selectedTo.code)}`;
 
+
+        console.log(
+            "Alternative route API:",
+            url
+        );
+
+
+        /* ---------------------------------------------
+           REQUEST
+        --------------------------------------------- */
+
         const response =
             await fetch(url);
+
 
         const data =
             await response.json();
 
 
-        if (!response.ok || !data.success) {
+        console.log(
+            "Alternative route response:",
+            data
+        );
+
+
+        if (
+            !response.ok ||
+            !data.success
+        ) {
 
             throw new Error(
+                data.message ||
                 data.error ||
-                "Unable to find routes."
+                "Unable to find route."
             );
         }
 
@@ -890,45 +1135,61 @@ async function findRoute() {
            DISPLAY
         --------------------------------------------- */
 
-        displayRoutes(data);
+        displayResults(data);
+
 
     } catch (error) {
 
+
         console.error(error);
 
+
         resultBox.innerHTML = `
+
             <div class="error">
-                ❌ ${error.message}
+
+                ❌
+                ${escapeHTML(error.message)}
+
             </div>
+
         `;
+
 
     } finally {
 
         button.disabled = false;
+
     }
+
 }
 
 
 /* =====================================================
-   DISPLAY ROUTES
+   DISPLAY RESULTS
    ===================================================== */
 
-function displayRoutes(data) {
+function displayResults(data) {
 
-    let html = "";
 
-    html += `
-        <div class="route-title">
+    let html = `
+
+        <div class="result-title">
             🚆 Route Result
         </div>
 
         <div class="route-path">
-            ${selectedFrom.name}
-            (${selectedFrom.code})
+
+            ${escapeHTML(selectedFrom.name)}
+            (${escapeHTML(selectedFrom.code)})
+
             →
-            ${selectedTo.name}
-            (${selectedTo.code})
+
+            ${escapeHTML(selectedTo.name)}
+            (${escapeHTML(selectedTo.code)})
+
         </div>
+
     `;
 
 
@@ -936,38 +1197,53 @@ function displayRoutes(data) {
        DIRECT TRAINS
     ================================================= */
 
+    const directTrains =
+        data.direct?.trains || [];
+
+
     if (
-        data.direct &&
-        data.direct.available
+        data.direct?.available &&
+        directTrains.length > 0
     ) {
 
+
         html += `
+
             <div class="direct-box">
 
-                <strong>
+                <div class="direct-title">
                     ✅ Direct trains available
-                </strong>
+                </div>
 
-                <br><br>
-
-                ${data.direct.trains
+                ${directTrains
                     .slice(0, 5)
                     .map(formatTrain)
                     .join("")
                 }
 
             </div>
+
         `;
 
     } else {
 
+
         html += `
+
             <div class="direct-box">
 
-                ⚠️ No direct train found.
+                <div class="direct-title">
+                    ⚠️ No direct train found
+                </div>
+
+                <div>
+                    You can try an alternative route below.
+                </div>
 
             </div>
+
         `;
+
     }
 
 
@@ -975,108 +1251,198 @@ function displayRoutes(data) {
        ALTERNATIVE ROUTES
     ================================================= */
 
-    if (
-        data.alternatives &&
-        data.alternatives.length > 0
-    ) {
+    const alternatives =
+        data.alternatives || [];
+
+
+    if (alternatives.length > 0) {
+
 
         html += `
-            <div
-                style="
-                    margin-top:12px;
-                    color:#facc15;
-                    font-weight:600;
-                "
-            >
-                🔁 You can try these alternative routes:
+
+            <div class="alternative-heading">
+
+                🔁 You can try:
+
             </div>
+
         `;
 
 
-        data.alternatives.forEach(
-            (alternative, index) => {
+        alternatives.forEach(
+            (route, index) => {
+
 
                 html += `
-                    <div class="alternative">
 
-                        <h3>
-                            🔁 Option ${index + 1}:
-                            Via ${alternative.via.name}
-                        </h3>
+                    <div class="alternative-card">
+
+                        <div class="alternative-title">
+
+                            🔁 Option ${index + 1}
+                            —
+                            Via ${escapeHTML(
+                                route.via?.name ||
+                                route.via?.code ||
+                                "Interchange"
+                            )}
+
+                        </div>
+
                 `;
 
 
-                /* FIRST LEG */
+                /* -------------------------------------
+                   FIRST LEG
+                ------------------------------------- */
+
+                const firstTrains =
+                    route.firstLeg?.trains || [];
+
 
                 html += `
+
                     <div class="leg">
 
                         <div class="leg-title">
+
                             🚆
-                            ${getStationName(
-                                alternative.firstLeg.from
+                            ${getName(
+                                route.firstLeg?.from
                             )}
+
                             →
-                            ${alternative.via.name}
+
+                            ${escapeHTML(
+                                route.via?.name ||
+                                route.via?.code ||
+                                ""
+                            )}
+
                         </div>
 
-                        ${alternative.firstLeg.trains
-                            .slice(0, 3)
-                            .map(formatTrain)
-                            .join("")
-                        }
-
-                    </div>
                 `;
 
 
-                /* SECOND LEG */
+                if (
+                    firstTrains.length > 0
+                ) {
+
+                    html +=
+                        firstTrains
+                            .slice(0, 3)
+                            .map(formatTrain)
+                            .join("");
+
+                } else {
+
+                    html += `
+                        <div class="no-result">
+                            No train found.
+                        </div>
+                    `;
+
+                }
+
 
                 html += `
+
+                    </div>
+
+                `;
+
+
+                /* -------------------------------------
+                   SECOND LEG
+                ------------------------------------- */
+
+                const secondTrains =
+                    route.secondLeg?.trains || [];
+
+
+                html += `
+
                     <div class="leg">
 
                         <div class="leg-title">
+
                             🚆
-                            ${alternative.via.name}
-                            →
-                            ${getStationName(
-                                alternative.secondLeg.to
+
+                            ${escapeHTML(
+                                route.via?.name ||
+                                route.via?.code ||
+                                ""
                             )}
+
+                            →
+
+                            ${getName(
+                                route.secondLeg?.to
+                            )}
+
                         </div>
 
-                        ${alternative.secondLeg.trains
+                `;
+
+
+                if (
+                    secondTrains.length > 0
+                ) {
+
+                    html +=
+                        secondTrains
                             .slice(0, 3)
                             .map(formatTrain)
-                            .join("")
-                        }
+                            .join("");
+
+                } else {
+
+                    html += `
+                        <div class="no-result">
+                            No train found.
+                        </div>
+                    `;
+
+                }
+
+
+                html += `
 
                     </div>
+
                 `;
 
 
                 html += `
+
                     </div>
+
                 `;
+
             }
         );
 
+
     } else {
 
+
         html += `
-            <div
-                style="
-                    margin-top:12px;
-                    color:#facc15;
-                "
-            >
+
+            <div class="no-result">
+
                 ⚠️ No suitable alternative route
                 was found.
+
             </div>
+
         `;
+
     }
 
 
-    resultBox.innerHTML = html;
+    resultBox.innerHTML =
+        html;
+
 }
 
 
@@ -1086,80 +1452,164 @@ function displayRoutes(data) {
 
 function formatTrain(trainData) {
 
+
     const train =
-        trainData.train || {};
+        trainData.train ||
+        trainData;
+
+
+    const trainNumber =
+        train.number ||
+        train.trainNumber ||
+        train.train_number ||
+        "N/A";
+
+
+    const trainName =
+        train.name ||
+        train.trainName ||
+        train.train_name ||
+        "Train";
+
 
     const from =
-        trainData.from || {};
+        trainData.from ||
+        {};
+
 
     const to =
-        trainData.to || {};
+        trainData.to ||
+        {};
+
+
+    const departure =
+        from.departure ||
+        from.departureTime ||
+        "";
+
+
+    const arrival =
+        to.arrival ||
+        to.arrivalTime ||
+        "";
+
+
+    const type =
+        train.type ||
+        train.trainType ||
+        "";
+
 
     return `
+
         <div class="train">
 
-            <div>
+            <div class="train-main">
 
                 <span class="train-number">
-                    ${train.number || "N/A"}
+                    ${escapeHTML(
+                        String(trainNumber)
+                    )}
                 </span>
 
                 -
 
                 <span class="train-name">
-                    ${train.name || "Train"}
+                    ${escapeHTML(
+                        String(trainName)
+                    )}
                 </span>
 
             </div>
 
-            <div class="train-time">
+            <div class="train-details">
 
-                ${from.departure
-                    ? `Departure: ${from.departure}`
-                    : ""
-                }
-
-                ${to.arrival
-                    ? ` | Arrival: ${to.arrival}`
+                ${
+                    departure
+                    ? "Departure: " +
+                      escapeHTML(
+                          String(departure)
+                      )
                     : ""
                 }
 
                 ${
-                    train.type
-                    ? ` | ${train.type}`
+                    arrival
+                    ? " | Arrival: " +
+                      escapeHTML(
+                          String(arrival)
+                      )
+                    : ""
+                }
+
+                ${
+                    type
+                    ? " | " +
+                      escapeHTML(
+                          String(type)
+                      )
                     : ""
                 }
 
             </div>
 
         </div>
+
     `;
+
 }
 
 
 /* =====================================================
-   STATION NAME
+   GET STATION NAME
    ===================================================== */
 
-function getStationName(code) {
+function getName(code) {
+
 
     if (
         selectedFrom &&
         selectedFrom.code === code
     ) {
 
-        return selectedFrom.name;
+        return escapeHTML(
+            selectedFrom.name
+        );
+
     }
+
 
     if (
         selectedTo &&
         selectedTo.code === code
     ) {
 
-        return selectedTo.name;
+        return escapeHTML(
+            selectedTo.name
+        );
+
     }
 
-    return code;
+
+    return escapeHTML(
+        code || ""
+    );
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+   ===================================================== */
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 
@@ -1172,7 +1622,9 @@ document.addEventListener(
     function (event) {
 
         if (
-            !event.target.closest(".input-group")
+            !event.target.closest(
+                ".input-group"
+            )
         ) {
 
             fromSuggestions.style.display =
@@ -1180,7 +1632,9 @@ document.addEventListener(
 
             toSuggestions.style.display =
                 "none";
+
         }
+
     }
 );
 
