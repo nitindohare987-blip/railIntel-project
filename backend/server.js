@@ -501,113 +501,629 @@ app.get(
                 [];
 
 
-            // ==================================================
-            // 2. CHECK ALTERNATIVE HUBS
-            // ==================================================
+            //// ======================================================
+// ============ SMART ALTERNATIVE ROUTES =================
+// ======================================================
+
+/*
+    Route-aware interchange stations.
+
+    Idea:
+    Gwalior -> Amritsar
+    should prefer:
+    GWL -> Delhi -> Amritsar
+
+    Gwalior -> Indore
+    can prefer:
+    GWL -> Bhopal -> Indore
+    or
+    GWL -> Ujjain -> Indore
+
+    We do NOT blindly suggest every hub.
+*/
+
+const ROUTE_HUBS = [
+
+    // North / Delhi side
+    {
+        code: "NDLS",
+        name: "New Delhi",
+        regions: ["north", "delhi", "punjab", "haryana"]
+    },
+
+    {
+        code: "AGC",
+        name: "Agra Cantt",
+        regions: ["north", "delhi", "punjab"]
+    },
+
+    // Central / MP side
+    {
+        code: "BPL",
+        name: "Bhopal Junction",
+        regions: ["central", "mp", "west"]
+    },
+
+    {
+        code: "UJN",
+        name: "Ujjain Junction",
+        regions: ["mp", "west", "central"]
+    },
+
+    // Rajasthan / West
+    {
+        code: "KOTA",
+        name: "Kota Junction",
+        regions: ["north", "west", "rajasthan"]
+    },
+
+    // Maharashtra side
+    {
+        code: "NGP",
+        name: "Nagpur Junction",
+        regions: ["central", "east", "south"]
+    },
+
+    // East
+    {
+        code: "ALD",
+        name: "Prayagraj",
+        regions: ["east", "north", "central"]
+    }
+
+];
+
+
+// ======================================================
+// ROUTE PREFERENCE MAP
+// ======================================================
+
+const ROUTE_PREFERENCES = [
+
+    // Gwalior -> Amritsar / Punjab
+    {
+        from: ["GWL"],
+        to: [
+            "ASR",
+            "LDH",
+            "JUC",
+            "PTK"
+        ],
+        preferred: [
+            "NDLS",
+            "AGC"
+        ]
+    },
+
+    // Gwalior -> Delhi
+    {
+        from: ["GWL"],
+        to: [
+            "NDLS",
+            "DLI",
+            "ANVT",
+            "NZM"
+        ],
+        preferred: [
+            "AGC"
+        ]
+    },
+
+    // Gwalior -> Indore / MP
+    {
+        from: ["GWL"],
+        to: [
+            "INDB",
+            "UJN",
+            "BPL"
+        ],
+        preferred: [
+            "BPL",
+            "UJN"
+        ]
+    },
+
+    // Gwalior -> Mumbai / Maharashtra
+    {
+        from: ["GWL"],
+        to: [
+            "CSMT",
+            "LTT",
+            "BDTS",
+            "MMCT"
+        ],
+        preferred: [
+            "BPL",
+            "KOTA"
+        ]
+    },
+
+    // Gwalior -> Rajasthan
+    {
+        from: ["GWL"],
+        to: [
+            "JP",
+            "AII",
+            "JU",
+            "UDZ"
+        ],
+        preferred: [
+            "KOTA",
+            "AGC"
+        ]
+    },
+
+    // Gwalior -> East
+    {
+        from: ["GWL"],
+        to: [
+            "HWH",
+            "KOAA",
+            "BBS",
+            "RNC"
+        ],
+        preferred: [
+            "ALD",
+            "NGP"
+        ]
+    }
+
+];
+
+
+// ======================================================
+// FIND PREFERRED HUBS
+// ======================================================
+
+function getPreferredHubs(from, to) {
+
+    const preference =
+        ROUTE_PREFERENCES.find(route =>
+
+            route.from.includes(from) &&
+            route.to.includes(to)
+
+        );
+
+
+    if (preference) {
+
+        return preference.preferred
+            .map(code =>
+                ROUTE_HUBS.find(
+                    hub => hub.code === code
+                )
+            )
+            .filter(Boolean);
+
+    }
+
+
+    /*
+        If exact route isn't in our preference map,
+        use a sensible default order.
+
+        This is still much better than randomly
+        trying Bhopal/Ujjain for every destination.
+    */
+
+    return [
+
+        "NDLS",
+        "AGC",
+        "KOTA",
+        "BPL",
+        "UJN",
+        "ALD",
+        "NGP"
+
+    ]
+        .map(code =>
+            ROUTE_HUBS.find(
+                hub => hub.code === code
+            )
+        )
+        .filter(Boolean);
+}
+
+
+// ======================================================
+// GET REAL TRAINS BETWEEN TWO STATIONS
+// ======================================================
+
+async function getAlternativeTrains(
+    from,
+    to
+) {
+
+    const url =
+        `https://api.railradar.in/v1/trains/between/` +
+        `${encodeURIComponent(from)}/` +
+        `${encodeURIComponent(to)}`;
+
+
+    const response =
+        await fetch(url, {
+
+            method: "GET",
+
+            headers: {
+
+                "Authorization":
+                    `Bearer ${API_KEY}`,
+
+                "Content-Type":
+                    "application/json"
+
+            }
+
+        });
+
+
+    const data =
+        await response.json();
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            data?.error?.message ||
+            "RailRadar request failed"
+        );
+
+    }
+
+
+    return data;
+
+}
+
+
+// ======================================================
+// ALTERNATIVE ROUTES API
+// ======================================================
+
+app.get(
+    "/api/alternative-routes",
+    async (req, res) => {
+
+        try {
+
+            const from =
+                (req.query.from || "")
+                    .trim()
+                    .toUpperCase();
+
+
+            const to =
+                (req.query.to || "")
+                    .trim()
+                    .toUpperCase();
+
+
+            // ------------------------------------------
+            // VALIDATION
+            // ------------------------------------------
+
+            if (!from || !to) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "From and To station codes are required."
+
+                });
+
+            }
+
+
+            if (from === to) {
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        "From and To stations cannot be same."
+
+                });
+
+            }
+
+
+            console.log(
+                `🔎 Smart route search: ${from} → ${to}`
+            );
+
+
+            // ==========================================
+            // DIRECT ROUTE
+            // ==========================================
+
+            let directData = null;
+
+
+            try {
+
+                directData =
+                    await getAlternativeTrains(
+                        from,
+                        to
+                    );
+
+            }
+
+            catch (error) {
+
+                console.log(
+                    "Direct route error:",
+                    error.message
+                );
+
+            }
+
+
+            const directTrains =
+                directData?.data?.trains || [];
+
+
+            // ==========================================
+            // GET SMART HUBS
+            // ==========================================
+
+            const hubs =
+                getPreferredHubs(
+                    from,
+                    to
+                );
+
+
+            console.log(
+                "Preferred hubs:",
+                hubs.map(h => h.code)
+            );
+
+
+            // ==========================================
+            // FIND ALTERNATIVES
+            // ==========================================
 
             const alternatives = [];
 
 
             for (
-                const hub
-                of ALTERNATIVE_HUBS
+                const hub of hubs
             ) {
 
-                // Don't use source/destination
-                // as interchange station.
+
+                // Never use source or destination
+                // as interchange.
 
                 if (
                     hub.code === from ||
                     hub.code === to
                 ) {
+
                     continue;
+
                 }
 
 
                 console.log(
-                    `Checking ${from} → ${hub.code} → ${to}`
+                    `🔍 Checking ${from} → ${hub.code} → ${to}`
                 );
 
 
-                let firstData;
-                let secondData;
+                let firstData = null;
 
+                let secondData = null;
+
+
+                // --------------------------------------
+                // FIRST LEG
+                // --------------------------------------
 
                 try {
 
                     firstData =
-                        await getTrainsBetween(
+                        await getAlternativeTrains(
                             from,
                             hub.code
                         );
 
+                }
+
+                catch (error) {
+
+                    console.log(
+                        `${from} → ${hub.code} failed`
+                    );
+
+                    continue;
+
+                }
+
+
+                // --------------------------------------
+                // SECOND LEG
+                // --------------------------------------
+
+                try {
+
                     secondData =
-                        await getTrainsBetween(
+                        await getAlternativeTrains(
                             hub.code,
                             to
                         );
 
                 }
+
                 catch (error) {
 
                     console.log(
-                        `No complete route via ${hub.code}`
+                        `${hub.code} → ${to} failed`
                     );
 
                     continue;
+
                 }
 
 
                 const firstTrains =
-                    firstData?.data?.trains ||
-                    [];
+                    firstData?.data?.trains || [];
+
 
                 const secondTrains =
-                    secondData?.data?.trains ||
-                    [];
+                    secondData?.data?.trains || [];
 
 
-                // Both legs must have real trains.
+                // --------------------------------------
+                // ONLY ACCEPT REAL COMPLETE ROUTES
+                // --------------------------------------
 
                 if (
-                    firstTrains.length > 0 &&
-                    secondTrains.length > 0
+                    firstTrains.length === 0 ||
+                    secondTrains.length === 0
                 ) {
 
-                    alternatives.push({
+                    continue;
 
-                        via: {
-                            code: hub.code,
-                            name: hub.name
-                        },
-
-                        firstLeg: {
-                            from: from,
-                            to: hub.code,
-                            trains:
-                                firstTrains.slice(0, 5)
-                        },
-
-                        secondLeg: {
-                            from: hub.code,
-                            to: to,
-                            trains:
-                                secondTrains.slice(0, 5)
-                        }
-
-                    });
                 }
 
 
-                // Maximum 3 alternatives.
+                // --------------------------------------
+                // ADD ROUTE
+                // --------------------------------------
+
+                alternatives.push({
+
+                    via: {
+
+                        code:
+                            hub.code,
+
+                        name:
+                            hub.name
+
+                    },
+
+
+                    firstLeg: {
+
+                        from:
+                            from,
+
+                        to:
+                            hub.code,
+
+                        trains:
+                            firstTrains.slice(
+                                0,
+                                5
+                            )
+
+                    },
+
+
+                    secondLeg: {
+
+                        from:
+                            hub.code,
+
+                        to:
+                            to,
+
+                        trains:
+                            secondTrains.slice(
+                                0,
+                                5
+                            )
+
+                    }
+
+                });
+
+
+                /*
+                    Only return top 3 sensible
+                    alternatives.
+                */
 
                 if (
                     alternatives.length >= 3
                 ) {
+
                     break;
+
                 }
+
             }
 
+
+            // ==========================================
+            // RESPONSE
+            // ==========================================
+
+            res.json({
+
+                success: true,
+
+                from:
+                    from,
+
+                to:
+                    to,
+
+                direct: {
+
+                    available:
+                        directTrains.length > 0,
+
+                    count:
+                        directTrains.length,
+
+                    trains:
+                        directTrains.slice(
+                            0,
+                            10
+                        )
+
+                },
+
+                alternatives:
+                    alternatives
+
+            });
+
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "❌ Smart alternative route error:",
+                error
+            );
+
+
+            res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Unable to find alternative routes.",
+
+                error:
+                    error.message
+
+            });
+
+        }
+
+    }
+);
 
             // ==================================================
             // 3. RESPONSE
