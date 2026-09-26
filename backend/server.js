@@ -356,7 +356,313 @@ app.get("/api/running/:trainNumber", async (req, res) => {
     }
 
 });
+// ======================================================
+// ============ ALTERNATIVE ROUTES =======================
+// ======================================================
 
+const ALTERNATIVE_HUBS = [
+    {
+        code: "BPL",
+        name: "Bhopal Junction"
+    },
+    {
+        code: "UJN",
+        name: "Ujjain Junction"
+    },
+    {
+        code: "JHS",
+        name: "Jhansi Junction"
+    },
+    {
+        code: "AGC",
+        name: "Agra Cantt"
+    },
+    {
+        code: "KOTA",
+        name: "Kota Junction"
+    }
+];
+
+
+// ------------------------------------------------------
+// GET REAL TRAINS BETWEEN TWO STATIONS
+// ------------------------------------------------------
+
+async function getTrainsBetween(
+    from,
+    to
+) {
+
+    const url =
+        `https://api.railradar.in/v1/trains/between/` +
+        `${encodeURIComponent(from)}/` +
+        `${encodeURIComponent(to)}`;
+
+    const response =
+        await fetch(url, {
+            method: "GET",
+            headers: {
+                "Authorization":
+                    `Bearer ${API_KEY}`,
+
+                "Content-Type":
+                    "application/json"
+            }
+        });
+
+    const data =
+        await response.json();
+
+    if (!response.ok) {
+
+        throw new Error(
+            data?.error?.message ||
+            "RailRadar train search failed."
+        );
+    }
+
+    return data;
+}
+
+
+// ------------------------------------------------------
+// ALTERNATIVE ROUTE API
+// ------------------------------------------------------
+
+app.get(
+    "/api/alternative-routes",
+    async (req, res) => {
+
+        try {
+
+            const from =
+                (req.query.from || "")
+                    .trim()
+                    .toUpperCase();
+
+            const to =
+                (req.query.to || "")
+                    .trim()
+                    .toUpperCase();
+
+
+            if (!from || !to) {
+
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Please provide from and to station codes."
+                });
+            }
+
+
+            if (from === to) {
+
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "From and To stations cannot be same."
+                });
+            }
+
+
+            console.log(
+                `🔎 Finding alternative route: ${from} → ${to}`
+            );
+
+
+            // ==================================================
+            // 1. CHECK DIRECT TRAINS
+            // ==================================================
+
+            let directData = null;
+
+            try {
+
+                directData =
+                    await getTrainsBetween(
+                        from,
+                        to
+                    );
+
+            }
+            catch (error) {
+
+                console.log(
+                    "Direct train search failed:",
+                    error.message
+                );
+
+            }
+
+
+            const directTrains =
+                directData?.data?.trains ||
+                [];
+
+
+            // ==================================================
+            // 2. CHECK ALTERNATIVE HUBS
+            // ==================================================
+
+            const alternatives = [];
+
+
+            for (
+                const hub
+                of ALTERNATIVE_HUBS
+            ) {
+
+                // Don't use source/destination
+                // as interchange station.
+
+                if (
+                    hub.code === from ||
+                    hub.code === to
+                ) {
+                    continue;
+                }
+
+
+                console.log(
+                    `Checking ${from} → ${hub.code} → ${to}`
+                );
+
+
+                let firstData;
+                let secondData;
+
+
+                try {
+
+                    firstData =
+                        await getTrainsBetween(
+                            from,
+                            hub.code
+                        );
+
+                    secondData =
+                        await getTrainsBetween(
+                            hub.code,
+                            to
+                        );
+
+                }
+                catch (error) {
+
+                    console.log(
+                        `No complete route via ${hub.code}`
+                    );
+
+                    continue;
+                }
+
+
+                const firstTrains =
+                    firstData?.data?.trains ||
+                    [];
+
+                const secondTrains =
+                    secondData?.data?.trains ||
+                    [];
+
+
+                // Both legs must have real trains.
+
+                if (
+                    firstTrains.length > 0 &&
+                    secondTrains.length > 0
+                ) {
+
+                    alternatives.push({
+
+                        via: {
+                            code: hub.code,
+                            name: hub.name
+                        },
+
+                        firstLeg: {
+                            from: from,
+                            to: hub.code,
+                            trains:
+                                firstTrains.slice(0, 5)
+                        },
+
+                        secondLeg: {
+                            from: hub.code,
+                            to: to,
+                            trains:
+                                secondTrains.slice(0, 5)
+                        }
+
+                    });
+                }
+
+
+                // Maximum 3 alternatives.
+
+                if (
+                    alternatives.length >= 3
+                ) {
+                    break;
+                }
+            }
+
+
+            // ==================================================
+            // 3. RESPONSE
+            // ==================================================
+
+            res.json({
+
+                success: true,
+
+                from: from,
+
+                to: to,
+
+                direct: {
+
+                    available:
+                        directTrains.length > 0,
+
+                    count:
+                        directTrains.length,
+
+                    trains:
+                        directTrains.slice(0, 10)
+                },
+
+                alternatives:
+                    alternatives
+
+            });
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Alternative Route Error:",
+                error
+            );
+
+            res.status(
+                error.status || 500
+            ).json({
+
+                success: false,
+
+                message:
+                    "Unable to find alternative routes.",
+
+                error:
+                    error.message
+            });
+        }
+
+    }
+);
 
 // ======================================================
 // PNR STATUS
