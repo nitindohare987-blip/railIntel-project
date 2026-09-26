@@ -2855,6 +2855,75 @@ async function startServer() {
     }
 
 }
+// ================= LOGIN STATUS =================
 
+function checkLoginStatus() {
+
+    const userData =
+        localStorage.getItem("railintelUser");
+
+    const loginBtn =
+        document.getElementById("login-btn");
+
+    const signupBtn =
+        document.getElementById("signup-btn");
+
+    const userArea =
+        document.getElementById("user-area");
+
+    const userName =
+        document.getElementById("user-name");
+
+    const logoutArea =
+        document.getElementById("logout-area");
+
+
+    if (userData) {
+
+        const user =
+            JSON.parse(userData);
+
+
+        // Hide Login / Signup
+        loginBtn.style.display = "none";
+        signupBtn.style.display = "none";
+
+
+        // Show user
+        userArea.style.display = "block";
+        logoutArea.style.display = "block";
+
+
+        userName.innerHTML =
+            "👤 " + user.name;
+
+    }
+
+    else {
+
+        loginBtn.style.display = "block";
+        signupBtn.style.display = "block";
+
+        userArea.style.display = "none";
+        logoutArea.style.display = "none";
+
+    }
+
+}
+
+
+// ================= LOGOUT =================
+
+function logout() {
+
+    localStorage.removeItem("railintelUser");
+
+    window.location.href = "index.html";
+
+}
+
+
+// Run when page loads
+checkLoginStatus();
 
 startServer();
