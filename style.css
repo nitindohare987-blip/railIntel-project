@@ -31,7 +31,41 @@ nav {
   top: 0;
   z-index: 1000;
 }
+/* ================= USER LOGIN ================= */
 
+#user-area a {
+    color: #facc15;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.25s;
+}
+
+#user-area a:hover {
+    color: #fde047;
+}
+
+
+/* ================= LOGOUT ================= */
+
+#logout-area {
+    margin-left: 8px;
+}
+
+#logout-area a {
+    color: #cbd5e1;
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 6px 13px;
+    border-radius: 7px;
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: 0.25s;
+}
+
+#logout-area a:hover {
+    color: white;
+    border-color: #6366f1;
+    background: rgba(99,102,241,0.12);
+}
 /* LOGO */
 .logo {
   font-size: 2.4rem;
@@ -387,3 +421,48 @@ form button:hover {
   box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
 }   
 
+/* ================= LOGGED IN USER ================= */
+
+#user-area {
+    margin-left: 5px;
+}
+
+#user-area .user-box {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    line-height: 1.1 !important;
+}
+
+
+/* Welcome Name */
+
+#user-area #user-name {
+    display: block !important;
+    color: #facc15 !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    white-space: nowrap;
+}
+
+
+/* Logout */
+
+#user-area #logout-link {
+    display: block !important;
+    color: #94a3b8 !important;
+    font-size: 0.68rem !important;
+    font-weight: 400 !important;
+    text-decoration: none !important;
+    margin-top: 4px !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    white-space: nowrap;
+}
+
+#user-area #logout-link:hover {
+    color: #ef4444 !important;
+}

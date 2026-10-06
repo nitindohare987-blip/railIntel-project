@@ -80,20 +80,19 @@
     </li>
 
 
-    <!-- LOGGED IN USER -->
+   <li id="user-area" style="display:none;">
+    <div class="user-box">
 
-    <li id="user-area" style="display:none;">
-        <a href="#" id="user-name"></a>
-    </li>
+        <a href="#" id="user-name">
+            Welcome
+        </a>
 
-
-    <!-- LOGOUT -->
-
-    <li id="logout-area" style="display:none;">
-        <a href="#" onclick="logout()">
+        <a href="#" id="logout-link" onclick="logout()">
             Logout
         </a>
-    </li>
+
+    </div>
+</li>
 
 </ul>
 
@@ -373,10 +372,157 @@
 
     </section>
 
+<script>
+
+    // ================= LOGIN STATUS =================
+
+    function updateLoginUI() {
+
+        const userData =
+            localStorage.getItem("railintelUser");
 
 
-    <!-- ================= JAVASCRIPT ================= -->
+        const loginArea =
+            document.getElementById("login-area");
 
+
+        const signupArea =
+            document.getElementById("signup-area");
+
+
+        const userArea =
+            document.getElementById("user-area");
+
+
+        const userName =
+            document.getElementById("user-name");
+
+
+        // Check elements
+
+        if (
+            !loginArea ||
+            !signupArea ||
+            !userArea ||
+            !userName
+        ) {
+
+            console.log(
+                "Login UI elements not found"
+            );
+
+            return;
+        }
+
+
+        // ================= LOGGED IN =================
+
+        if (userData) {
+
+            try {
+
+                const user =
+                    JSON.parse(userData);
+
+
+                console.log(
+                    "Logged in user:",
+                    user
+                );
+
+
+                // Hide Login and Sign Up
+
+                loginArea.style.display =
+                    "none";
+
+                signupArea.style.display =
+                    "none";
+
+
+                // Show User
+
+                userArea.style.display =
+                    "block";
+
+
+                // Show Name
+
+                userName.textContent =
+                    "Welcome, " +
+                    (
+                        user.name ||
+                        user.username ||
+                        user.email
+                    );
+
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "User data error:",
+                    error
+                );
+
+
+                localStorage.removeItem(
+                    "railintelUser"
+                );
+
+            }
+
+        }
+
+
+        // ================= NOT LOGGED IN =================
+
+        else {
+
+            loginArea.style.display =
+                "block";
+
+            signupArea.style.display =
+                "block";
+
+            userArea.style.display =
+                "none";
+
+        }
+
+    }
+
+
+
+    // ================= LOGOUT =================
+
+    function logout() {
+
+        localStorage.removeItem(
+            "railintelUser"
+        );
+
+
+        window.location.href =
+            "index.html";
+
+    }
+
+
+
+    // ================= PAGE LOAD =================
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            updateLoginUI();
+
+        }
+    );
+
+</script>
     <script src="script.js"></script>
 
 
