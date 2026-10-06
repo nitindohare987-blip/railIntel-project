@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Booking Page</title>
+
+<title>Book Ticket | RailIntel</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -18,7 +21,9 @@
   text-decoration: none;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   background: linear-gradient(135deg, #0f172a, #1e293b, #312e81, #6366f1);
@@ -26,7 +31,8 @@ body {
   min-height: 100vh;
 }
 
-/* ───────── NAVBAR ───────── */
+/* ================= NAVBAR ================= */
+
 nav {
   display: flex;
   justify-content: space-between;
@@ -39,21 +45,18 @@ nav {
   z-index: 1000;
 }
 
-/* LOGO */
 .logo {
   font-size: 2.4rem;
   font-weight: 700;
   color: #b026ff;
 }
 
-/* NAV LINKS */
 nav ul {
   display: flex;
   list-style: none;
   gap: 32px;
 }
 
-/* LINKS */
 nav ul li a {
   color: #94a3b8;
   font-size: 0.95rem;
@@ -61,12 +64,10 @@ nav ul li a {
   position: relative;
 }
 
-/* HOVER COLOR */
 nav ul li a:hover {
   color: white;
 }
 
-/* UNDERLINE EFFECT */
 nav ul li a::after {
   content: '';
   position: absolute;
@@ -82,7 +83,8 @@ nav ul li a:hover::after {
   width: 100%;
 }
 
-/* HEADING */
+/* ================= HEADING ================= */
+
 h2 {
   text-align: center;
   font-size: 1.4rem;
@@ -92,10 +94,11 @@ h2 {
   color: #e2e8f0;
 }
 
-/* FORM BOX */
+/* ================= FORM BOX ================= */
+
 .formBox {
   width: 90%;
-  max-width: 360px;
+  max-width: 500px;
   margin: 20px auto 60px;
   background: #020617;
   border: 1px solid rgba(255,255,255,0.07);
@@ -106,8 +109,10 @@ h2 {
   gap: 12px;
 }
 
-/* INPUTS */
-input, select {
+/* ================= INPUTS ================= */
+
+input,
+select {
   padding: 11px 14px;
   width: 100%;
   border-radius: 8px;
@@ -120,24 +125,74 @@ input, select {
   transition: border-color 0.2s;
 }
 
-input::placeholder { color: #475569; }
-input:focus, select:focus { border-color: #6366f1; }
-select option { background: #0f172a; }
+input::placeholder {
+  color: #475569;
+}
 
-/* date input color fix */
+input:focus,
+select:focus {
+  border-color: #6366f1;
+}
+
+select option {
+  background: #0f172a;
+}
+
 input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(0.6);
   cursor: pointer;
 }
 
-/* DIVIDER */
+/* ================= STATION SUGGESTIONS ================= */
+
+.station-wrapper {
+  position: relative;
+}
+
+.station-results {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 48px;
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  z-index: 2000;
+  max-height: 220px;
+  overflow-y: auto;
+  display: none;
+}
+
+.station-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.station-item:hover {
+  background: #1e293b;
+}
+
+.station-name {
+  color: #e2e8f0;
+  font-size: 0.85rem;
+}
+
+.station-code {
+  color: #94a3b8;
+  font-size: 0.72rem;
+}
+
+/* ================= DIVIDER ================= */
+
 .divider {
   border: none;
   border-top: 1px solid rgba(255,255,255,0.07);
   margin: 2px 0;
 }
 
-/* BUTTONS */
+/* ================= BUTTONS ================= */
+
 .btn-row {
   display: flex;
   gap: 10px;
@@ -180,27 +235,148 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: white;
 }
 
-/* TICKET RESULT */
-#ticket {
+/* ================= STATUS ================= */
+
+#status {
   text-align: center;
-  font-size: 0.92rem;
-  line-height: 1.9;
-  background: #0f172a;
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 10px;
-  padding: 14px 16px;
-  color: #fde68a;
+  font-size: 0.85rem;
+  color: #94a3b8;
   display: none;
 }
 
-/* RESPONSIVE */
-@media (max-width: 480px) {
-  nav { padding: 14px 20px; }
-  .logo { font-size: 1.8rem; }
-  nav ul { gap: 16px; }
-  nav ul li a { font-size: 0.8rem; }
+/* ================= TRAIN RESULTS ================= */
+
+#trainResults {
+  width: 90%;
+  max-width: 850px;
+  margin: 0 auto 60px;
 }
-/* ================= MOBILE RESPONSIVE ================= */
+
+.train-card {
+  background: rgba(2,6,23,0.88);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.train-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.train-name {
+  color: #e2e8f0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.train-number {
+  color: #94a3b8;
+  font-size: 0.78rem;
+  margin-top: 3px;
+}
+
+.train-type {
+  color: #a5b4fc;
+  font-size: 0.75rem;
+}
+
+.route {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0f172a;
+  padding: 12px;
+  border-radius: 9px;
+  margin-bottom: 14px;
+}
+
+.time {
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.station {
+  color: #94a3b8;
+  font-size: 0.72rem;
+}
+
+.arrow {
+  color: #6366f1;
+  font-size: 1.2rem;
+}
+
+.availability-title {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  margin-bottom: 8px;
+}
+
+.availability-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.class-box {
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 9px;
+  text-align: center;
+}
+
+.class-name {
+  color: #94a3b8;
+  font-size: 0.72rem;
+}
+
+.class-status {
+  color: #86efac;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+.class-status.waiting {
+  color: #fde68a;
+}
+
+.class-status.unavailable {
+  color: #f87171;
+}
+
+.select-train {
+  margin-top: 14px;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  background: #6366f1;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.select-train:hover {
+  background: #4f46e5;
+}
+
+/* ================= EMPTY ================= */
+
+.empty {
+  text-align: center;
+  padding: 25px;
+  color: #94a3b8;
+  background: rgba(2,6,23,0.7);
+  border-radius: 12px;
+}
+
+/* ================= RESPONSIVE ================= */
 
 @media (max-width: 768px) {
 
@@ -224,10 +400,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-size: 0.82rem;
   }
 
+  .train-top {
+    flex-direction: column;
+  }
+
 }
-
-
-/* ================= SMALL MOBILE ================= */
 
 @media (max-width: 480px) {
 
@@ -247,6 +424,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-size: 0.76rem;
   }
 
+  .formBox {
+    width: 92%;
+  }
+
+  .availability-row {
+    grid-template-columns: 1fr;
+  }
+
 }
 
 </style>
@@ -255,80 +440,958 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 <body>
 
 <nav>
-  <div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
+
+  <div class="logo">
+    रेल<span style="color:#94a3b8;">Intel</span>
+  </div>
+
   <ul>
     <li><a href="index.html">Home</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#faqs">FAQs</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#faqs">FAQs</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
   </ul>
+
 </nav>
 
-<h2>Book Ticket</h2>
+
+<h2>Search Trains</h2>
+
 
 <div class="formBox">
 
-  <input id="name"  placeholder="Full Name">
-  <input id="train" placeholder="Train No">
-  <input id="from"  placeholder="From">
-  <input id="to"    placeholder="To">
-  <input type="date" id="date">
+  <!-- FROM -->
 
-  <select id="class">
-    <option value="">Select Class</option>
-    <option>Sleeper</option>
-    <option>3AC</option>
-    <option>2AC</option>
-    <option>General</option>
-  </select>
+  <div class="station-wrapper">
+
+    <input
+      id="from"
+      placeholder="From station"
+      autocomplete="off"
+    >
+
+    <div
+      id="fromResults"
+      class="station-results">
+    </div>
+
+  </div>
+
+
+  <!-- TO -->
+
+  <div class="station-wrapper">
+
+    <input
+      id="to"
+      placeholder="To station"
+      autocomplete="off"
+    >
+
+    <div
+      id="toResults"
+      class="station-results">
+    </div>
+
+  </div>
+
+
+  <input
+    type="date"
+    id="date"
+  >
+
 
   <hr class="divider">
 
+
   <div class="btn-row">
-    <button class="btn-book" onclick="bookNow()">Book Ticket</button>
-    <button class="btn-back" onclick="goBack()">← Back</button>
+
+    <button
+      class="btn-book"
+      onclick="searchTrains()">
+      Search Trains
+    </button>
+
+    <button
+      class="btn-back"
+      onclick="goBack()">
+      ← Back
+    </button>
+
   </div>
 
-  <div id="ticket"></div>
+
+  <div id="status"></div>
 
 </div>
 
+
+<div id="trainResults"></div>
+
+
 <script>
 
-function bookNow() {
-  var name  = document.getElementById("name").value.trim();
-  var train = document.getElementById("train").value.trim();
-  var from  = document.getElementById("from").value.trim();
-  var to    = document.getElementById("to").value.trim();
-  var date  = document.getElementById("date").value;
-  var cls   = document.getElementById("class").value;
+const API_BASE =
+  "https://railintel-project.onrender.com";
 
-  var ticketBox = document.getElementById("ticket");
 
-  if (!name || !train || !from || !to) {
-    ticketBox.style.display = "block";
-    ticketBox.style.color = "#f87171";
-    ticketBox.innerHTML = "⚠️ Please fill all details.";
+let selectedFrom = null;
+let selectedTo = null;
+
+
+/* ================= DATE ================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const dateInput =
+    document.getElementById("date");
+
+  const today =
+    new Date();
+
+  const year =
+    today.getFullYear();
+
+  const month =
+    String(today.getMonth() + 1).padStart(2, "0");
+
+  const day =
+    String(today.getDate()).padStart(2, "0");
+
+  dateInput.min =
+    `${year}-${month}-${day}`;
+
+});
+
+
+/* ================= STATION SEARCH ================= */
+
+function setupStationSearch(inputId, resultsId, type) {
+
+  const input =
+    document.getElementById(inputId);
+
+  const results =
+    document.getElementById(resultsId);
+
+
+  let timer;
+
+
+  input.addEventListener("input", function () {
+
+    clearTimeout(timer);
+
+    const query =
+      input.value.trim();
+
+
+    if (query.length < 2) {
+
+      results.style.display =
+        "none";
+
+      return;
+
+    }
+
+
+    timer = setTimeout(async function () {
+
+      try {
+
+        const response =
+          await fetch(
+            API_BASE +
+            "/api/stations/search?q=" +
+            encodeURIComponent(query)
+          );
+
+
+        const data =
+          await response.json();
+
+
+        results.innerHTML =
+          "";
+
+
+        if (
+          !data.success ||
+          !data.data ||
+          data.data.length === 0
+        ) {
+
+          results.innerHTML =
+            `<div class="station-item">
+              No station found
+            </div>`;
+
+          results.style.display =
+            "block";
+
+          return;
+
+        }
+
+
+        data.data
+          .slice(0, 8)
+          .forEach(function (station) {
+
+            const div =
+              document.createElement("div");
+
+            div.className =
+              "station-item";
+
+
+            const code =
+              station.code ||
+              station.stationCode ||
+              "";
+
+
+            const name =
+              station.name ||
+              station.stationName ||
+              "";
+
+
+            div.innerHTML =
+
+              `<div class="station-name">
+                ${name}
+              </div>
+
+              <div class="station-code">
+                ${code}
+              </div>`;
+
+
+            div.onclick =
+              function () {
+
+                input.value =
+                  name;
+
+                if (type === "from") {
+
+                  selectedFrom = {
+                    code: code,
+                    name: name
+                  };
+
+                } else {
+
+                  selectedTo = {
+                    code: code,
+                    name: name
+                  };
+
+                }
+
+                results.style.display =
+                  "none";
+
+              };
+
+
+            results.appendChild(div);
+
+          });
+
+
+        results.style.display =
+          "block";
+
+
+      } catch (error) {
+
+        console.error(
+          "Station search error:",
+          error
+        );
+
+      }
+
+    }, 300);
+
+  });
+
+}
+
+
+/* ================= INITIALIZE ================= */
+
+setupStationSearch(
+  "from",
+  "fromResults",
+  "from"
+);
+
+setupStationSearch(
+  "to",
+  "toResults",
+  "to"
+);
+
+
+/* ================= SEARCH TRAINS ================= */
+
+async function searchTrains() {
+
+  const fromInput =
+    document.getElementById("from").value.trim();
+
+  const toInput =
+    document.getElementById("to").value.trim();
+
+  const date =
+    document.getElementById("date").value;
+
+
+  const status =
+    document.getElementById("status");
+
+  const results =
+    document.getElementById("trainResults");
+
+
+  /* ---------- VALIDATION ---------- */
+
+  if (
+    !fromInput ||
+    !toInput ||
+    !date
+  ) {
+
+    status.style.display =
+      "block";
+
+    status.style.color =
+      "#f87171";
+
+    status.innerText =
+      "⚠️ Please select From, To and Journey Date.";
+
+    return;
+
+  }
+
+
+  if (
+    !selectedFrom ||
+    !selectedTo
+  ) {
+
+    status.style.display =
+      "block";
+
+    status.style.color =
+      "#f87171";
+
+    status.innerText =
+      "⚠️ Please select stations from the suggestions.";
+
+    return;
+
+  }
+
+
+  if (
+    selectedFrom.code ===
+    selectedTo.code
+  ) {
+
+    status.style.display =
+      "block";
+
+    status.style.color =
+      "#f87171";
+
+    status.innerText =
+      "⚠️ From and To stations cannot be same.";
+
+    return;
+
+  }
+
+
+  status.style.display =
+    "block";
+
+  status.style.color =
+    "#94a3b8";
+
+  status.innerText =
+    "🔎 Searching real trains...";
+
+
+  results.innerHTML =
+    "";
+
+
+  try {
+
+    const url =
+      API_BASE +
+      "/api/trains?from=" +
+      encodeURIComponent(selectedFrom.code) +
+      "&to=" +
+      encodeURIComponent(selectedTo.code) +
+      "&date=" +
+      encodeURIComponent(date);
+
+
+    const response =
+      await fetch(url);
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      !response.ok ||
+      !data.success
+    ) {
+
+      throw new Error(
+        data.message ||
+        "Unable to search trains"
+      );
+
+    }
+
+
+    const trains =
+      data.data?.trains ||
+      data.trains ||
+      [];
+
+
+    if (
+      trains.length === 0
+    ) {
+
+      status.innerText =
+        "No trains found for this route.";
+
+      results.innerHTML =
+        `<div class="empty">
+          🚆 No trains available for this route on the selected date.
+        </div>`;
+
+      return;
+
+    }
+
+
+    status.innerText =
+      `✅ ${trains.length} train(s) found`;
+
+
+    for (
+      const item of trains
+    ) {
+
+      await renderTrain(
+        item,
+        date
+      );
+
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      "Train search error:",
+      error
+    );
+
+
+    status.style.color =
+      "#f87171";
+
+    status.innerText =
+      "❌ " + error.message;
+
+
+    results.innerHTML =
+      `<div class="empty">
+        Unable to load trains. Please try again.
+      </div>`;
+
+  }
+
+}
+
+
+/* ================= RENDER TRAIN ================= */
+
+async function renderTrain(
+  item,
+  date
+) {
+
+  const results =
+    document.getElementById(
+      "trainResults"
+    );
+
+
+  const train =
+    item.train ||
+    item;
+
+
+  const from =
+    item.from ||
+    {};
+
+  const to =
+    item.to ||
+    {};
+
+
+  const number =
+    train.number ||
+    train.trainNumber ||
+    "";
+
+
+  const name =
+    train.name ||
+    train.trainName ||
+    "Unknown Train";
+
+
+  const type =
+    train.type ||
+    "Express";
+
+
+  const departure =
+    from.departure ||
+    "--";
+
+
+  const arrival =
+    to.arrival ||
+    "--";
+
+
+  const duration =
+    item.duration
+      ? formatDuration(item.duration)
+      : "--";
+
+
+  const card =
+    document.createElement(
+      "div"
+    );
+
+
+  card.className =
+    "train-card";
+
+
+  card.innerHTML =
+
+    `<div class="train-top">
+
+      <div>
+
+        <div class="train-name">
+          ${name}
+        </div>
+
+        <div class="train-number">
+          Train No: ${number}
+        </div>
+
+      </div>
+
+      <div class="train-type">
+        ${type}
+      </div>
+
+    </div>
+
+
+    <div class="route">
+
+      <div>
+
+        <div class="time">
+          ${departure}
+        </div>
+
+        <div class="station">
+          ${selectedFrom.code}
+        </div>
+
+      </div>
+
+
+      <div class="arrow">
+        →
+      </div>
+
+
+      <div>
+
+        <div class="time">
+          ${arrival}
+        </div>
+
+        <div class="station">
+          ${selectedTo.code}
+        </div>
+
+      </div>
+
+
+      <div class="station">
+        ${duration}
+      </div>
+
+    </div>
+
+
+    <div class="availability-title">
+      Real Seat Availability
+    </div>
+
+
+    <div class="availability-row">
+
+      <div class="class-box">
+
+        <div class="class-name">
+          SL
+        </div>
+
+        <div
+          id="sl-${number}"
+          class="class-status">
+          Loading...
+        </div>
+
+      </div>
+
+
+      <div class="class-box">
+
+        <div class="class-name">
+          3A
+        </div>
+
+        <div
+          id="3a-${number}"
+          class="class-status">
+          Loading...
+        </div>
+
+      </div>
+
+
+      <div class="class-box">
+
+        <div class="class-name">
+          2A
+        </div>
+
+        <div
+          id="2a-${number}"
+          class="class-status">
+          Loading...
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <button
+      class="select-train"
+      onclick="selectTrain('${number}', '${escapeText(name)}')">
+
+      Select Train
+
+    </button>`;
+
+
+  results.appendChild(
+    card
+  );
+
+
+  /* Fetch real availability */
+
+  loadAvailability(
+    number,
+    "SL",
+    date,
+    "sl-" + number
+  );
+
+  loadAvailability(
+    number,
+    "3A",
+    date,
+    "3a-" + number
+  );
+
+  loadAvailability(
+    number,
+    "2A",
+    date,
+    "2a-" + number
+  );
+
+}
+
+
+/* ================= SEAT AVAILABILITY ================= */
+
+async function loadAvailability(
+  trainNumber,
+  classCode,
+  date,
+  elementId
+) {
+
+  const element =
+    document.getElementById(
+      elementId
+    );
+
+
+  if (!element) {
     return;
   }
 
-  var seat = Math.floor(Math.random() * 100) + 1;
 
-  ticketBox.style.display = "block";
-  ticketBox.style.color = "#fde68a";
-  ticketBox.innerHTML =
-    "✅ <b>Ticket Confirmed!</b><br>" +
-    "👤 Name: " + name + "<br>" +
-    "🚆 Train: " + train + "<br>" +
-    "💺 Seat: " + seat + " &nbsp;|&nbsp; Class: " + cls + "<br>" +
-    "📍 " + from + " → " + to + "<br>" +
-    "📅 Date: " + (date || "Not selected");
+  try {
+
+    const url =
+      API_BASE +
+      "/api/seat-availability" +
+
+      "?trainNumber=" +
+      encodeURIComponent(trainNumber) +
+
+      "&source=" +
+      encodeURIComponent(
+        selectedFrom.code
+      ) +
+
+      "&destination=" +
+      encodeURIComponent(
+        selectedTo.code
+      ) +
+
+      "&journeyDate=" +
+      encodeURIComponent(date) +
+
+      "&classCode=" +
+      encodeURIComponent(classCode);
+
+
+    const response =
+      await fetch(url);
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      !response.ok ||
+      !data.success
+    ) {
+
+      element.innerText =
+        "Unavailable";
+
+      element.className =
+        "class-status unavailable";
+
+      return;
+
+    }
+
+
+    const availability =
+      data.availability;
+
+
+    element.innerText =
+      availability || "N/A";
+
+
+    if (
+      String(availability)
+        .toUpperCase()
+        .includes("WL") ||
+      String(availability)
+        .toUpperCase()
+        .includes("RAC")
+    ) {
+
+      element.className =
+        "class-status waiting";
+
+    }
+
+    else if (
+      String(availability)
+        .toUpperCase()
+        .includes("AVAILABLE")
+    ) {
+
+      element.className =
+        "class-status";
+
+    }
+
+    else {
+
+      element.className =
+        "class-status unavailable";
+
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      "Availability error:",
+      error
+    );
+
+
+    element.innerText =
+      "N/A";
+
+    element.className =
+      "class-status unavailable";
+
+  }
+
 }
 
+
+/* ================= SELECT TRAIN ================= */
+
+function selectTrain(
+  trainNumber,
+  trainName
+) {
+
+  const user =
+    localStorage.getItem(
+      "railintelUser"
+    );
+
+
+  if (!user) {
+
+    alert(
+      "Please login before continuing."
+    );
+
+    window.location.href =
+      "login.html";
+
+    return;
+
+  }
+
+
+  localStorage.setItem(
+    "selectedTrain",
+    JSON.stringify({
+
+      trainNumber:
+        trainNumber,
+
+      trainName:
+        trainName,
+
+      from:
+        selectedFrom,
+
+      to:
+        selectedTo,
+
+      journeyDate:
+        document.getElementById(
+          "date"
+        ).value
+
+    })
+  );
+
+
+  alert(
+    "Train selected successfully!"
+  );
+
+}
+
+
+/* ================= DURATION ================= */
+
+function formatDuration(
+  minutes
+) {
+
+  const hours =
+    Math.floor(
+      minutes / 60
+    );
+
+  const mins =
+    minutes % 60;
+
+
+  return (
+    hours +
+    "h " +
+    mins +
+    "m"
+  );
+
+}
+
+
+/* ================= ESCAPE ================= */
+
+function escapeText(text) {
+
+  return String(text)
+    .replace(/'/g, "\\'")
+    .replace(/"/g, "&quot;");
+
+}
+
+
+/* ================= BACK ================= */
+
 function goBack() {
-  window.location.href = "index.html";
+
+  window.location.href =
+    "index.html";
+
 }
 
 </script>
+
 </body>
 </html>

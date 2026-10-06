@@ -175,61 +175,331 @@ app.get("/api/stations/search", async (req, res) => {
 // ======================================================
 // TRAINS BETWEEN STATIONS
 // ======================================================
+// ======================================================
+// ============ TRAINS BETWEEN STATIONS =================
+// ======================================================
 
 app.get("/api/trains", async (req, res) => {
 
     try {
 
-        const { from, to } = req.query;
+        const { from, to, date } = req.query;
 
+
+        // Check source and destination
         if (!from || !to) {
 
             return res.status(400).json({
+                success: false,
+                message: "Please provide from and to station codes."
+            });
+
+        }
+
+
+        // Check date format if date is provided
+        if (date) {
+
+            const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+            if (!dateRegex.test(date)) {
+
+                return res.status(400).json({
+                    success: false,
+                    message: "Date must be in YYYY-MM-DD format."
+                });
+
+            }
+
+        }
+
+
+        // RailRadar trains-between API
+        let url =
+            `https://api.railradar.in/v1/trains/between/${encodeURIComponent(from)}/${encodeURIComponent(to)}`;
+
+
+        // Add selected journey date
+        if (date) {
+
+            url += `?date=${encodeURIComponent(date)}`;
+
+        }
+
+
+        console.log(
+            `🚆 Searching trains: ${from} → ${to}` +
+            (date ? ` | Date: ${date}` : "")
+        );
+
+
+        // Call RailRadar API
+        const response = await fetch(url, {
+
+            method: "GET",
+
+            headers: {
+
+                "Authorization": `Bearer ${API_KEY}`,
+
+                "Content-Type": "application/json"
+
+            }
+
+        });
+
+
+        const data = await response.json();
+
+
+        // RailRadar error
+        if (!response.ok) {
+
+            console.error(
+                "Train Search API Error:",
+                data
+            );
+
+            return res.status(response.status).json({
 
                 success: false,
 
                 message:
-                    "Please provide from and to station codes."
+                    data?.error?.message ||
+                    "Unable to fetch trains.",
+
+                error:
+                    data?.error || null
 
             });
 
         }
 
-        const url =
-            `https://api.railradar.in/v1/trains/between/${encodeURIComponent(
-                from
-            )}/${encodeURIComponent(
-                to
-            )}`;
 
-        const response = await fetch(url, {
+        // Send RailRadar response to frontend
+        res.status(200).json(data);
 
-            headers: {
-                "Authorization": `Bearer ${API_KEY}`,
-                "Content-Type": "application/json"
-            }
 
-        });
-
-        const data = await response.json();
-
-        res.status(response.status).json(data);
-
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Train Search Error:",
             error.message
         );
 
+
+        res.status(500).json({
+
+            success: false,
+
+            message: "Unable to search trains.",
+
+            error: error.message
+
+        });
+
+    }
+
+});
+// ======================================================
+// ============ REAL SEAT AVAILABILITY ==================
+// ======================================================
+
+app.get("/api/seat-availability", async (req, res) => {
+
+    try {
+
+        const {
+            trainNumber,
+            source,
+            destination,
+            journeyDate,
+            classCode
+        } = req.query;
+
+
+        // ================= VALIDATION =================
+
+        if (
+            !trainNumber ||
+            !source ||
+            !destination ||
+            !journeyDate ||
+            !classCode
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "trainNumber, source, destination, journeyDate and classCode are required."
+
+            });
+
+        }
+
+
+        // ================= ALLOWED CLASSES =================
+
+        const allowedClasses = [
+            "1A",
+            "2A",
+            "3A",
+            "3E",
+            "CC",
+            "EC",
+            "EA",
+            "FC",
+            "SL",
+            "2S"
+        ];
+
+
+        if (!allowedClasses.includes(classCode)) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Invalid class code."
+
+            });
+
+        }
+
+
+        // ================= RAILRADAR API =================
+
+        const url =
+            `https://api.railradar.in/v1/trains/${encodeURIComponent(trainNumber)}/seats` +
+            `?journeyDate=${encodeURIComponent(journeyDate)}` +
+            `&source=${encodeURIComponent(source)}` +
+            `&destination=${encodeURIComponent(destination)}` +
+            `&classCode=${encodeURIComponent(classCode)}` +
+            `&quotaCode=GN`;
+
+
+        console.log(
+            `💺 Checking ${trainNumber} ${classCode} | ${source} → ${destination} | ${journeyDate}`
+        );
+
+
+        const response = await fetch(url, {
+
+            method: "GET",
+
+            headers: {
+
+                "Authorization":
+                    `Bearer ${API_KEY}`,
+
+                "Content-Type":
+                    "application/json"
+
+            }
+
+        });
+
+
+        const data =
+            await response.json();
+
+
+        // ================= API ERROR =================
+
+        if (!response.ok) {
+
+            console.error(
+                "Seat Availability API Error:",
+                data
+            );
+
+
+            return res.status(
+                response.status
+            ).json({
+
+                success: false,
+
+                message:
+                    data?.error?.message ||
+                    "Unable to fetch seat availability.",
+
+                error:
+                    data?.error || null
+
+            });
+
+        }
+
+
+        // ================= FIND SELECTED DATE =================
+
+        const availabilityList =
+            data?.data?.avlDayList || [];
+
+
+        const selectedDay =
+            availabilityList.find(
+                item =>
+                    item.availablityDate ===
+                    journeyDate
+            );
+
+
+        // ================= RESPONSE =================
+
+        res.json({
+
+            success: true,
+
+            trainNumber:
+                trainNumber,
+
+            source:
+                source,
+
+            destination:
+                destination,
+
+            journeyDate:
+                journeyDate,
+
+            classCode:
+                classCode,
+
+            quotaCode:
+                data?.data?.quotaCode ||
+                "GN",
+
+            availability:
+                selectedDay?.availablityStatus ||
+                "N/A",
+
+            data:
+                data?.data || null
+
+        });
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Seat Availability Error:",
+            error.message
+        );
+
+
         res.status(500).json({
 
             success: false,
 
             message:
-                "Railway API request failed.",
+                "Unable to fetch seat availability.",
 
             error:
                 error.message
@@ -239,8 +509,6 @@ app.get("/api/trains", async (req, res) => {
     }
 
 });
-
-
 // ======================================================
 // RUNNING STATUS
 // ======================================================
@@ -2857,60 +3125,6 @@ async function startServer() {
 }
 // ================= LOGIN STATUS =================
 
-function checkLoginStatus() {
-
-    const userData =
-        localStorage.getItem("railintelUser");
-
-    const loginBtn =
-        document.getElementById("login-btn");
-
-    const signupBtn =
-        document.getElementById("signup-btn");
-
-    const userArea =
-        document.getElementById("user-area");
-
-    const userName =
-        document.getElementById("user-name");
-
-    const logoutArea =
-        document.getElementById("logout-area");
-
-
-    if (userData) {
-
-        const user =
-            JSON.parse(userData);
-
-
-        // Hide Login / Signup
-        loginBtn.style.display = "none";
-        signupBtn.style.display = "none";
-
-
-        // Show user
-        userArea.style.display = "block";
-        logoutArea.style.display = "block";
-
-
-        userName.innerHTML =
-            "👤 " + user.name;
-
-    }
-
-    else {
-
-        loginBtn.style.display = "block";
-        signupBtn.style.display = "block";
-
-        userArea.style.display = "none";
-        logoutArea.style.display = "none";
-
-    }
-
-}
-
 
 // ================= LOGOUT =================
 
@@ -2924,6 +3138,5 @@ function logout() {
 
 
 // Run when page loads
-checkLoginStatus();
 
 startServer();
