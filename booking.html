@@ -1010,28 +1010,47 @@ function renderTrain(item, date) {
 
     results.appendChild(card);
 
-    const checkButton = card.querySelector(".check-availability");
+  
+const checkButton = card.querySelector(".check-availability");
 
-    checkButton.addEventListener("click", async function () {
-        checkButton.disabled = true;
-        checkButton.textContent = "Checking...";
+checkButton.addEventListener("click", async function () {
+    checkButton.disabled = true;
+    checkButton.textContent = "Checking...";
 
-        try {
-            await Promise.all([
-                loadAvailability(number, "SL", date, "sl-" + number),
-                loadAvailability(number, "3A", date, "3a-" + number),
-                loadAvailability(number, "2A", date, "2a-" + number)
-            ]);
-        } finally {
-            checkButton.disabled = false;
-            checkButton.textContent = "Refresh Availability";
-        }
-    });
+    try {
+        await loadAvailability(
+            number,
+            "SL",
+            date,
+            "sl-" + number
+        );
 
-    card.querySelector(".select-this-train").addEventListener("click", function () {
-        selectTrain(number, name);
-    });
-}
+        await loadAvailability(
+            number,
+            "3A",
+            date,
+            "3a-" + number
+        );
+
+        await loadAvailability(
+            number,
+            "2A",
+            date,
+            "2a-" + number
+        );
+
+    } catch (error) {
+        console.error("Availability check failed:", error);
+    } finally {
+        checkButton.disabled = false;
+        checkButton.textContent = "Refresh Availability";
+    }
+});
+
+card.querySelector(".select-this-train").addEventListener("click", function () {
+    selectTrain(number, name);
+});
+
 
 
 
