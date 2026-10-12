@@ -932,359 +932,205 @@ async function searchTrains() {
 
 /* ================= RENDER TRAIN ================= */
 
-async function renderTrain(
-  item,
-  date
-) {
+function renderTrain(item, date) {
+    const results = document.getElementById("trainResults");
 
-  const results =
-    document.getElementById(
-      "trainResults"
+    const train = item.train || item;
+    const from = item.from || {};
+    const to = item.to || {};
+
+    const number = String(
+        train.number || train.trainNumber || ""
     );
 
+    const name = train.name || train.trainName || "Unknown Train";
+    const type = train.type || "Express";
+    const departure = from.departure || "--";
+    const arrival = to.arrival || "--";
 
-  const train =
-    item.train ||
-    item;
+    const duration = item.duration
+        ? formatDuration(item.duration)
+        : "--";
 
+    const card = document.createElement("div");
+    card.className = "train-card";
 
-  const from =
-    item.from ||
-    {};
-
-  const to =
-    item.to ||
-    {};
-
-
-  const number =
-    train.number ||
-    train.trainNumber ||
-    "";
-
-
-  const name =
-    train.name ||
-    train.trainName ||
-    "Unknown Train";
-
-
-  const type =
-    train.type ||
-    "Express";
-
-
-  const departure =
-    from.departure ||
-    "--";
-
-
-  const arrival =
-    to.arrival ||
-    "--";
-
-
-  const duration =
-    item.duration
-      ? formatDuration(item.duration)
-      : "--";
-
-
-  const card =
-    document.createElement(
-      "div"
-    );
-
-
-  card.className =
-    "train-card";
-
-
-  card.innerHTML =
-
-    `<div class="train-top">
-
-      <div>
-
-        <div class="train-name">
-          ${name}
+    card.innerHTML = `
+        <div class="train-top">
+            <div>
+                <div class="train-name">${escapeText(name)}</div>
+                <div class="train-number">Train No: ${escapeText(number)}</div>
+            </div>
+            <div class="train-type">${escapeText(type)}</div>
         </div>
 
-        <div class="train-number">
-          Train No: ${number}
+        <div class="route">
+            <div>
+                <div class="time">${escapeText(departure)}</div>
+                <div class="station">${escapeText(selectedFrom.code)}</div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div>
+                <div class="time">${escapeText(arrival)}</div>
+                <div class="station">${escapeText(selectedTo.code)}</div>
+            </div>
+
+            <div class="station">${escapeText(duration)}</div>
         </div>
 
-      </div>
+        <div class="availability-title">Real Seat Availability</div>
 
-      <div class="train-type">
-        ${type}
-      </div>
+        <div class="availability-row">
+            <div class="class-box">
+                <div class="class-name">SL</div>
+                <div id="sl-${number}" class="class-status">Not checked</div>
+            </div>
 
-    </div>
+            <div class="class-box">
+                <div class="class-name">3A</div>
+                <div id="3a-${number}" class="class-status">Not checked</div>
+            </div>
 
-
-    <div class="route">
-
-      <div>
-
-        <div class="time">
-          ${departure}
+            <div class="class-box">
+                <div class="class-name">2A</div>
+                <div id="2a-${number}" class="class-status">Not checked</div>
+            </div>
         </div>
 
-        <div class="station">
-          ${selectedFrom.code}
-        </div>
+        <button class="select-train check-availability">
+            Check Availability
+        </button>
 
-      </div>
+        <button class="select-train select-this-train">
+            Select Train
+        </button>
+    `;
 
+    results.appendChild(card);
 
-      <div class="arrow">
-        →
-      </div>
+    const checkButton = card.querySelector(".check-availability");
 
+    checkButton.addEventListener("click", async function () {
+        checkButton.disabled = true;
+        checkButton.textContent = "Checking...";
 
-      <div>
+        try {
+            await Promise.all([
+                loadAvailability(number, "SL", date, "sl-" + number),
+                loadAvailability(number, "3A", date, "3a-" + number),
+                loadAvailability(number, "2A", date, "2a-" + number)
+            ]);
+        } finally {
+            checkButton.disabled = false;
+            checkButton.textContent = "Refresh Availability";
+        }
+    });
 
-        <div class="time">
-          ${arrival}
-        </div>
-
-        <div class="station">
-          ${selectedTo.code}
-        </div>
-
-      </div>
-
-
-      <div class="station">
-        ${duration}
-      </div>
-
-    </div>
-
-
-    <div class="availability-title">
-      Real Seat Availability
-    </div>
-
-
-    <div class="availability-row">
-
-      <div class="class-box">
-
-        <div class="class-name">
-          SL
-        </div>
-
-        <div
-          id="sl-${number}"
-          class="class-status">
-          Loading...
-        </div>
-
-      </div>
-
-
-      <div class="class-box">
-
-        <div class="class-name">
-          3A
-        </div>
-
-        <div
-          id="3a-${number}"
-          class="class-status">
-          Loading...
-        </div>
-
-      </div>
-
-
-      <div class="class-box">
-
-        <div class="class-name">
-          2A
-        </div>
-
-        <div
-          id="2a-${number}"
-          class="class-status">
-          Loading...
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <button
-      class="select-train"
-      onclick="selectTrain('${number}', '${escapeText(name)}')">
-
-      Select Train
-
-    </button>`;
-
-
-  results.appendChild(
-    card
-  );
-
-
-  /* Fetch real availability */
-
-  loadAvailability(
-    number,
-    "SL",
-    date,
-    "sl-" + number
-  );
-
-  loadAvailability(
-    number,
-    "3A",
-    date,
-    "3a-" + number
-  );
-
-  loadAvailability(
-    number,
-    "2A",
-    date,
-    "2a-" + number
-  );
-
+    card.querySelector(".select-this-train").addEventListener("click", function () {
+        selectTrain(number, name);
+    });
 }
+
 
 
 /* ================= SEAT AVAILABILITY ================= */
 
-async function loadAvailability(
-  trainNumber,
-  classCode,
-  date,
-  elementId
-) {
+async function loadAvailability(trainNumber, classCode, journeyDate, elementId) {
+    const statusElement = document.getElementById(elementId);
 
-  const element =
-    document.getElementById(
-      elementId
-    );
-
-
-  if (!element) {
-    return;
-  }
-
-
-  try {
-
-    const url =
-      API_BASE +
-      "/api/seat-availability" +
-
-      "?trainNumber=" +
-      encodeURIComponent(trainNumber) +
-
-      "&source=" +
-      encodeURIComponent(
-        selectedFrom.code
-      ) +
-
-      "&destination=" +
-      encodeURIComponent(
-        selectedTo.code
-      ) +
-
-      "&journeyDate=" +
-      encodeURIComponent(date) +
-
-      "&classCode=" +
-      encodeURIComponent(classCode);
-
-
-    const response =
-      await fetch(url);
-
-
-    const data =
-      await response.json();
-
-
-    if (
-      !response.ok ||
-      !data.success
-    ) {
-
-      element.innerText =
-        "Unavailable";
-
-      element.className =
-        "class-status unavailable";
-
-      return;
-
+    if (!statusElement) {
+        console.error("Availability element not found:", elementId);
+        return;
     }
 
+    statusElement.textContent = "Checking...";
+    statusElement.className = "class-status";
 
-    const availability =
-      data.availability;
+    try {
+        const params = new URLSearchParams({
+            trainNumber: String(trainNumber),
+            source: selectedFrom.code,
+            destination: selectedTo.code,
+            journeyDate: journeyDate,
+            classCode: classCode
+        });
 
+        const response = await fetch(
+            `${API_BASE}/api/seat-availability?${params.toString()}`
+        );
 
-    element.innerText =
-      availability || "N/A";
+        let data;
 
+        try {
+            data = await response.json();
+        } catch {
+            data = null;
+        }
 
-    if (
-      String(availability)
-        .toUpperCase()
-        .includes("WL") ||
-      String(availability)
-        .toUpperCase()
-        .includes("RAC")
-    ) {
+        // API error does NOT mean seats are unavailable.
+        if (!response.ok || !data || data.success !== true) {
+            statusElement.textContent = "Could not check";
+            statusElement.className = "class-status unavailable";
 
-      element.className =
-        "class-status waiting";
+            console.error(
+                `Availability API error for ${trainNumber} (${classCode}):`,
+                data
+            );
+            return;
+        }
 
+        const availability = String(data.availability || "").trim();
+        const normalized = availability.toUpperCase();
+
+        // No confirmed availability data.
+        if (
+            !availability ||
+            normalized === "N/A" ||
+            normalized === "NA" ||
+            normalized === "NULL" ||
+            normalized === "UNDEFINED"
+        ) {
+            statusElement.textContent = "Not confirmed";
+            statusElement.className = "class-status";
+            return;
+        }
+
+        // Show the actual status returned by the API.
+        statusElement.textContent = availability;
+
+        if (
+            normalized.includes("AVAILABLE") &&
+            !normalized.includes("NOT AVAILABLE")
+        ) {
+            statusElement.className = "class-status available";
+        } else if (
+            normalized.includes("RAC") ||
+            normalized.includes("WL") ||
+            normalized.includes("WAITLIST")
+        ) {
+            statusElement.className = "class-status waiting";
+        } else if (
+            normalized.includes("NOT AVAILABLE") ||
+            normalized.includes("UNAVAILABLE") ||
+            normalized.includes("REGRET") ||
+            normalized.includes("CLOSED")
+        ) {
+            statusElement.className = "class-status unavailable";
+        } else {
+            // Unknown statuses are displayed without guessing.
+            statusElement.className = "class-status";
+        }
+
+    } catch (error) {
+        console.error("Availability request failed:", error);
+
+        statusElement.textContent = "Could not check";
+        statusElement.className = "class-status unavailable";
     }
-
-    else if (
-      String(availability)
-        .toUpperCase()
-        .includes("AVAILABLE")
-    ) {
-
-      element.className =
-        "class-status";
-
-    }
-
-    else {
-
-      element.className =
-        "class-status unavailable";
-
-    }
-
-
-  } catch (error) {
-
-    console.error(
-      "Availability error:",
-      error
-    );
-
-
-    element.innerText =
-      "N/A";
-
-    element.className =
-      "class-status unavailable";
-
-  }
-
 }
+
 
 
 /* ================= SELECT TRAIN ================= */
