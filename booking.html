@@ -532,403 +532,322 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 <script>
 
-const API_BASE =
-  "https://railintel-project.onrender.com";
-
+const API_BASE = "https://railintel-project.onrender.com";
 
 let selectedFrom = null;
 let selectedTo = null;
 
-
 /* ================= DATE ================= */
 
 document.addEventListener("DOMContentLoaded", function () {
+    const dateInput = document.getElementById("date");
 
-  const dateInput =
-    document.getElementById("date");
+    if (!dateInput) return;
 
-  const today =
-    new Date();
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
 
-  const year =
-    today.getFullYear();
-
-  const month =
-    String(today.getMonth() + 1).padStart(2, "0");
-
-  const day =
-    String(today.getDate()).padStart(2, "0");
-
-  dateInput.min =
-    `${year}-${month}-${day}`;
-
+    dateInput.min = `${year}-${month}-${day}`;
 });
-
 
 /* ================= STATION SEARCH ================= */
 
 function setupStationSearch(inputId, resultsId, type) {
+    const input = document.getElementById(inputId);
+    const results = document.getElementById(resultsId);
 
-  const input =
-    document.getElementById(inputId);
+    let timer;
+    let controller;
 
-  const results =
-    document.getElementById(resultsId);
+    if (!input || !results) return;
 
+    input.addEventListener("input", function () {
+        clearTimeout(timer);
 
-  let timer;
+        if (controller) controller.abort();
 
-
-  input.addEventListener("input", function () {
-
-    clearTimeout(timer);
-
-    const query =
-      input.value.trim();
-
-
-    if (query.length < 2) {
-
-      results.style.display =
-        "none";
-
-      return;
-
-    }
-
-
-    timer = setTimeout(async function () {
-
-      try {
-
-        const response =
-          await fetch(
-            API_BASE +
-            "/api/stations/search?q=" +
-            encodeURIComponent(query)
-          );
-
-
-        const data =
-          await response.json();
-
-
-        results.innerHTML =
-          "";
-
-
-        if (
-          !data.success ||
-          !data.data ||
-          data.data.length === 0
-        ) {
-
-          results.innerHTML =
-            `<div class="station-item">
-              No station found
-            </div>`;
-
-          results.style.display =
-            "block";
-
-          return;
-
+        if (type === "from") {
+            selectedFrom = null;
+        } else {
+            selectedTo = null;
         }
 
+        const query = input.value.trim();
+        results.innerHTML = "";
 
-        data.data
-          .slice(0, 8)
-          .forEach(function (station) {
+        if (query.length < 2) {
+            results.style.display = "none";
+            return;
+        }
 
-            const div =
-              document.createElement("div");
+        timer = setTimeout(async function () {
+            controller = new AbortController();
 
-            div.className =
-              "station-item";
+            try {
+                const response = await fetch(
+                    `${API_BASE}/api/stations/search?q=${encodeURIComponent(query)}`,
+                    { signal: controller.signal }
+                );
 
+                const data = await response.json();
 
-            const code =
-              station.code ||
-              station.stationCode ||
-              "";
-
-
-            const name =
-              station.name ||
-              station.stationName ||
-              "";
-
-
-            div.innerHTML =
-
-              `<div class="station-name">
-                ${name}
-              </div>
-
-              <div class="station-code">
-                ${code}
-              </div>`;
-
-
-            div.onclick =
-              function () {
-
-                input.value =
-                  name;
-
-                if (type === "from") {
-
-                  selectedFrom = {
-                    code: code,
-                    name: name
-                  };
-
-                } else {
-
-                  selectedTo = {
-                    code: code,
-                    name: name
-                  };
-
+                if (!response.ok || data.success === false) {
+                    throw new Error(
+                        data.message ||
+                        data.error?.message ||
+                        `Station search failed (${response.status})`
+                    );
                 }
 
-                results.style.display =
-                  "none";
+                const stations = Array.isArray(data.data)
+                    ? data.data
+                    : Array.isArray(data.data?.stations)
+                        ? data.data.stations
+                        : Array.isArray(data.data?.results)
+                            ? data.data.results
+                            : Array.isArray(data.stations)
+                                ? data.stations
+                                : [];
 
-              };
+                results.innerHTML = "";
 
+                if (stations.length === 0) {
+                    showStationMessage(results, "No station found");
+                    return;
+                }
 
-            results.appendChild(div);
+                stations.slice(0, 8).forEach(function (station) {
+                    const code = String(
+                        station.code ||
+                        station.stationCode ||
+                        station.station_code ||
+                        station.station?.code ||
+                        ""
+                    ).trim();
 
-          });
+                    const name = String(
+                        station.name ||
+                        station.stationName ||
+                        station.station_name ||
+                        station.station?.name ||
+                        ""
+                    ).trim();
 
+                    if (!code || !name) return;
 
-        results.style.display =
-          "block";
+                    const item = document.createElement("div");
+                    item.className = "station-item";
 
+                    const nameElement = document.createElement("div");
+                    nameElement.className = "station-name";
+                    nameElement.textContent = name;
 
-      } catch (error) {
+                    const codeElement = document.createElement("div");
+                    codeElement.className = "station-code";
+                    codeElement.textContent = code;
 
-        console.error(
-          "Station search error:",
-          error
-        );
+                    item.appendChild(nameElement);
+                    item.appendChild(codeElement);
 
-      }
+                    item.addEventListener("click", function () {
+                        input.value = name;
 
-    }, 300);
+                        if (type === "from") {
+                            selectedFrom = { code, name };
+                        } else {
+                            selectedTo = { code, name };
+                        }
 
-  });
+                        results.style.display = "none";
+                    });
 
+                    results.appendChild(item);
+                });
+
+                if (results.children.length === 0) {
+                    showStationMessage(
+                        results,
+                        "No usable station results"
+                    );
+                    return;
+                }
+
+                results.style.display = "block";
+
+            } catch (error) {
+                if (error.name === "AbortError") return;
+
+                console.error("Station search error:", error);
+
+                showStationMessage(
+                    results,
+                    "Unable to load stations. Try again."
+                );
+            }
+        }, 350);
+    });
 }
 
+function showStationMessage(results, message) {
+    results.innerHTML = "";
+
+    const item = document.createElement("div");
+    item.className = "station-item";
+    item.textContent = message;
+
+    results.appendChild(item);
+    results.style.display = "block";
+}
 
 /* ================= INITIALIZE ================= */
 
-setupStationSearch(
-  "from",
-  "fromResults",
-  "from"
-);
-
-setupStationSearch(
-  "to",
-  "toResults",
-  "to"
-);
-
+setupStationSearch("from", "fromResults", "from");
+setupStationSearch("to", "toResults", "to");
 
 /* ================= SEARCH TRAINS ================= */
 
 async function searchTrains() {
+    const fromInput = document.getElementById("from").value.trim();
+    const toInput = document.getElementById("to").value.trim();
+    const date = document.getElementById("date").value;
 
-  const fromInput =
-    document.getElementById("from").value.trim();
+    const status = document.getElementById("status");
+    const results = document.getElementById("trainResults");
+    const button = document.querySelector(".btn-book");
 
-  const toInput =
-    document.getElementById("to").value.trim();
-
-  const date =
-    document.getElementById("date").value;
-
-
-  const status =
-    document.getElementById("status");
-
-  const results =
-    document.getElementById("trainResults");
-
-
-  /* ---------- VALIDATION ---------- */
-
-  if (
-    !fromInput ||
-    !toInput ||
-    !date
-  ) {
-
-    status.style.display =
-      "block";
-
-    status.style.color =
-      "#f87171";
-
-    status.innerText =
-      "⚠️ Please select From, To and Journey Date.";
-
-    return;
-
-  }
-
-
-  if (
-    !selectedFrom ||
-    !selectedTo
-  ) {
-
-    status.style.display =
-      "block";
-
-    status.style.color =
-      "#f87171";
-
-    status.innerText =
-      "⚠️ Please select stations from the suggestions.";
-
-    return;
-
-  }
-
-
-  if (
-    selectedFrom.code ===
-    selectedTo.code
-  ) {
-
-    status.style.display =
-      "block";
-
-    status.style.color =
-      "#f87171";
-
-    status.innerText =
-      "⚠️ From and To stations cannot be same.";
-
-    return;
-
-  }
-
-
-  status.style.display =
-    "block";
-
-  status.style.color =
-    "#94a3b8";
-
-  status.innerText =
-    "🔎 Searching real trains...";
-
-
-  results.innerHTML =
-    "";
-
-
-  try {
-
-    const url =
-      API_BASE +
-      "/api/trains?from=" +
-      encodeURIComponent(selectedFrom.code) +
-      "&to=" +
-      encodeURIComponent(selectedTo.code) +
-      "&date=" +
-      encodeURIComponent(date);
-
-
-    const response =
-      await fetch(url);
-
-
-    const data =
-      await response.json();
-
-
-    if (
-      !response.ok ||
-      !data.success
-    ) {
-
-      throw new Error(
-        data.message ||
-        "Unable to search trains"
-      );
-
+    function showStatus(message, isError = false) {
+        status.style.display = "block";
+        status.style.color = isError ? "#f87171" : "#94a3b8";
+        status.textContent = message;
     }
 
-
-    const trains =
-      data.data?.trains ||
-      data.trains ||
-      [];
-
-
-    if (
-      trains.length === 0
-    ) {
-
-      status.innerText =
-        "No trains found for this route.";
-
-      results.innerHTML =
-        `<div class="empty">
-          🚆 No trains available for this route on the selected date.
-        </div>`;
-
-      return;
-
+    if (!fromInput || !toInput || !date) {
+        showStatus("Please select From, To and Journey Date.", true);
+        return;
     }
 
-
-    status.innerText =
-      `✅ ${trains.length} train(s) found`;
-
-
-    for (
-      const item of trains
-    ) {
-
-      await renderTrain(
-        item,
-        date
-      );
-
+    if (!selectedFrom || !selectedTo) {
+        showStatus(
+            "Please select both stations from the suggestions.",
+            true
+        );
+        return;
     }
 
+    if (selectedFrom.code === selectedTo.code) {
+        showStatus("From and To stations cannot be the same.", true);
+        return;
+    }
 
-  } catch (error) {
+    const selectedDate = new Date(`${date}T00:00:00`);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-    console.error(
-      "Train search error:",
-      error
-    );
+    if (Number.isNaN(selectedDate.getTime()) || selectedDate < today) {
+        showStatus("Please select a valid journey date.", true);
+        return;
+    }
 
+    const originalButtonText = button.textContent;
 
-    status.style.color =
-      "#f87171";
+    button.disabled = true;
+    button.textContent = "Searching...";
+    results.innerHTML = "";
 
-    status.innerText =
-      "❌ " + error.message;
+    showStatus("Searching real trains...");
 
+    try {
+        const params = new URLSearchParams({
+            from: selectedFrom.code,
+            to: selectedTo.code,
+            date
+        });
 
-    results.innerHTML =
-      `<div class="empty">
-        Unable to load trains. Please try again.
-      </div>`;
+        const response = await fetch(
+            `${API_BASE}/api/trains?${params.toString()}`
+        );
 
-  }
+        let data;
 
+        try {
+            data = await response.json();
+        } catch {
+            throw new Error("Server returned an invalid response.");
+        }
+
+        if (!response.ok || data.success === false) {
+            throw new Error(
+                data.message ||
+                data.error?.message ||
+                `Train search failed (HTTP ${response.status}).`
+            );
+        }
+
+        const trains = Array.isArray(data.data)
+            ? data.data
+            : Array.isArray(data.data?.trains)
+                ? data.data.trains
+                : Array.isArray(data.data?.results)
+                    ? data.data.results
+                    : Array.isArray(data.trains)
+                        ? data.trains
+                        : Array.isArray(data.results)
+                            ? data.results
+                            : [];
+
+        if (trains.length === 0) {
+            showStatus("No trains found for this route and date.");
+
+            results.innerHTML = `
+                <div class="empty">
+                    No train results were returned for this route and date.
+                    Please verify the stations and try again.
+                </div>
+            `;
+            return;
+        }
+
+        let renderedCount = 0;
+
+        for (const item of trains) {
+            const card = renderTrain(item, date);
+
+            if (card) renderedCount++;
+        }
+
+        if (renderedCount === 0) {
+            showStatus("Train data was received but could not be displayed.", true);
+            results.innerHTML = `
+                <div class="empty">
+                    The train data format was not recognised.
+                    Check the backend API response.
+                </div>
+            `;
+            return;
+        }
+
+        showStatus(`${renderedCount} train(s) found.`);
+
+    } catch (error) {
+        console.error("Train search error:", error);
+
+        showStatus(
+            error.message || "Unable to load trains. Please try again.",
+            true
+        );
+
+        results.innerHTML = `
+            <div class="empty">
+                Unable to load train results. Please try again later.
+            </div>
+        `;
+    } finally {
+        button.disabled = false;
+        button.textContent = originalButtonText;
+    }
 }
-
 
 /* ================= RENDER TRAIN ================= */
 
@@ -940,17 +859,40 @@ function renderTrain(item, date) {
     const to = item.to || {};
 
     const number = String(
-        train.number || train.trainNumber || ""
-    );
+        train.number ||
+        train.trainNumber ||
+        train.train_number ||
+        ""
+    ).trim();
 
-    const name = train.name || train.trainName || "Unknown Train";
-    const type = train.type || "Express";
-    const departure = from.departure || "--";
-    const arrival = to.arrival || "--";
+    const name =
+        train.name ||
+        train.trainName ||
+        train.train_name ||
+        "Unknown Train";
 
-    const duration = item.duration
-        ? formatDuration(item.duration)
-        : "--";
+    const type = train.type || train.trainType || "Express";
+
+    const departure =
+        from.departure ||
+        from.departureTime ||
+        item.departure ||
+        "--";
+
+    const arrival =
+        to.arrival ||
+        to.arrivalTime ||
+        item.arrival ||
+        "--";
+
+    const duration = Number.isFinite(Number(item.duration))
+        ? formatDuration(Number(item.duration))
+        : item.duration || "--";
+
+    if (!number) {
+        console.warn("Skipping train with missing train number:", item);
+        return null;
+    }
 
     const card = document.createElement("div");
     card.className = "train-card";
@@ -959,7 +901,9 @@ function renderTrain(item, date) {
         <div class="train-top">
             <div>
                 <div class="train-name">${escapeText(name)}</div>
-                <div class="train-number">Train No: ${escapeText(number)}</div>
+                <div class="train-number">
+                    Train No: ${escapeText(number)}
+                </div>
             </div>
             <div class="train-type">${escapeText(type)}</div>
         </div>
@@ -999,70 +943,57 @@ function renderTrain(item, date) {
             </div>
         </div>
 
-        <button class="select-train check-availability">
+        <button type="button" class="select-train check-availability">
             Check Availability
         </button>
 
-        <button class="select-train select-this-train">
+        <button type="button" class="select-train select-this-train">
             Select Train
         </button>
     `;
 
     results.appendChild(card);
 
-  
-const checkButton = card.querySelector(".check-availability");
+    const checkButton = card.querySelector(".check-availability");
 
-checkButton.addEventListener("click", async function () {
-    checkButton.disabled = true;
-    checkButton.textContent = "Checking...";
+    checkButton.addEventListener("click", async function () {
+        checkButton.disabled = true;
+        checkButton.textContent = "Checking...";
 
-    try {
-        await loadAvailability(
-            number,
-            "SL",
-            date,
-            "sl-" + number
-        );
+        try {
+            // Sequential requests reduce simultaneous API load.
+            await loadAvailability(number, "SL", date, `sl-${number}`);
+            await loadAvailability(number, "3A", date, `3a-${number}`);
+            await loadAvailability(number, "2A", date, `2a-${number}`);
+        } catch (error) {
+            console.error("Availability check failed:", error);
+        } finally {
+            checkButton.disabled = false;
+            checkButton.textContent = "Refresh Availability";
+        }
+    });
 
-        await loadAvailability(
-            number,
-            "3A",
-            date,
-            "3a-" + number
-        );
+    card.querySelector(".select-this-train").addEventListener(
+        "click",
+        function () {
+            selectTrain(number, name);
+        }
+    );
 
-        await loadAvailability(
-            number,
-            "2A",
-            date,
-            "2a-" + number
-        );
-
-    } catch (error) {
-        console.error("Availability check failed:", error);
-    } finally {
-        checkButton.disabled = false;
-        checkButton.textContent = "Refresh Availability";
-    }
-});
-
-card.querySelector(".select-this-train").addEventListener("click", function () {
-    selectTrain(number, name);
-});
-
-
-
+    return card;
+}
 
 /* ================= SEAT AVAILABILITY ================= */
 
-async function loadAvailability(trainNumber, classCode, journeyDate, elementId) {
+async function loadAvailability(
+    trainNumber,
+    classCode,
+    journeyDate,
+    elementId
+) {
     const statusElement = document.getElementById(elementId);
 
-    if (!statusElement) {
-        console.error("Availability element not found:", elementId);
-        return;
-    }
+    if (!statusElement) return;
 
     statusElement.textContent = "Checking...";
     statusElement.className = "class-status";
@@ -1072,8 +1003,8 @@ async function loadAvailability(trainNumber, classCode, journeyDate, elementId) 
             trainNumber: String(trainNumber),
             source: selectedFrom.code,
             destination: selectedTo.code,
-            journeyDate: journeyDate,
-            classCode: classCode
+            journeyDate,
+            classCode
         });
 
         const response = await fetch(
@@ -1088,13 +1019,20 @@ async function loadAvailability(trainNumber, classCode, journeyDate, elementId) 
             data = null;
         }
 
-        // API error does NOT mean seats are unavailable.
         if (!response.ok || !data || data.success !== true) {
-            statusElement.textContent = "Could not check";
+            const message =
+                data?.message ||
+                data?.error?.message ||
+                `HTTP ${response.status}`;
+
+            statusElement.textContent =
+                response.status === 429 ? "Rate limited" : "Could not check";
+
             statusElement.className = "class-status unavailable";
 
             console.error(
                 `Availability API error for ${trainNumber} (${classCode}):`,
+                message,
                 data
             );
             return;
@@ -1103,20 +1041,15 @@ async function loadAvailability(trainNumber, classCode, journeyDate, elementId) 
         const availability = String(data.availability || "").trim();
         const normalized = availability.toUpperCase();
 
-        // No confirmed availability data.
         if (
             !availability ||
-            normalized === "N/A" ||
-            normalized === "NA" ||
-            normalized === "NULL" ||
-            normalized === "UNDEFINED"
+            ["N/A", "NA", "NULL", "UNDEFINED"].includes(normalized)
         ) {
             statusElement.textContent = "Not confirmed";
             statusElement.className = "class-status";
             return;
         }
 
-        // Show the actual status returned by the API.
         statusElement.textContent = availability;
 
         if (
@@ -1138,7 +1071,6 @@ async function loadAvailability(trainNumber, classCode, journeyDate, elementId) 
         ) {
             statusElement.className = "class-status unavailable";
         } else {
-            // Unknown statuses are displayed without guessing.
             statusElement.className = "class-status";
         }
 
@@ -1150,110 +1082,55 @@ async function loadAvailability(trainNumber, classCode, journeyDate, elementId) 
     }
 }
 
-
-
 /* ================= SELECT TRAIN ================= */
 
-function selectTrain(
-  trainNumber,
-  trainName
-) {
+function selectTrain(trainNumber, trainName) {
+    const user = localStorage.getItem("railintelUser");
 
-  const user =
-    localStorage.getItem(
-      "railintelUser"
+    if (!user) {
+        alert("Please login before continuing.");
+        window.location.href = "login.html";
+        return;
+    }
+
+    localStorage.setItem(
+        "selectedTrain",
+        JSON.stringify({
+            trainNumber,
+            trainName,
+            from: selectedFrom,
+            to: selectedTo,
+            journeyDate: document.getElementById("date").value
+        })
     );
 
-
-  if (!user) {
-
-    alert(
-      "Please login before continuing."
-    );
-
-    window.location.href =
-      "login.html";
-
-    return;
-
-  }
-
-
-  localStorage.setItem(
-    "selectedTrain",
-    JSON.stringify({
-
-      trainNumber:
-        trainNumber,
-
-      trainName:
-        trainName,
-
-      from:
-        selectedFrom,
-
-      to:
-        selectedTo,
-
-      journeyDate:
-        document.getElementById(
-          "date"
-        ).value
-
-    })
-  );
-
-
-  alert(
-    "Train selected successfully!"
-  );
-
+    alert("Train selected successfully!");
 }
-
 
 /* ================= DURATION ================= */
 
-function formatDuration(
-  minutes
-) {
+function formatDuration(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
 
-  const hours =
-    Math.floor(
-      minutes / 60
-    );
-
-  const mins =
-    minutes % 60;
-
-
-  return (
-    hours +
-    "h " +
-    mins +
-    "m"
-  );
-
+    return `${hours}h ${mins}m`;
 }
 
+/* ================= ESCAPE TEXT ================= */
 
-/* ================= ESCAPE ================= */
-
-function escapeText(text) {
-
-  return String(text)
-    .replace(/'/g, "\\'")
-    .replace(/"/g, "&quot;");
-
+function escapeText(value) {
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
 }
-
 
 /* ================= BACK ================= */
 
 function goBack() {
-
-  window.location.href =
-    "index.html";
-
+    window.location.href = "index.html";
 }
 
 </script>
