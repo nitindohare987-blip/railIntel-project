@@ -1,10 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delay Recovery</title>
+    <title>Delay Intelligence | RailIntel</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -23,105 +23,78 @@
             min-height: 100vh;
         }
 
-       
-/* ── NAVBAR ── */
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 80px;
-  background: #020617;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 80px;
+            background: #020617;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-.logo {
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: #b026ff;
-}
+        .logo {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #b026ff;
+        }
 
-nav ul {
-  display: flex;
-  list-style: none;
-  gap: 32px;
-}
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
 
-nav ul li a {
-  color: #94a3b8;
-  font-size: 0.95rem;
-  transition: color 0.2s;
-  position: relative;
-}
+        nav a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: .95rem;
+        }
 
-nav ul li a:hover {
-  color: white;
-}
+        nav a:hover {
+            color: white;
+        }
 
-/* underline effect on hover */
-nav ul li a::after {
-  content: '';
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: #b026ff;
-  transition: width 0.25s;
-}
-
-nav ul li a:hover::after {
-  width: 100%;
-}
-
-
-        /* ── HEADING ── */
         h2 {
             text-align: center;
             padding-top: 36px;
-            font-size: 1.4rem;
+            font-size: 1.8rem;
             font-weight: 600;
             color: #e2e8f0;
             letter-spacing: 1px;
         }
 
-        /* ── CARD ── */
         .div {
             width: 90%;
-            max-width: 400px;
+            max-width: 500px;
             margin: 24px auto 60px;
             background: #020617;
             padding: 28px 26px;
             border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255,255,255,.07);
             display: flex;
             flex-direction: column;
             gap: 14px;
         }
 
-        /* ── INPUTS ── */
-        input,
-        select {
-            padding: 11px 14px;
+        input, select {
+            padding: 14px 16px;
             width: 100%;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,.08);
             background: #0f172a;
             color: white;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.88rem;
+            font-size: .95rem;
             outline: none;
-            transition: border-color 0.2s;
         }
 
         input::placeholder {
             color: #475569;
         }
 
-        input:focus,
-        select:focus {
+        input:focus, select:focus {
             border-color: #6366f1;
         }
 
@@ -129,236 +102,512 @@ nav ul li a:hover::after {
             background: #0f172a;
         }
 
-        /* ── BUTTON ── */
         button {
-            padding: 12px;
+            padding: 14px;
             background: #6366f1;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             color: white;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.3s;
+            transition: .25s;
             width: 100%;
         }
 
         button:hover {
             background: #4f46e5;
-            transform: scale(1.03);
         }
 
-        /* ── RESULT BOX ── */
+        button:disabled {
+            opacity: .65;
+            cursor: wait;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,.07);
+            margin: 6px 0;
+        }
+
         #result {
-            font-size: 0.92rem;
+            font-size: .92rem;
             background: #0f172a;
             padding: 16px 18px;
             border-radius: 10px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255,255,255,.07);
             line-height: 1.9;
             display: none;
+            overflow-wrap: anywhere;
         }
 
-        /* ── CHART ── */
-        canvas {
-            margin-top: 6px;
-            max-width: 100%;
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+            padding: 7px 0;
         }
 
-        /* ── DIVIDER ── */
-        .divider {
-            border: none;
-            border-top: 1px solid rgba(255, 255, 255, 0.07);
-            margin: 2px 0;
+        .result-row:last-child {
+            border-bottom: none;
         }
-        /* ================= MOBILE RESPONSIVE ================= */
 
-@media (max-width: 768px) {
+        .muted {
+            color: #94a3b8;
+        }
 
-  nav {
-    padding: 14px 20px;
-    flex-direction: column;
-    gap: 12px;
-  }
+        #chartSection {
+            display: none;
+            margin-top: 12px;
+        }
 
-  .logo {
-    font-size: 2rem;
-  }
+        .chart-title {
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
 
-  nav ul {
-    gap: 18px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+        .chart-wrap {
+            position: relative;
+            height: 260px;
+        }
 
-  nav ul li a {
-    font-size: 0.82rem;
-  }
+        #message {
+            font-size: .85rem;
+            color: #cbd5e1;
+            line-height: 1.7;
+        }
 
-}
+        @media (max-width: 768px) {
+            nav {
+                padding: 14px 20px;
+                flex-direction: column;
+                gap: 12px;
+            }
 
+            .logo {
+                font-size: 2rem;
+            }
 
-/* ================= SMALL MOBILE ================= */
+            nav ul {
+                gap: 18px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
 
-@media (max-width: 480px) {
+            nav a {
+                font-size: .82rem;
+            }
+        }
 
-  nav {
-    padding: 12px 15px;
-  }
+        @media (max-width: 480px) {
+            nav {
+                padding: 12px 15px;
+            }
 
-  .logo {
-    font-size: 1.8rem;
-  }
+            .logo {
+                font-size: 1.8rem;
+            }
 
-  nav ul {
-    gap: 12px;
-  }
+            nav ul {
+                gap: 12px;
+            }
 
-  nav ul li a {
-    font-size: 0.76rem;
-  }
+            .div {
+                padding: 22px 16px;
+            }
 
-}
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            .result-row {
+                font-size: .84rem;
+            }
+        }
     </style>
 </head>
 
 <body>
-
     <nav>
         <div class="logo">रेल<span style="color:#94a3b8;">Intel</span></div>
         <ul>
-            <li>Home</li>
-            <li>About</li>
-            <li>FAQs</li>
-            <li>Contact</li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="index.html#faqs">FAQs</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
         </ul>
     </nav>
 
     <h2>Delay Intelligence</h2>
 
     <div class="div">
-
-        <input type="text" id="train" placeholder="Train No">
+        <input
+            type="text"
+            id="train"
+            placeholder="Train Number (e.g. 12919)"
+            inputmode="numeric"
+            maxlength="6"
+            autocomplete="off"
+        >
 
         <select id="type">
-            <option>Superfast</option>
-            <option>Express</option>
-            <option>Passenger</option>
-            <option>Local</option>
+            <option value="Superfast">Superfast</option>
+            <option value="Express">Express</option>
+            <option value="Passenger">Passenger</option>
+            <option value="Local">Local</option>
+            <option value="Vande Bharat">Vande Bharat</option>
         </select>
-
-        <input type="text" id="delay" placeholder="Delay in minutes">
 
         <hr class="divider">
 
-        <button onclick="check()">Check Recovery</button>
+        <button id="checkBtn" type="button" onclick="checkRecovery()">
+            Check Recovery
+        </button>
 
+        <div id="message" role="status" aria-live="polite"></div>
         <div id="result"></div>
 
-        <canvas id="delayChart"></canvas>
-
+        <section id="chartSection">
+            <h3 class="chart-title">Recorded Delay History</h3>
+            <div class="chart-wrap">
+                <canvas id="delayChart"></canvas>
+            </div>
+        </section>
     </div>
 
     <script>
+        const API_BASE = "https://railintel-project.onrender.com";
 
-        let chart;
+        let chart = null;
 
-        function check() {
+        const trainInput = document.getElementById("train");
+        const resultBox = document.getElementById("result");
+        const messageBox = document.getElementById("message");
+        const checkBtn = document.getElementById("checkBtn");
+        const chartSection = document.getElementById("chartSection");
 
-            let train = document.getElementById("train").value;
-            let type = document.getElementById("type").value;
-            let delay = parseInt(document.getElementById("delay").value);
+        function showMessage(message) {
+            messageBox.textContent = message;
+        }
 
-            if (!train || isNaN(delay)) {
-                document.getElementById("result").style.display = "block";
-                document.getElementById("result").innerHTML = "⚠️ Please enter all details";
+        function showError(message) {
+            resultBox.style.display = "block";
+            resultBox.textContent = message;
+        }
+
+        function addRow(container, label, value) {
+            const row = document.createElement("div");
+            row.className = "result-row";
+
+            const left = document.createElement("span");
+            left.className = "muted";
+            left.textContent = label;
+
+            const right = document.createElement("strong");
+            right.textContent = value;
+
+            row.append(left, right);
+            container.appendChild(row);
+        }
+
+        function formatDate(value) {
+            if (!value) return "Not available";
+
+            const date = new Date(value);
+
+            if (Number.isNaN(date.getTime())) {
+                return String(value);
+            }
+
+            return date.toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                timeZone: "Asia/Kolkata"
+            });
+        }
+
+        function getDelay(record) {
+            const value = Number(record?.delayMinutes);
+            return Number.isFinite(value) ? value : null;
+        }
+
+        function getRisk(delay) {
+            if (delay <= 10) {
+                return "Low";
+            }
+
+            if (delay <= 60) {
+                return "Medium";
+            }
+
+            return "High";
+        }
+
+        async function fetchJSON(url) {
+            const response = await fetch(url);
+
+            let data;
+
+            try {
+                data = await response.json();
+            } catch {
+                throw new Error("Server returned an invalid response.");
+            }
+
+            if (!response.ok || data?.success === false) {
+                throw new Error(
+                    data?.message ||
+                    data?.error?.message ||
+                    `Request failed (${response.status}).`
+                );
+            }
+
+            return data;
+        }
+
+        async function checkRecovery() {
+            const trainNumber = trainInput.value.trim();
+            const trainType = document.getElementById("type").value;
+
+            if (!/^\d{4,6}$/.test(trainNumber)) {
+                resultBox.style.display = "block";
+                showError("Please enter a valid 4–6 digit train number.");
+                showMessage("");
                 return;
             }
 
-            let ans = "";
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Checking...";
+            resultBox.style.display = "none";
+            resultBox.replaceChildren();
+            chartSection.style.display = "none";
+            showMessage("Fetching live train information...");
 
-            if (type == "Superfast") {
-                ans = delay <= 60 ? "✅ Can recover delay" : "❌ May not recover";
-            } else if (type == "Express") {
-                ans = delay <= 40 ? "🟡 Possible recovery" : "❌ Low chance";
-            } else if (type == "Passenger") {
-                ans = delay <= 20 ? "🟡 Possible" : "❌ Cannot recover";
-            } else if (type == "Local") {
-                ans = delay <= 30 ? "✅ Normal delay" : "❌ Will stay late";
+            if (chart) {
+                chart.destroy();
+                chart = null;
             }
 
-            let data;
-            if (train == "12121") {
-                data = [10, 20, 15, 30, 25, 40, 35];
-            } else if (train == "12951") {
-                data = [5, 15, 10, 20, 18, 25, 30];
-            } else {
-                data = Array.from({ length: 7 }, () => Math.floor(Math.random() * 60));
+            try {
+                /*
+                 * Collect a live snapshot using the existing backend route.
+                 * This stores/updates a record in MongoDB if collection succeeds.
+                 */
+                let snapshot = null;
+                let collectionWarning = "";
+
+                try {
+                    const collected = await fetchJSON(
+                        `${API_BASE}/api/reliability/collect/${encodeURIComponent(trainNumber)}`
+                    );
+
+                    snapshot = collected?.data || null;
+                } catch (error) {
+                    collectionWarning =
+                        "Could not save a new live snapshot: " + error.message;
+                }
+
+                showMessage("Loading recorded delay history...");
+
+                const historyResponse = await fetchJSON(
+                    `${API_BASE}/api/reliability/history/${encodeURIComponent(trainNumber)}`
+                );
+
+                const history = Array.isArray(historyResponse?.data)
+                    ? historyResponse.data
+                    : [];
+
+                /*
+                 * Prefer the freshly collected snapshot. If collection was
+                 * unavailable, use the newest stored record when present.
+                 */
+                const latest = snapshot ||
+                    (history.length ? history[0] : null);
+
+                resultBox.replaceChildren();
+                resultBox.style.display = "block";
+
+                const heading = document.createElement("h3");
+                heading.textContent = latest?.trainName ||
+                    `Train ${trainNumber}`;
+                heading.style.marginBottom = "10px";
+                resultBox.appendChild(heading);
+
+                addRow(resultBox, "Train Number", trainNumber);
+                addRow(resultBox, "Train Type", trainType);
+
+                if (latest) {
+                    const delay = getDelay(latest);
+
+                    addRow(
+                        resultBox,
+                        "Latest Recorded Delay",
+                        delay === null ? "Not available" : `${delay} minutes`
+                    );
+
+                    addRow(
+                        resultBox,
+                        "Current Status",
+                        latest.status || "Not available"
+                    );
+
+                    addRow(
+                        resultBox,
+                        "Current Station",
+                        latest.currentStation || "Not available"
+                    );
+
+                    addRow(
+                        resultBox,
+                        "Next Station",
+                        latest.nextStation || "Not available"
+                    );
+
+                    addRow(
+                        resultBox,
+                        "Journey Date",
+                        formatDate(latest.journeyDate || latest.startDate)
+                    );
+
+                    if (delay !== null) {
+                        addRow(resultBox, "Delay Risk", getRisk(delay));
+                    }
+                } else {
+                    addRow(resultBox, "Latest Delay", "Not available");
+                }
+
+                addRow(
+                    resultBox,
+                    "Saved History Records",
+                    String(history.length)
+                );
+
+                const note = document.createElement("p");
+                note.className = "muted";
+                note.style.marginTop = "12px";
+                note.style.fontSize = ".8rem";
+                note.textContent =
+                    "Risk is a simple delay-threshold indicator, not a prediction of recovery or an official railway rating.";
+                resultBox.appendChild(note);
+
+                if (collectionWarning) {
+                    showMessage(
+                        collectionWarning +
+                        " Showing saved history where available."
+                    );
+                } else {
+                    showMessage("Live snapshot request completed.");
+                }
+
+                renderHistoryChart(history);
+
+                if (history.length === 0) {
+                    showMessage(
+                        (collectionWarning ? collectionWarning + " " : "") +
+                        "No historical records are saved yet. The chart will appear as records accumulate."
+                    );
+                }
+            } catch (error) {
+                showMessage("");
+                showError(
+                    "Unable to load delay intelligence. " +
+                    error.message +
+                    " Please try again later."
+                );
+            } finally {
+                checkBtn.disabled = false;
+                checkBtn.textContent = "Check Recovery";
+            }
+        }
+
+        function renderHistoryChart(history) {
+            const validRecords = history
+                .filter(record => getDelay(record) !== null)
+                .slice()
+                .reverse();
+
+            if (validRecords.length === 0) {
+                chartSection.style.display = "none";
+                return;
             }
 
-            let avg = Math.floor(data.reduce((a, b) => a + b, 0) / data.length);
+            chartSection.style.display = "block";
 
-            let risk;
-            if (delay <= avg) {
-                risk = "🟢 Low Risk";
-            } else if (delay <= avg + 15) {
-                risk = "🟡 Medium Risk";
-            } else {
-                risk = "🔴 High Risk";
-            }
+            const labels = validRecords.map(record =>
+                formatDate(record.journeyDate || record.capturedAt)
+            );
 
-            let resultBox = document.getElementById("result");
-            resultBox.style.display = "block";
-            resultBox.innerHTML =
-                "<b>" + ans + "</b><br>" +
-                "Average Delay: <b>" + avg + " mins</b><br>" +
-                "Risk: <b>" + risk + "</b>";
+            const delays = validRecords.map(record => getDelay(record));
 
-            let labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-            let ctx = document.getElementById("delayChart").getContext("2d");
+            const ctx = document.getElementById("delayChart")
+                .getContext("2d");
 
-            if (chart) { chart.destroy(); }
+            if (chart) chart.destroy();
 
             chart = new Chart(ctx, {
-                type: 'line',
+                type: "line",
                 data: {
-                    labels: labels,
+                    labels,
                     datasets: [{
-                        label: 'Past Delay (minutes)',
-                        data: data,
-                        borderColor: '#6366f1',
-                        backgroundColor: 'rgba(99,102,241,0.1)',
+                        label: "Recorded Delay (minutes)",
+                        data: delays,
+                        borderColor: "#818cf8",
+                        backgroundColor: "rgba(99,102,241,0.12)",
                         borderWidth: 2,
-                        pointBackgroundColor: '#6366f1',
+                        pointBackgroundColor: "#818cf8",
                         pointRadius: 4,
-                        tension: 0.4,
+                        tension: 0.3,
                         fill: true
                     }]
                 },
                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            labels: { color: '#94a3b8', font: { size: 11 } }
+                            labels: {
+                                color: "#cbd5e1"
+                            }
                         }
                     },
                     scales: {
                         x: {
-                            grid: { color: 'rgba(255,255,255,0.05)' },
-                            ticks: { color: '#94a3b8', font: { size: 11 } }
+                            grid: {
+                                color: "rgba(255,255,255,0.05)"
+                            },
+                            ticks: {
+                                color: "#94a3b8",
+                                maxRotation: 45,
+                                minRotation: 0
+                            }
                         },
                         y: {
-                            grid: { color: 'rgba(255,255,255,0.05)' },
-                            ticks: { color: '#94a3b8', font: { size: 11 } },
-                            beginAtZero: true
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: "Delay (minutes)",
+                                color: "#94a3b8"
+                            },
+                            grid: {
+                                color: "rgba(255,255,255,0.05)"
+                            },
+                            ticks: {
+                                color: "#94a3b8"
+                            }
                         }
                     }
                 }
             });
         }
 
+        trainInput.addEventListener("keydown", event => {
+            if (event.key === "Enter") {
+                checkRecovery();
+            }
+        });
     </script>
 </body>
-
 </html>
+```
